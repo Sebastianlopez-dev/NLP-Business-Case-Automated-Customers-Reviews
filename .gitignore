@@ -51,11 +51,12 @@ models/
 .env.local
 .env.*.local
 
+# Agent & project memory (local only, not versioned)
+AGENTS.md
+memory.md
+
 # Original project files (reference only)
 project-nlp-business-case-automated-customers-reviews-v2-main/
 *.zip
 
-# Agent & memory (managed externally)
-AGENTS.md
-memory.md
 
