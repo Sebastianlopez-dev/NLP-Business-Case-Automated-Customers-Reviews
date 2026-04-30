@@ -55,6 +55,9 @@ models/
 AGENTS.md
 memory.md
 
+# Agent skill registry (local only)
+.atl/
+
 # Original project files (reference only)
 project-nlp-business-case-automated-customers-reviews-v2-main/
 *.zip
