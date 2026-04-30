@@ -1,0 +1,61 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb_checkpoints*
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Data files (too large for git)
+data/
+*.csv
+*.parquet
+*.arrow
+
+# Models (too large for git)
+*.pt
+*.bin
+*.h5
+*.pkl
+*.joblib
+model/
+models/
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+
+# Original project files (reference only)
+project-nlp-business-case-automated-customers-reviews-v2-main/
+*.zip
+
+# Agent & memory (managed externally)
+AGENTS.md
+memory.md
+
