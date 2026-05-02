@@ -43,6 +43,8 @@ data/
 *.h5
 *.pkl
 *.joblib
+*.npy
+*.npz
 model/
 models/
 
