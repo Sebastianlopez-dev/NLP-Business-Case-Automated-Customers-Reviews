@@ -9,12 +9,38 @@
 
 **Problem**: The Amazon Reviews 2023 dataset is 750 GB compressed. Downloading it all would fill any hard drive. Loading it all into RAM is impossible.
 
-| Approach | How it works | RAM used | When to use |
-|----------|-------------|----------|-------------|
-| Full download | Download all JSONL.gz files → unzip → load into memory | 750 GB+ (impossible) | Never for this dataset |
-| HF Streaming | `load_dataset(streaming=True)` reads one record at a time from HuggingFace Hub. Like a straw sipping from a 750 GB ocean — you only hold one sip at a time | ~90 MB per category (the "straw") | ✅ **Always for datasets > RAM** |
+| Approach | How it works | RAM used | Disk cache | When to use |
+|----------|-------------|----------|------------|-------------|
+| Full download | Download all JSONL.gz files → unzip → load into memory | 750 GB+ (impossible) | 750 GB+ | Never for this dataset |
+| HF `load_dataset()` | Downloads .jsonl.gz → indexes ALL rows into Arrow → samples 30K | ~90 MB per category | **~2× per category** (raw .gz + Arrow index = ~120 GB total) | Small datasets only — fills Colab disk before 33 categories |
+| Raw JSONL streaming ✅ | `requests.get(stream=True)` + `gzip.GzipFile` from UCSD. Reads line by line, stops at 30K | ~90 MB per category (the "straw") | **0 GB** — never writes to disk | ✅ **Always for datasets > RAM** (2026-05-05 onwards) |
 
-**Why we chose streaming**: It's the only way to touch 571M reviews without a datacenter. The data is never downloaded — it flows through the pipeline and only the 30K samples per category stay in RAM.
+### The HuggingFace cache problem (discovered 2026-05-05)
+
+The HuggingFace approach — even without explicit `streaming=True` — downloads the `.jsonl.gz` file AND converts it to an Arrow index in `~/.cache/huggingface/`. This **doubles** the disk footprint per category:
+
+```
+HuggingFace per category:   .jsonl.gz (downloaded) + Arrow index + metadata
+                             ~3-4 GB per category × 33 = ~100-120 GB
+Raw JSONL per category:      0 bytes on disk — only 30K dicts in RAM
+```
+
+At 8 categories, Colab was already at 80 GB / 225 GB — the pipeline would have crashed before completing all 33.
+
+### Why raw JSONL streaming from UCSD
+
+| | HF `load_dataset()` | Raw JSONL from UCSD |
+|---|---|---|
+| URL source | HuggingFace Hub (redirects to UCSD anyway) | [mcauleylab.ucsd.edu](https://amazon-reviews-2023.github.io) — the original host |
+| Disk cache | ~120 GB across 33 categories | **0 GB** |
+| "Generating full split" | Indexes ALL rows (19.9M for Automotive) | ❌ Never happens |
+| Time per large category | 3-5 min (indexing) + 30s (sampling) | 10-30s total |
+| API stability | Broke in `datasets>=2.19` (`split` + `streaming` deprecated) | Pure Python stdlib + `requests` — no version risk |
+| Code complexity | 1 line of `load_dataset()` | ~15 lines of HTTP + gzip + JSON |
+
+**Why we chose raw JSONL streaming**: It's what §1 promised from day one — "streaming from a 750 GB ocean." With the HuggingFace approach, we were downloading and indexing the ocean just to take 30K sips. Raw streaming actually delivers: zero disk, zero indexing, true lazy reading. The URL pattern is verified from the official UCSD site — no risk of wrong links.
+
+> **Analogy**: HuggingFace was like a librarian who unpacks, catalogs, and shelves all 571M books before letting you check out 30K. Raw streaming is like walking into the warehouse, grabbing the first 30K books off the first shelf, and leaving.
 
 ---
 
@@ -82,7 +108,13 @@
 
 **Why two models?** DistilBERT is the *baseline* — fast to train, proves the pipeline works. RoBERTa is the *champion* — trained on 160 GB+ of text, better at sarcasm, nuanced opinions, and long reviews. Having both lets us compare: "Did the extra 59M parameters actually help on our data?"
 
-> **Token limit — ultra-verified (2026-05-02):** Both models use exactly **512 tokens** as maximum input length. The [official RoBERTa model card](https://huggingface.co/FacebookAI/roberta-base) states: *"The inputs of the model take pieces of 512 contiguous tokens"* and confirms training at *"a sequence length of 512."* DistilBERT, as a distilled BERT, inherits the same positional embedding architecture. The word count analysis in N01 estimates ~394 English words ≈ 512 tokens, applicable to both models.
+> **Token limit — ultra-verified (2026-05-02):** Both models use exactly **512 tokens** as maximum input length. The [official RoBERTa model card](https://huggingface.co/FacebookAI/roberta-base) states: *"The inputs of the model take pieces of 512 contiguous tokens"* and confirms training at *"a sequence length of 512."* The [official DistilBERT model card](https://huggingface.co/distilbert/distilbert-base-uncased) states: *"The only constrain is that the result has a combined length of less than 512 tokens."* DistilBERT, as a distilled BERT, inherits the same positional embedding architecture. The word count analysis in N01 estimates ~394 English words ≈ 512 tokens, applicable to both models.
+>
+> **Training truncation decision — `max_length=128` (2026-05-05):** Both N02 and N03 tokenize at **128 tokens**, not the full 512. This is deliberate:
+> - Amazon reviews are typically short (N01 EDA: median ~40 words ≈ 52 tokens). 128 tokens cover ~95% of reviews without truncation.
+> - Self-attention complexity is O(n²): reducing sequence length from 512 to 128 divides training time by ~4× (512²/128² = 16× fewer attention pairs per review).
+> - 128 is a well-documented sweet spot in the fine-tuning literature for short-text classification (GLUE SST-2, IMDb, Amazon reviews).
+> - **Tradeoff**: ~5% of long reviews lose their tail content. The time savings on T4 GPU outweigh this loss for a bootcamp project. For production, consider 256 or dynamic batching.
 
 > **DistilBERT** = knowledge distilled from BERT (teacher → student). Like a summary of a textbook — lighter but retains the key ideas.  
 > **RoBERTa** = BERT retrained with more data, bigger batches, and no "next sentence prediction" task that BERT had. Like the textbook's second edition — same structure, better content.
@@ -247,3 +279,107 @@ N01: Arrow (text, label, rating, category, parent_asin)
 | **Separation** | `data/dataset/` = Arrow ONLY (immutable foundation). `data/` = intermediate artifacts (regenerable). `data/models/` = trained weights. `data/summaries/` = final deliverable. |
 
 > **Analogy**: The Arrow dataset is a library of raw reviews. Each notebook is a researcher who reads the library, writes a report (CSV), and leaves it on the desk. The next researcher reads the library AND the reports — they don't need to re-do the previous researchers' work.
+
+---
+
+## 13. `load_dataset` API: `split` + `streaming=True` Deprecation *(N01, fixed 2026-05-04)*
+
+**Problem**: The N01 notebook used `load_dataset(id, config, split='full', streaming=True, trust_remote_code=True)` to load Amazon Reviews 2023 categories. This broke on Colab because the `datasets` library version ≥2.19 deprecated the `split` parameter when combined with `streaming=True` for datasets with custom loading scripts. The official Colab environment ships a recent `datasets` version, while local environments with older versions silently accepted the deprecated syntax.
+
+| Pattern | `split` + `streaming` (old) | No `split`, no `streaming` (correct) |
+|---------|---------------------------|--------------------------------------|
+| API call | `load_dataset(id, config, split='full', streaming=True, ...)` | `load_dataset(id, config, trust_remote_code=True)` + `dataset["full"]` |
+| Works in `datasets<2.19` | ✅ Yes (but deprecated) | ✅ Yes |
+| Works in `datasets>=2.19` | ❌ **BREAKS** | ✅ Yes |
+| Memory behaviour | Explicit lazy loading via `streaming=True` flag | Implicit lazy loading — the dataset's custom script reads JSONL.gz files lazily |
+| Official docs source | Derived from generic `datasets` streaming tutorial | [HuggingFace dataset card](https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023#quick-start) + [amazon-reviews-2023.github.io](https://amazon-reviews-2023.github.io/data_loading/huggingface.html) |
+
+**Why the old pattern broke**: The `datasets` library tightened its validation: when a dataset has a custom loading script (like Amazon Reviews 2023), passing both `split` and `streaming=True` creates ambiguity — the library doesn't know whether to trust the script's split handling or its own streaming split logic. From version 2.19 onward, this combination raises an error.
+
+**Why we pinned `datasets==2.19.0`**: 
+
+| | Pin to `2.19.0` | Always use latest |
+|---|---|---|
+| Reproducibility | ✅ Exact version, same behaviour forever | ❌ Colab updates silently — your code may break between sessions |
+| Bug fixes | ❌ Stuck on March 2024 fixes | ✅ Gets security patches |
+| API stability | ✅ Guaranteed | ❌ No guarantee |
+| For a bootcamp project | ✅ Nobody will rerun this notebook in production | N/A |
+
+**Decision**: Pin `datasets==2.19.0` and use the no-split-no-streaming pattern. This is a bootcamp deliverable — it needs to run reliably for grading, not for years of production use. The pin guarantees the grader's Colab environment will match what we tested against.
+
+**Official sources confirming the correct pattern** (two independent sources, same result):
+
+| # | Source | URL | Command+F | What it shows |
+|---|--------|-----|-----------|---------------|
+| 1 | HuggingFace dataset card | `https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023` | `Load User Reviews` | `load_dataset("McAuley-Lab/Amazon-Reviews-2023", "raw_review_All_Beauty", trust_remote_code=True)` — no `split`, no `streaming` |
+| 2 | UCSD official site (subpage) | `https://amazon-reviews-2023.github.io/data_loading/huggingface.html` | `Load Review Samples` | Same code as source #1 — `load_dataset(...)` + `dataset["full"]` for reviews |
+
+> **Important**: The root page `https://amazon-reviews-2023.github.io/` uses **native JSON loading**, not HuggingFace `datasets`. It explicitly redirects to the subpage: *"Check data loading examples and Huggingface datasets APIs in **Common Data Loading** section."* When citing, use sources #1 or #2 above — not the root page.
+
+**How we discovered this**: The Colab AI agent flagged `split='full'` + `streaming=True` as an obsolete pattern. Cross-referencing both official sources above confirmed that the correct pattern never included `split` or `streaming` at all — the loading script handles lazy reading internally.
+
+> **Analogy**: You don't need to tell a librarian "give me book #42, but only one page at a time." If the library already sends pages on demand, your extra instruction just confuses the system. The Amazon loading script is that librarian — it already reads lazily from the compressed files.
+
+---
+
+## 14. N02/N03 Audit: Cross-Notebook Bug Patterns *(N02, N03, fixed 2026-05-07)*
+
+**Problem**: N01 underwent a major refactor (streaming from UCSD, 5th column, 18 fixes in Colab), but N02 and N03 were never tested against the new N01 output. A deep audit found 15 bugs — three of them silent (no error, wrong data).
+
+### Bug Categories Discovered
+
+| # | Category | Example | Impact | N02 | N03 |
+|---|----------|---------|--------|-----|-----|
+| 1 | Cross-environment paths | `DATASET_DIR` assigned inside `else` (local-only) — undefined in Colab | 🔴 NameError. Notebook designed for Colab can't run in Colab | — | ✅ |
+| 2 | Variable naming drift | `seed=SEED` but variable is `RANDOM_SEED` — NameError at training time | 🔴 Training crashes before first epoch | ✅ | ✅ |
+| 3 | Split key inconsistency | `tokenized_dataset["val"]` but N01 saves as `"validation"` — KeyError | 🔴 Trainer can't instantiate | ✅ | — |
+| 4 | Cross-notebook file paths | N03 loads `metrics_distilbert.json` from `DATASET_DIR` but N02 saves to `OUTPUT_DIR` — file never found | 🔴 Silent: comparison section uses hardcoded placeholders instead of real metrics | — | ✅ |
+| 5 | Sklearn labels omission | `precision_score(labels, preds, average=None)` WITHOUT explicit `labels=[0,1,2]` — if a class is never predicted, sklearn returns 2-element array → IndexError | 🔴 Crashes evaluation cells on imbalanced predictions | ✅ | — |
+| 6 | Hardcoded class counts | `num_labels=3`, `range(3)`, `labels=[0,1,2]`, `LABEL_NAMES = {0: …, 1: …, 2: …}` — all assume exactly 3 classes | 🟡 Works today, breaks if label strategy changes | ✅ | ✅ |
+| 7 | Stale comments | Split expected as `"val"` but code uses `"validation"`; split ratio documented as 80/10/10 but project convention is 70/15/15 | 🟡 Misleads future maintainers | ✅ | ✅ |
+| 8 | Imports outside cell-imports | `import torch.nn as nn`, `from transformers import pipeline`, `import subprocess` in processing cells | 🟡 Violates project convention; hidden imports confuse readers | ✅ | — |
+
+### Why These Patterns Emerged
+
+Three root causes explain all 15 bugs:
+
+**1. Environment asymmetry**: N02 and N03 were developed locally (where `else` branch runs) but designed for Colab (where `IN_COLAB = True`). Any variable defined only in the local branch silently works during development and crashes in production. The `DATASET_DIR` bug is the canonical example.
+
+**2. Naming drift over time**: The project evolved its conventions (`"val"` → `"validation"`, `SEED` → `RANDOM_SEED`) but notebooks were created at different points in that evolution. N01 uses the latest conventions; N02/N03 used intermediate ones that were never back-ported.
+
+**3. Default-to-hardcode culture**: Early notebooks used hardcoded values (`num_labels=3`, `labels=[0,1,2]`) because "the label scheme is fixed." Later auditing (AGENTS.md §8, traps #10-11) established the principle of deriving everything dynamically — but N02/N03 were written before that principle existed.
+
+### Fix Strategy
+
+All 15 bugs were fixed in the local `.ipynb` files (2026-05-07). The fixes follow a consistent principle:
+
+| Was | Now | Pattern |
+|-----|-----|---------|
+| `seed=SEED` | `seed=RANDOM_SEED` | Match the variable that actually exists |
+| `tokenized_dataset["val"]` | `tokenized_dataset["validation"]` | Match N01's actual DatasetDict keys |
+| `DATASET_DIR` in else-only | `DATASET_DIR` outside if/else | All path variables apply to both environments |
+| `os.path.join(DATASET_DIR, …)` | `os.path.join(OUTPUT_DIR, …)` | Read from where the producer actually writes |
+| `num_labels=3` | `num_labels=len(id2label)` | Derive from the data, not a constant |
+| `labels=[0, 1, 2]` | `labels=list(range(NUM_LABELS))` | Same principle |
+| `range(3)` | `sorted(id2label.keys())` | Same principle |
+| No guard clause | `if 'var' not in dir(): …` | Survive out-of-order cell execution |
+
+### Verification Protocol
+
+The audit established a protocol that future cross-notebook checks must follow:
+
+```
+1. Read N01 → note every output (columns, keys, paths, directories)
+2. Read consumer → verify every assumption against N01's actual output
+3. For each assumption mismatch, classify:
+   - CRITICAL = crashes consumer (NameError, KeyError, IndexError)
+   - WARNING = works but wrong data (silent fallback, stale comments)
+   - SUGGESTION = works correctly but fragile (hardcoded, no guard)
+4. Fix CRITICAL and WARNING; defer SUGGESTIONs to itwouldenhance.md
+```
+
+> **Analogy**: N01 is the factory that produces parts. N02 and N03 are assembly lines that consume those parts. If the factory changes the shape of a connector, the assembly line jams — but it might jam silently, producing broken products that look fine until someone tests them.
+
+### What Was Deferred
+
+5 SUGGESTION-level items were deferred to [itwouldenhance.md](itwouldenhance.md): duplicate label mappings, padding strategy, warmup estimation, buried imports, and hardcoded DistilBERT parameter count in display strings. None affect execution correctness.

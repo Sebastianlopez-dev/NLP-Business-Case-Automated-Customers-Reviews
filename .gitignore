@@ -56,7 +56,9 @@ models/
 # Agent & project memory (local only, not versioned)
 AGENTS.md
 memory.md
+concepts.md
 design-visual.md
+itwouldenhance.md
 
 # Agent skill registry (local only)
 .atl/
