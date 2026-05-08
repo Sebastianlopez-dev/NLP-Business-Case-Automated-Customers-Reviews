@@ -23,7 +23,7 @@
             /* Core Palette */
             --brand-cyan: #0891B2;
             --brand-orange: #EA580C;
-            --brand-emerald: #10B981;
+            --brand-neo-success: #10B981;
             --brand-red: #DC2626;
             --brand-slate: #334155;
             --brand-slate-light: #94A3B8;
@@ -717,7 +717,7 @@ API_TIMEOUT     = <span class="syn-orange">180</span></code></pre>
             colors: {
                 cyan: '#0891B2',
                 orange: '#EA580C',
-                emerald: '#10B981',
+                neoSuccess: '#10B981',
                 red: '#DC2626',
                 slate: '#334155',
                 slateLight: '#94A3B8',
@@ -804,7 +804,7 @@ training_args = TrainingArguments(
                             labels: ['Minority (Negative)', 'Neutral', 'Positive'],
                             datasets: [{
                                 data: [16000, 30000, 30000],
-                                backgroundColor: [this.colors.red, this.colors.slateLight, this.colors.emerald],
+                                backgroundColor: [this.colors.red, this.colors.slateLight, this.colors.neoSuccess],
                                 borderColor: '#ffffff',
                                 borderWidth: 1,
                                 borderRadius: 0
@@ -886,7 +886,7 @@ training_args = TrainingArguments(
 
                     if (text.match(/(excellent|incredible|good|perfect|recommend|great|happy|love|amazing)/)) {
                         label = 'Positive';
-                        color = this.colors.emerald;
+                        color = this.colors.neoSuccess;
                         icon = '<i class="ph ph-trend-up"></i>';
                         llm = "High semantic positivity. The customer shows strong retention. Suggestion: Automatic trigger to request a public review on Trustpilot.";
                     } else if (text.match(/(terrible|bad|broken|trash|worst|disappointment|cheap|useless|hate)/)) {
