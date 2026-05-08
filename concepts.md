@@ -136,6 +136,19 @@ At 8 categories, Colab was already at 80 GB / 225 GB — the pipeline would have
 > - Self-attention complexity is O(n²): reducing sequence length from 512 to 128 divides training time by ~4× (512²/128² = 16× fewer attention pairs per review).
 > - 128 is a well-documented sweet spot in the fine-tuning literature for short-text classification (GLUE SST-2, IMDb, Amazon reviews).
 > - **Tradeoff**: ~5% of long reviews lose their tail content. The time savings on T4 GPU outweigh this loss for a bootcamp project. For production, consider 256 or dynamic batching.
+>
+> **Colab disconnect protection — `resume_from_checkpoint` (2026-05-08):**
+> Colab runtimes disconnect after ~90 minutes of inactivity, or randomly under heavy load. During fine-tuning (10–60 min for DistilBERT/RoBERTa), a mid-training disconnect means losing all progress since the last checkpoint.
+>
+> Both N02 and N03 now detect the latest checkpoint before calling `trainer.train()` by scanning `CHECKPOINT_DIR` / `CHECKPOINTS_DIR` for directories starting with `"checkpoint"`. Because `save_strategy="epoch"` writes to Google Drive every epoch, checkpoints survive runtime resets. If found, `trainer.train(resume_from_checkpoint=last_checkpoint)` resumes the optimizer state, learning rate schedule, and epoch counter from exactly where it stopped.
+>
+> | Scenario | Without resume | With resume (current) |
+> |----------|---------------|----------------------|
+> | Disconnect at epoch 1/3 | Restart from epoch 1 → 60 min total | Resume from epoch 2 → ~40 min remaining |
+> | Disconnect at epoch 3/3 (min 55) | Restart from epoch 1 → 115 min total | Resume from epoch 3 → ~5 min remaining |
+> | No disconnect | Same (fresh start) | Same (no checkpoint found → starts fresh) |
+>
+> This is a zero-cost protection: the checkpoint scanning overhead is negligible (<1 second), and `trainer.train(resume_from_checkpoint=None)` behaves identically to `trainer.train()` on first run.
 
 > **DistilBERT** = knowledge distilled from BERT (teacher → student). Like a summary of a textbook — lighter but retains the key ideas.  
 > **RoBERTa** = BERT retrained with more data, bigger batches, and no "next sentence prediction" task that BERT had. Like the textbook's second edition — same structure, better content.
