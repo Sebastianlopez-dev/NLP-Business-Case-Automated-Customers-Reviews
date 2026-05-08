@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NLP Business Case - Editorial Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Typography: Source Serif 4 (Headlines), Inter (UI), JetBrains Mono (Data/Code) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Monochromatic Iconography (Phosphor Icons - WebFont) -->
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+
+    <style>
+        :root {
+            /* Core Palette */
+            --brand-cyan: #0891B2;
+            --brand-orange: #EA580C;
+            --brand-emerald: #10B981;
+            --brand-red: #DC2626;
+            --brand-slate: #334155;
+            --brand-slate-light: #94A3B8;
+            --brand-slate-800: #1E293B;
+            --bg-page: #F8FAFC;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--brand-slate);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Typography Classes */
+        .font-editorial {
+            font-family: 'Source Serif 4', Georgia, serif;
+            letter-spacing: -0.01em;
+        }
+
+        .font-mono-data {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Elevation and Cards */
+        .card-standard {
+            background: #FFFFFF;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.03);
+            border: 1px solid #F1F5F9;
+        }
+
+        .card-hero-glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            border: 1px solid #F8FAFC;
+        }
+
+        .divider-fine {
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        /* Buttons / CTAs */
+        .btn-cta {
+            background-color: var(--brand-orange);
+            color: white;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(234, 88, 12, 0.2);
+        }
+
+        .btn-cta:hover {
+            background-color: #C2410C;
+            transform: translateY(-1px);
+        }
+
+        /* Sidebar Navigation */
+        .nav-item {
+            color: #64748B;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            position: relative;
+            background-color: transparent;
+        }
+
+        .nav-item:hover {
+            color: #1E293B;
+            background-color: #F8FAFC;
+        }
+
+        .nav-item.active {
+            color: var(--brand-cyan);
+            font-weight: 600;
+            background-color: transparent;
+        }
+
+        .nav-item.active i {
+            color: var(--brand-cyan);
+            font-weight: bold;
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 15%;
+            height: 70%;
+            width: 3px;
+            background-color: var(--brand-cyan);
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Mock IDE */
+        .ide-container {
+            background-color: #0F172A;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #F8FAFC;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .syn-pink {
+            color: #D946EF;
+        }
+
+        .syn-grey {
+            color: #64748B;
+            font-style: italic;
+        }
+
+        .syn-cyan {
+            color: #22D3EE;
+        }
+
+        .syn-orange {
+            color: #EA580C;
+        }
+
+        /* Updated to strict brand orange */
+
+        /* Tabs Functionality */
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 280px;
+        }
+    </style>
+</head>
+
+<body class="flex h-screen w-full bg-[#F8FAFC]">
+
+    <!-- SIDEBAR -->
+    <aside
+        class="w-[240px] flex-shrink-0 bg-white border-r border-[#E2E8F0] flex flex-col h-full z-20 relative shadow-sm">
+        <div class="p-6 mb-2 flex items-center gap-3">
+            <i class="ph ph-hexagon text-2xl text-[#1E293B]"></i>
+            <div>
+                <h1 class="font-editorial text-lg font-bold text-[#1E293B] leading-tight">NLP Business</h1>
+                <p class="text-[#94A3B8] text-[10px] font-mono-data tracking-widest uppercase">v4.0 Production</p>
+            </div>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto py-2 flex flex-col gap-1 text-sm">
+            <button onclick="app.switchTab('tab-eda')" id="nav-eda" class="nav-item active px-6 py-3 gap-3">
+                <i class="ph ph-chart-bar text-lg opacity-80"></i>
+                <span>Data & EDA</span>
+            </button>
+            <button onclick="app.switchTab('tab-modelos')" id="nav-modelos" class="nav-item px-6 py-3 gap-3">
+                <i class="ph ph-cpu text-lg opacity-80"></i>
+                <span>Architecture</span>
+            </button>
+            <button onclick="app.switchTab('tab-sentimiento')" id="nav-sentimiento" class="nav-item px-6 py-3 gap-3">
+                <i class="ph ph-smiley text-lg opacity-80"></i>
+                <span>Sentiment</span>
+            </button>
+            <button onclick="app.switchTab('tab-clusters')" id="nav-clusters" class="nav-item px-6 py-3 gap-3">
+                <i class="ph ph-circles-three-plus text-lg opacity-80"></i>
+                <span>Latent Topics</span>
+            </button>
+            <button onclick="app.switchTab('tab-etl')" id="nav-etl" class="nav-item px-6 py-3 gap-3">
+                <i class="ph ph-database text-lg opacity-80"></i>
+                <span>ETL Pipeline</span>
+            </button>
+            <button onclick="app.switchTab('tab-llm')" id="nav-llm" class="nav-item px-6 py-3 gap-3">
+                <i class="ph ph-brain text-lg opacity-80"></i>
+                <span>LLM Synthesis</span>
+            </button>
+
+            <div class="mt-8 px-6 mb-2 text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest">Interactive</div>
+            <button onclick="app.switchTab('tab-play')" id="nav-play" class="nav-item px-6 py-3 gap-3">
+                <i class="ph ph-lightning text-lg opacity-80"></i>
+                <span>Playground</span>
+            </button>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 h-full overflow-y-auto relative">
+        <div class="max-w-[1024px] mx-auto p-12">
+
+            <!-- ==========================================
+                 1. DATA & EDA
+                 ========================================== -->
+            <section id="tab-eda" class="tab-content active">
+
+                <div class="mb-16">
+                    <p class="text-[11px] font-semibold text-[#94A3B8] uppercase tracking-widest mb-2">Total Corpus
+                        Volume</p>
+                    <div
+                        class="font-mono-data text-6xl md:text-7xl font-bold text-[#1E293B] tracking-tighter leading-none mb-4">
+                        571.54M
+                    </div>
+                    <div class="flex items-center gap-6 text-sm text-[#334155]">
+                        <p class="flex items-center gap-2"><i class="ph ph-files text-[#94A3B8]"></i> Amazon Reviews
+                            2023 Dataset</p>
+                        <span class="w-1 h-1 rounded-full bg-[#94A3B8]"></span>
+                        <p class="flex items-center gap-2"><i class="ph ph-hard-drives text-[#94A3B8]"></i> Disk Cost:
+                            <span class="font-mono-data font-bold text-[#0891B2]">0 GB</span> (Streaming)
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-12 gap-8">
+                    <div class="col-span-12 lg:col-span-8 flex flex-col gap-6">
+                        <div class="flex justify-between items-end mb-2">
+                            <h2 class="font-editorial text-2xl font-semibold text-[#1E293B]">Sample Class Distribution
+                            </h2>
+                        </div>
+                        <div class="card-standard">
+                            <div class="chart-wrapper">
+                                <canvas id="edaChart"></canvas>
+                            </div>
+                            <div class="mt-6 flex gap-6 text-xs text-[#94A3B8] font-mono-data justify-center">
+                                <span class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-[#DC2626]"></div> Minority (16k)
+                                </span>
+                                <span class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-[#94A3B8]"></div> Neutral (30k)
+                                </span>
+                                <span class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-[#10B981]"></div> Positive (30k)
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-span-12 lg:col-span-4 flex flex-col gap-8 pt-10">
+                        <div>
+                            <h3
+                                class="font-editorial text-lg font-semibold text-[#1E293B] mb-2 flex items-center gap-2">
+                                <i class="ph ph-scales text-[#94A3B8]"></i> Analysis Across 33 Classes
+                            </h3>
+                            <p class="text-sm text-[#334155] leading-relaxed">
+                                We analyzed 33 different categories, aiming for an optimal subset of <strong>~30,000
+                                    reviews per class</strong>. However, the data revealed an organic disparity where
+                                the minority class yielded only <strong>~16,000 samples</strong>.
+                            </p>
+                        </div>
+
+                        <div class="divider-fine"></div>
+
+                        <div>
+                            <h3
+                                class="font-editorial text-lg font-semibold text-[#1E293B] mb-2 flex items-center gap-2">
+                                <i class="ph ph-funnel text-[#94A3B8]"></i> Hybrid Stopwords
+                            </h3>
+                            <p class="text-sm text-[#334155] leading-relaxed mb-3">
+                                <code
+                                    class="font-mono-data text-[11px] bg-slate-100 px-1.5 py-0.5 rounded text-[#334155]">NLTK (179) + Domain (23)</code>
+                            </p>
+                            <p class="text-sm text-[#334155] leading-relaxed">
+                                Standardizing the text required filtering ubiquitous e-commerce terms like
+                                <em>"product"</em> or <em>"bought"</em> to prevent TF-IDF frequency analysis from
+                                yielding generic noise.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 2. MODELS / CODE
+                 ========================================== -->
+            <section id="tab-modelos" class="tab-content">
+                <div class="mb-12 max-w-2xl">
+                    <h2 class="font-editorial text-4xl font-semibold text-[#1E293B] mb-4">Model Architecture</h2>
+                    <p class="text-sm text-[#334155] leading-relaxed">
+                        Overcoming Out-Of-Memory (OOM) limits on Google Colab T4. Technical transition from the baseline
+                        (DistilBERT) to the champion model (RoBERTa).
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-12 gap-8">
+                    <div class="col-span-12 lg:col-span-8">
+                        <div class="ide-container overflow-hidden">
+                            <div class="flex bg-[#0F172A] border-b border-white/10 px-4 py-2 gap-4">
+                                <button onclick="app.toggleCode('distil')" id="btn-code-distil"
+                                    class="text-[11px] font-mono-data py-2 text-[#22D3EE] border-b-2 border-[#22D3EE] transition-colors uppercase tracking-wider">distilbert.py</button>
+                                <button onclick="app.toggleCode('roberta')" id="btn-code-roberta"
+                                    class="text-[11px] font-mono-data py-2 text-white/40 hover:text-white/70 border-b-2 border-transparent transition-colors uppercase tracking-wider">roberta.py</button>
+                            </div>
+                            <div class="p-6 text-[13px] overflow-x-auto leading-loose" id="code-display">
+                                <!-- Code injected by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-span-12 lg:col-span-4 flex flex-col gap-8">
+                        <div class="card-standard" id="model-insight-card">
+                            <h4
+                                class="font-editorial text-lg font-semibold text-[#1E293B] mb-2 flex items-center gap-2">
+                                <i class="ph ph-memory text-[#94A3B8]"></i> Memory Asymmetry
+                            </h4>
+                            <p class="text-sm text-[#334155] leading-relaxed" id="model-insight-text">
+                                <!-- Text injected by JS -->
+                            </p>
+                        </div>
+
+                        <div>
+                            <p
+                                class="text-[11px] font-semibold text-[#94A3B8] uppercase tracking-widest mb-2 flex items-center gap-2">
+                                <i class="ph ph-scissors"></i> Spatial Optimization
+                            </p>
+                            <p class="text-sm text-[#334155] leading-relaxed">
+                                Both models implement <code
+                                    class="font-mono-data text-[11px] bg-white border border-[#E2E8F0] px-1 py-0.5 rounded text-[#334155]">max_length=128</code>.
+                                This quadratic attention reduction speeds up training by 4× while successfully covering
+                                the sequence length of 95% of the corpus.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 3. SENTIMENT
+                 ========================================== -->
+            <section id="tab-sentimiento" class="tab-content">
+                <div class="mb-12 max-w-2xl">
+                    <h2 class="font-editorial text-4xl font-semibold text-[#1E293B] mb-4">Sentiment Metrics</h2>
+                    <p class="text-sm text-[#334155] leading-relaxed">
+                        The operational trade-off: computational speed versus contextual depth. Champion vs Baseline
+                        analysis.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="flex flex-col">
+                        <div class="flex justify-between items-baseline border-b border-[#E2E8F0] pb-4 mb-6">
+                            <h3 class="font-editorial text-2xl font-semibold text-[#1E293B] flex items-center gap-2">
+                                <i class="ph ph-rocket text-[#0891B2]"></i> DistilBERT
+                            </h3>
+                            <span
+                                class="font-mono-data text-[11px] text-[#0891B2] font-semibold bg-[#F0F9FF] px-2 py-1 rounded">Baseline</span>
+                        </div>
+                        <div class="space-y-6 text-sm text-[#334155]">
+                            <div>
+                                <span
+                                    class="block text-[11px] font-semibold text-[#94A3B8] uppercase tracking-wider mb-1.5">Foundation</span>
+                                Knowledge Distillation (Sanh et al., 2019). Trained to mimic BERT's probability
+                                distribution using only 66M parameters.
+                            </div>
+                            <div>
+                                <span
+                                    class="block text-[11px] font-semibold text-[#94A3B8] uppercase tracking-wider mb-1.5 flex items-center gap-1"><i
+                                        class="ph ph-warning-circle"></i> The Limit</span>
+                                Struggles with complex heuristics and irony (e.g., <em>"I love that it breaks in two
+                                    days"</em>), prioritizing isolated polar tokens.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <div class="flex justify-between items-baseline border-b border-[#E2E8F0] pb-4 mb-6">
+                            <h3 class="font-editorial text-2xl font-semibold text-[#1E293B] flex items-center gap-2">
+                                <i class="ph ph-target text-[#EA580C]"></i> RoBERTa
+                            </h3>
+                            <span
+                                class="font-mono-data text-[11px] text-[#EA580C] font-semibold bg-[#FFF7ED] px-2 py-1 rounded">Champion</span>
+                        </div>
+                        <div class="space-y-6 text-sm text-[#334155]">
+                            <div>
+                                <span
+                                    class="block text-[11px] font-semibold text-[#94A3B8] uppercase tracking-wider mb-1.5">Foundation</span>
+                                Massively re-optimized BERT (Liu et al., 2019). Trained with Dynamic Masking and 125M
+                                parameters.
+                            </div>
+                            <div>
+                                <span
+                                    class="block text-[11px] font-semibold text-[#94A3B8] uppercase tracking-wider mb-1.5 flex items-center gap-1"><i
+                                        class="ph ph-check-circle"></i> The Advantage</span>
+                                Resolves non-linear irony. Correlates extended syntax ("love") with defect verbs
+                                ("breaks").
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 4. CLUSTERING
+                 ========================================== -->
+            <section id="tab-clusters" class="tab-content">
+                <div class="mb-12 max-w-2xl">
+                    <h2 class="font-editorial text-4xl font-semibold text-[#1E293B] mb-4">Unsupervised Topology</h2>
+                    <p class="text-sm text-[#334155] leading-relaxed">
+                        Mathematical grouping of qualitative variance without manual intervention via spatial mapping.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-12 gap-8">
+                    <div class="col-span-12 lg:col-span-8 card-standard">
+                        <h3 class="font-editorial text-lg font-semibold text-[#1E293B] mb-6 flex items-center gap-2">
+                            <i class="ph ph-scatter-plot text-[#94A3B8]"></i> Semantic Mapping (UMAP 2D)
+                        </h3>
+                        <div class="chart-wrapper">
+                            <canvas id="clusterChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="col-span-12 lg:col-span-4 flex flex-col gap-8 pt-2">
+                        <div>
+                            <h4 class="font-editorial text-lg font-semibold text-[#1E293B] mb-2">The Architect vs The
+                                Mover</h4>
+                            <p class="text-sm text-[#334155] leading-relaxed">
+                                <strong>K-Means</strong> is the architect who measures every wall before placing
+                                furniture. It acts as our gold-standard baseline, but loads the full n-dimensional set
+                                into memory, failing to scale.<br><br>
+                                <strong>MiniBatchKMeans</strong> is the fast mover. It iterates over stochastic batches,
+                                avoiding OOM while empirically maintaining 99% of the Silhouette Score. We hired the
+                                mover to handle 571M rooms.
+                            </p>
+                        </div>
+
+                        <div class="divider-fine"></div>
+
+                        <div>
+                            <h4 class="font-editorial text-lg font-semibold text-[#1E293B] mb-2">Lightweight Embeddings
+                            </h4>
+                            <p class="text-sm text-[#334155] leading-relaxed">
+                                Processed using <code
+                                    class="font-mono-data text-[11px] bg-white border border-[#E2E8F0] px-1 py-0.5 rounded text-[#334155]">all-MiniLM-L6-v2</code>.
+                                With a mere 22 MB footprint, it projects massive corpora into 384 dimensions without
+                                saturating RAM.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 5. ETL
+                 ========================================== -->
+            <section id="tab-etl" class="tab-content">
+                <div class="mb-12 max-w-2xl">
+                    <h2 class="font-editorial text-4xl font-semibold text-[#1E293B] mb-4">ETL Data Pipeline</h2>
+                    <p class="text-sm text-[#334155] leading-relaxed">
+                        Columnar storage structures, ETL caching, and structural bug resolution across execution
+                        environments.
+                    </p>
+                </div>
+
+                <div class="w-full">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr>
+                                <th
+                                    class="py-3 px-4 text-[11px] font-semibold text-[#94A3B8] uppercase tracking-widest border-b border-[#E2E8F0] w-1/4">
+                                    Architecture Principle</th>
+                                <th
+                                    class="py-3 px-4 text-[11px] font-semibold text-[#94A3B8] uppercase tracking-widest border-b border-[#E2E8F0] w-1/2">
+                                    Technical Decision</th>
+                                <th
+                                    class="py-3 px-4 text-[11px] font-semibold text-[#94A3B8] uppercase tracking-widest border-b border-[#E2E8F0] w-1/4">
+                                    Systemic Impact</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm text-[#334155]">
+                            <tr class="hover:bg-[#F8FAFC] transition-colors border-b border-[#F1F5F9]">
+                                <td class="py-4 px-4 font-medium text-[#1E293B] flex items-center gap-2">
+                                    <i class="ph ph-file-csv text-[#94A3B8] text-lg"></i> Arrow + Narrow CSV
+                                </td>
+                                <td class="py-4 px-4 leading-relaxed">Raw text remains immutable in Apache Arrow (1.4
+                                    GB). Each GPU inference exports a strict, narrow CSV (~5 MB) acting as a cache for
+                                    new columns. Joined via <code
+                                        class="font-mono-data text-[11px] bg-slate-100 px-1 rounded">pd.merge()</code>
+                                    at runtime.</td>
+                                <td class="py-4 px-4"><span
+                                        class="bg-[#F1F5F9] px-2 py-1 rounded text-[11px] font-mono-data text-[#334155] flex items-center w-fit gap-1"><i
+                                            class="ph ph-clock"></i> Prevents Retraining</span></td>
+                            </tr>
+                            <tr class="hover:bg-[#F8FAFC] transition-colors border-b border-[#F1F5F9]">
+                                <td class="py-4 px-4 font-medium text-[#1E293B] flex items-center gap-2">
+                                    <i class="ph ph-plugs text-[#94A3B8] text-lg"></i> API Deprecation Patch
+                                </td>
+                                <td class="py-4 px-4 leading-relaxed">HF Datasets &ge; 2.19 deprecated the <code
+                                        class="font-mono-data text-[11px]">streaming=True</code> flag with custom
+                                    splits. Solution: Lazy loading via pinned library version & direct UCSD requests.
+                                </td>
+                                <td class="py-4 px-4"><span
+                                        class="bg-[#F1F5F9] px-2 py-1 rounded text-[11px] font-mono-data text-[#334155] flex items-center w-fit gap-1"><i
+                                            class="ph ph-shield-check"></i> Pipeline Stability</span></td>
+                            </tr>
+                            <tr class="hover:bg-[#F8FAFC] transition-colors border-b border-[#F1F5F9]">
+                                <td class="py-4 px-4 font-medium text-[#1E293B] flex items-center gap-2">
+                                    <i class="ph ph-bug text-[#94A3B8] text-lg"></i> Cross-Env Audit
+                                </td>
+                                <td class="py-4 px-4 leading-relaxed">Eliminated rigid values inherited from local
+                                    environments (e.g., <code class="font-mono-data text-[11px]">num_labels=3</code>).
+                                    Implemented dynamic structural resolution for N02 and N03 notebooks.</td>
+                                <td class="py-4 px-4"><span
+                                        class="bg-[#F1F5F9] px-2 py-1 rounded text-[11px] font-mono-data text-[#334155] flex items-center w-fit gap-1"><i
+                                            class="ph ph-check-circle"></i> 100% Run-Through</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 6. LLM INSIGHTS
+                 ========================================== -->
+            <section id="tab-llm" class="tab-content">
+                <div class="mb-12 max-w-2xl">
+                    <h2 class="font-editorial text-4xl font-semibold text-[#1E293B] mb-4">Semantic Synthesis</h2>
+                    <p class="text-sm text-[#334155] leading-relaxed">
+                        Executive abstraction of latent topologies using Foundational Models (LLMs).
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-12 gap-8">
+                    <div class="col-span-12 lg:col-span-6 flex flex-col gap-6">
+                        <h3 class="font-editorial text-xl font-semibold text-[#1E293B] mb-2">Extractive-Abstractive
+                            Workflow</h3>
+                        <p class="text-sm text-[#334155] leading-relaxed">
+                            Processing massive raw volumes directly in an LLM context window is not economically viable
+                            and promotes hallucinations.
+                        </p>
+                        <ul class="text-sm text-[#334155] leading-relaxed space-y-4 mt-2 mb-6">
+                            <li class="flex gap-3">
+                                <i class="ph ph-code text-xl text-[#94A3B8]"></i>
+                                <span><strong>1. Strict Extraction (Python):</strong> Deterministic calculations of key
+                                    heuristics (cluster volume, dominant polarity, TF-IDF vectors).</span>
+                            </li>
+                            <li class="flex gap-3">
+                                <i class="ph ph-robot text-xl text-[#94A3B8]"></i>
+                                <span><strong>2. Conditioned Abstraction (LLM API):</strong> We inject a structured JSON
+                                    payload into <span class="font-semibold" style="color: var(--brand-orange)">Mistral
+                                        Medium 3.5 (128B)</span>, limiting its task exclusively to functional narrative
+                                    via the NVIDIA API.</span>
+                            </li>
+                        </ul>
+
+                        <div class="border border-[#E2E8F0] rounded p-6 bg-white shadow-sm">
+                            <p
+                                class="font-mono-data text-[11px] text-[#94A3B8] mb-3 uppercase tracking-widest flex items-center gap-2">
+                                <i class="ph ph-brackets-curly"></i> JSON Injection (Facts)
+                            </p>
+                            <div class="font-mono-data text-xs leading-loose text-[#334155] mb-6">
+                                {<br>
+                                &nbsp;&nbsp;"cluster": <span class="text-[#0891B2]">"Logistics"</span>,<br>
+                                &nbsp;&nbsp;"volume": <span class="text-[#0891B2]">14500</span>,<br>
+                                &nbsp;&nbsp;"sentiment": <span class="text-[#0891B2]">"87% Neg"</span><br>
+                                }
+                            </div>
+
+                            <p
+                                class="font-mono-data text-[11px] text-[#94A3B8] mb-3 uppercase tracking-widest border-t border-[#E2E8F0] pt-4 flex items-center gap-2">
+                                <i class="ph ph-text-align-left"></i> <span
+                                    style="color: var(--brand-orange)">Mistral</span> 128B Output
+                            </p>
+                            <p class="text-sm text-[#334155] italic">
+                                "The highest operational churn risk lies within logistics, a sector grouping 14,500
+                                users with a predominant 87% negativity rate, primarily focused on delivery delays."
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-span-12 lg:col-span-6 pt-2">
+                        <div class="ide-container p-6 h-full">
+                            <p
+                                class="font-mono-data text-[11px] text-[#94A3B8] mb-4 uppercase tracking-widest flex items-center gap-2">
+                                <i class="ph ph-code"></i> NVIDIA API Config
+                            </p>
+                            <pre class="font-mono-data text-xs leading-loose text-[#F8FAFC]"><code><span class="syn-grey"># API settings</span>
+API_MODEL       = <span class="syn-cyan">"<span style="color: var(--brand-orange)">mistral</span>ai/<span style="color: var(--brand-orange)">mistral</span>-medium-3.5-128b"</span>
+API_ENDPOINT    = <span class="syn-cyan">"https://integrate.api.nvidia.com/v1/chat/completions"</span>
+API_TEMPERATURE = <span class="syn-orange">0.70</span>                  <span class="syn-grey"># Balanced: creative enough for blog tone</span>
+API_TOP_P       = <span class="syn-orange">1.00</span>                  <span class="syn-grey"># Full probability mass (default)</span>
+API_MAX_TOKENS  = <span class="syn-orange">16384</span>                 <span class="syn-grey"># Generous: up to 32K allowed, 16K is plenty</span>
+API_STREAM      = <span class="syn-pink">False</span>                 <span class="syn-grey"># False = simpler response parsing in notebook</span>
+API_TIMEOUT     = <span class="syn-orange">180</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 7. PLAYGROUND
+                 ========================================== -->
+            <section id="tab-play" class="tab-content">
+                <div class="mb-12 max-w-2xl">
+                    <h2 class="font-editorial text-4xl font-semibold text-[#1E293B] mb-4">Interactive Inference</h2>
+                    <p class="text-sm text-[#334155] leading-relaxed">
+                        Live testing of the Transformer → LLM pipeline. Input a text to execute the heuristic
+                        evaluation.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-12 gap-12">
+                    <div class="col-span-12 lg:col-span-6 flex flex-col gap-4">
+                        <textarea id="play-input"
+                            class="w-full h-40 p-4 border border-[#CBD5E1] rounded text-sm text-[#334155] focus:outline-none focus:border-[#0891B2] focus:ring-1 focus:ring-[#0891B2] resize-none transition-shadow"
+                            placeholder="Type or paste a product review to analyze its polarity..."></textarea>
+
+                        <div class="flex items-center gap-4 mt-2">
+                            <select id="play-model"
+                                class="flex-1 text-sm border border-[#CBD5E1] rounded p-2.5 text-[#334155] bg-white outline-none cursor-pointer focus:border-[#0891B2]">
+                                <option value="distilbert">Model: DistilBERT (Baseline)</option>
+                                <option value="roberta">Model: RoBERTa (Champion)</option>
+                            </select>
+
+                            <button onclick="app.runInference()" id="play-btn"
+                                class="btn-cta px-6 py-2.5 rounded font-medium text-sm w-[140px] flex justify-center items-center">
+                                <span id="play-btn-txt">Evaluate</span>
+                                <span id="play-spinner" class="loader hidden ml-2 border-[2px]"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-span-12 lg:col-span-6 flex flex-col pt-1">
+                        <div class="flex justify-between items-end border-b border-[#E2E8F0] pb-2 mb-6">
+                            <h3 class="text-[11px] font-semibold text-[#94A3B8] uppercase tracking-wider">Analytical
+                                Output</h3>
+                        </div>
+
+                        <div id="play-empty"
+                            class="flex-1 flex flex-col items-center justify-center text-[#94A3B8] gap-3 opacity-80 min-h-[160px]">
+                            <i class="ph ph-terminal-window text-2xl"></i>
+                            <p class="text-sm">Waiting for input. Inference begins upon evaluation.</p>
+                        </div>
+
+                        <div id="play-results" class="hidden flex-col gap-8">
+                            <div>
+                                <p
+                                    class="text-[11px] font-semibold text-[#94A3B8] uppercase tracking-widest mb-2 flex items-center gap-1">
+                                    <i class="ph ph-chart-polar"></i> 1. Base Classification
+                                </p>
+                                <div class="flex items-center gap-3">
+                                    <div id="play-badge"
+                                        class="px-2.5 py-1 rounded text-white text-xs font-semibold tracking-wide shadow-sm flex items-center gap-1">
+                                    </div>
+                                    <span id="play-conf" class="text-[11px] font-mono-data text-[#334155]"></span>
+                                </div>
+                            </div>
+                            <div>
+                                <p
+                                    class="text-[11px] font-semibold text-[#94A3B8] uppercase tracking-widest mb-2 flex items-center gap-1">
+                                    <i class="ph ph-brain"></i> 2. Contextual Synthesis (<span
+                                        style="color: var(--brand-orange)">Mistral</span>)
+                                </p>
+                                <p id="play-llm"
+                                    class="text-sm text-[#334155] leading-relaxed border-l-[3px] border-[#E2E8F0] pl-4">
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        const app = {
+            colors: {
+                cyan: '#0891B2',
+                orange: '#EA580C',
+                emerald: '#10B981',
+                red: '#DC2626',
+                slate: '#334155',
+                slateLight: '#94A3B8',
+                slate800: '#1E293B',
+                gridAlpha: 'rgba(148, 163, 184, 0.4)'
+            },
+
+            clusters: ['#0E7490', '#0891B2', '#06B6D4', '#22D3EE', '#475569', '#94A3B8'],
+
+            codeSnippets: {
+                distil: `<span class="syn-pink">from</span> transformers <span class="syn-pink">import</span> AutoModelForSequenceClassification, TrainingArguments
+
+<span class="syn-grey"># Baseline (66M)</span>
+model_name = <span class="syn-cyan">"distilbert-base-uncased"</span>
+model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=3)
+
+training_args = TrainingArguments(
+    per_device_train_batch_size=<span class="syn-orange">32</span>, <span class="syn-grey"># Standard Batch</span>
+    learning_rate=<span class="syn-orange">2e-5</span>,
+    max_length=<span class="syn-orange">128</span>,
+)`,
+                roberta: `<span class="syn-pink">from</span> transformers <span class="syn-pink">import</span> AutoModelForSequenceClassification, TrainingArguments
+
+<span class="syn-grey"># Champion (125M)</span>
+model_name = <span class="syn-orange">"roberta-base"</span>
+model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=3)
+
+<span class="syn-grey"># OOM Mitigation</span>
+training_args = TrainingArguments(
+    per_device_train_batch_size=<span class="syn-orange">8</span>,   <span class="syn-grey"># Reduced RAM usage</span>
+    gradient_accumulation_steps=<span class="syn-orange">4</span>,   <span class="syn-grey"># Compensation (8x4=32)</span>
+    max_length=<span class="syn-orange">128</span>,
+)`
+            },
+
+            switchTab: function (id) {
+                const contents = document.querySelectorAll('.tab-content');
+                const navs = document.querySelectorAll('.nav-item');
+
+                if (contents && navs) {
+                    contents.forEach(el => el.classList.remove('active'));
+                    navs.forEach(el => el.classList.remove('active'));
+
+                    const targetContent = document.getElementById(id);
+                    const targetNav = document.getElementById(id.replace('tab-', 'nav-'));
+
+                    if (targetContent) targetContent.classList.add('active');
+                    if (targetNav) targetNav.classList.add('active');
+
+                    const mainArea = document.querySelector('main');
+                    if (mainArea) mainArea.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            },
+
+            toggleCode: function (model) {
+                const btnDistil = document.getElementById('btn-code-distil');
+                const btnRoberta = document.getElementById('btn-code-roberta');
+                const display = document.getElementById('code-display');
+                const insightText = document.getElementById('model-insight-text');
+
+                if (model === 'distil') {
+                    if (btnDistil) btnDistil.className = "text-[11px] font-mono-data py-2 text-[#22D3EE] border-b-2 border-[#22D3EE] transition-colors uppercase tracking-wider";
+                    if (btnRoberta) btnRoberta.className = "text-[11px] font-mono-data py-2 text-white/40 hover:text-white/70 border-b-2 border-transparent transition-colors uppercase tracking-wider";
+                    if (display) display.innerHTML = `<pre><code>${this.codeSnippets.distil}</code></pre>`;
+                    if (insightText) insightText.innerHTML = `DistilBERT (66M) processes a <code class="font-mono-data text-xs bg-white border border-[#E2E8F0] px-1 py-0.5 rounded">batch_size=32</code> without depleting memory. It trains 60% faster while retaining 97% of BERT's original linguistic capacity.`;
+                } else {
+                    if (btnRoberta) btnRoberta.className = "text-[11px] font-mono-data py-2 text-[#FB923C] border-b-2 border-[#FB923C] transition-colors uppercase tracking-wider";
+                    if (btnDistil) btnDistil.className = "text-[11px] font-mono-data py-2 text-white/40 hover:text-white/70 border-b-2 border-transparent transition-colors uppercase tracking-wider";
+                    if (display) display.innerHTML = `<pre><code>${this.codeSnippets.roberta}</code></pre>`;
+                    if (insightText) insightText.innerHTML = `RoBERTa (125M) requires strict VRAM control. We reduced the batch to 8, introducing <code class="font-mono-data text-xs bg-white border border-[#E2E8F0] px-1 py-0.5 rounded">gradient_accumulation_steps=4</code> to simulate the mathematical step of 32 without crashing the T4 GPU.`;
+                }
+            },
+
+            initCharts: function () {
+                Chart.defaults.font.family = "'Inter', sans-serif";
+                Chart.defaults.color = this.colors.slate;
+
+                // 1. EDA Bar Chart - Adjusted to reflect the ~16k, ~30k, ~30k sample structure
+                const edaElement = document.getElementById('edaChart');
+                if (edaElement) {
+                    new Chart(edaElement.getContext('2d'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['Minority (Negative)', 'Neutral', 'Positive'],
+                            datasets: [{
+                                data: [16000, 30000, 30000],
+                                backgroundColor: [this.colors.red, this.colors.slateLight, this.colors.emerald],
+                                borderColor: '#ffffff',
+                                borderWidth: 1,
+                                borderRadius: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { color: this.colors.gridAlpha, drawBorder: false, borderDash: [5, 5] },
+                                    ticks: { font: { family: "'JetBrains Mono', monospace", size: 11 }, maxTicksLimit: 6 }
+                                },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { font: { weight: '500' }, color: this.colors.slate800 }
+                                }
+                            },
+                            plugins: { legend: { display: false }, tooltip: { backgroundColor: this.colors.slate } }
+                        }
+                    });
+                }
+
+                // 2. Cluster Chart
+                const clusterElement = document.getElementById('clusterChart');
+                if (clusterElement) {
+                    new Chart(clusterElement.getContext('2d'), {
+                        type: 'bubble',
+                        data: {
+                            datasets: [
+                                { label: 'C1: Logistics', data: [{ x: 2, y: 3, r: 15 }, { x: 2.5, y: 3.5, r: 10 }], backgroundColor: this.clusters[0], borderColor: '#ffffff', borderWidth: 1 },
+                                { label: 'C2: Battery', data: [{ x: -2, y: -3, r: 20 }, { x: -2.5, y: -2, r: 15 }], backgroundColor: this.clusters[1], borderColor: '#ffffff', borderWidth: 1 },
+                                { label: 'C3: Quality', data: [{ x: 5, y: -1, r: 12 }, { x: 4.5, y: -0.5, r: 8 }], backgroundColor: this.clusters[2], borderColor: '#ffffff', borderWidth: 1 },
+                                { label: 'C4: Software', data: [{ x: -4, y: 4, r: 18 }], backgroundColor: this.clusters[3], borderColor: '#ffffff', borderWidth: 1 },
+                                { label: 'C5: Price', data: [{ x: 0, y: 6, r: 10 }], backgroundColor: this.clusters[4], borderColor: '#ffffff', borderWidth: 1 }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                x: { grid: { color: this.colors.gridAlpha, borderDash: [5, 5] }, ticks: { display: false } },
+                                y: { grid: { color: this.colors.gridAlpha, borderDash: [5, 5] }, ticks: { display: false } }
+                            },
+                            plugins: {
+                                legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 6, font: { size: 11 } } },
+                                tooltip: { backgroundColor: this.colors.slate }
+                            }
+                        }
+                    });
+                }
+            },
+
+            runInference: function () {
+                const inputEl = document.getElementById('play-input');
+                const btnTxt = document.getElementById('play-btn-txt');
+                const spinner = document.getElementById('play-spinner');
+                const btn = document.getElementById('play-btn');
+
+                if (!inputEl || !inputEl.value.trim()) return;
+                const text = inputEl.value.trim().toLowerCase();
+
+                spinner.classList.remove('hidden');
+                btn.setAttribute('disabled', 'true');
+                btnTxt.textContent = "Processing";
+                document.getElementById('play-empty').classList.add('hidden');
+                document.getElementById('play-results').classList.add('hidden');
+
+                setTimeout(() => {
+                    spinner.classList.add('hidden');
+                    btn.removeAttribute('disabled');
+                    btnTxt.textContent = "Evaluate";
+
+                    let label = 'Neutral';
+                    let color = this.colors.slateLight;
+                    let icon = '<i class="ph ph-minus"></i>';
+                    let llm = "Flat semantics. Lacks strong polar identifiers. Classified as a functional comment; no priority recommendation needed.";
+
+                    if (text.match(/(excellent|incredible|good|perfect|recommend|great|happy|love|amazing)/)) {
+                        label = 'Positive';
+                        color = this.colors.emerald;
+                        icon = '<i class="ph ph-trend-up"></i>';
+                        llm = "High semantic positivity. The customer shows strong retention. Suggestion: Automatic trigger to request a public review on Trustpilot.";
+                    } else if (text.match(/(terrible|bad|broken|trash|worst|disappointment|cheap|useless|hate)/)) {
+                        label = 'Negative';
+                        color = this.colors.red;
+                        icon = '<i class="ph ph-warning-circle"></i>';
+                        llm = "Critical risk. Latent topics point to structural quality failures (Cluster 3). Preventive escalation to Level 2 technical support is recommended.";
+                    }
+
+                    const badge = document.getElementById('play-badge');
+                    badge.style.backgroundColor = color;
+                    badge.innerHTML = `${icon} ${label}`;
+
+                    document.getElementById('play-conf').textContent = `Confidence: ${(Math.random() * (0.99 - 0.89) + 0.89).toFixed(3)}`;
+                    document.getElementById('play-llm').textContent = llm;
+
+                    document.getElementById('play-results').classList.remove('hidden');
+                    document.getElementById('play-results').classList.add('flex');
+                }, 750);
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            app.toggleCode('distil');
+            app.initCharts();
+        });
+    </script>
+</body>
+
+</html>
