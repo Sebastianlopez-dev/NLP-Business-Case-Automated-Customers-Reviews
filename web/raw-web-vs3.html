@@ -266,7 +266,6 @@
             <section id="tab-eda" class="tab-content active">
                 <div class="mb-10">
                     <h2 class="text-2xl font-bold text-slate-800 tracking-tight mb-1">Data & Exploratory Analysis</h2>
-                    <p class="text-sm text-slate-500">Corpus volume, class distribution, and preprocessing strategy for 571.54M Amazon reviews.</p>
                 </div>
                 <!-- Pipeline Data Flow — 4-stage reduction, inline (no card box) -->
                 <div class="mb-8">
@@ -353,6 +352,24 @@ response = requests.get(url, stream=<span class="syn-pink">True</span>, timeout=
                         <div class="chart-container flex-1">
                             <canvas id="edaChart"></canvas>
                         </div>
+                        <!-- 3-class grouping band -->
+                        <div class="flex items-stretch mt-4 pt-3 border-t border-slate-100 gap-1">
+                            <div class="flex-[2] text-center">
+                                <div class="border-t-2 mb-1.5" style="border-color: #DC2626;"></div>
+                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Negative</p>
+                                <p class="text-[9px] text-slate-400">1–2★ · 10.6%</p>
+                            </div>
+                            <div class="flex-[1] text-center">
+                                <div class="border-t-2 mb-1.5" style="border-color: #94A3B8;"></div>
+                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Neutral</p>
+                                <p class="text-[9px] text-slate-400">3★ · 7.5%</p>
+                            </div>
+                            <div class="flex-[2] text-center">
+                                <div class="border-t-2 mb-1.5" style="border-color: #10B981;"></div>
+                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Positive</p>
+                                <p class="text-[9px] text-slate-400">4–5★ · 81.8%</p>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
@@ -367,21 +384,36 @@ response = requests.get(url, stream=<span class="syn-pink">True</span>, timeout=
                             </p>
                         </div>
                         <div class="card-standard">
-                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Hybrid Stopwords
-                            </h4>
-                            <div class="flex items-center gap-2 mb-4">
-                                <span
-                                    class="bg-slate-50 border border-slate-200 text-slate-600 text-[11px] font-mono-data px-2 py-0.5 rounded">NLTK
-                                    (179)</span>
-                                <span class="text-slate-300">+</span>
-                                <span
-                                    class="bg-slate-50 border border-slate-200 text-slate-600 text-[11px] font-mono-data px-2 py-0.5 rounded">Domain
-                                    (23)</span>
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">The Neutral Paradox</h4>
+                            <div class="space-y-3 mb-4">
+                                <div>
+                                    <div class="flex justify-between text-[10px] text-slate-500 mb-1">
+                                        <span>Negative</span><span class="font-mono-data">295</span>
+                                    </div>
+                                    <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="h-full rounded-full" style="width: 73%; background: #DC2626;"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[10px] text-slate-500 mb-1">
+                                        <span>Neutral</span><span class="font-mono-data font-bold" style="color: #EA580C;">405</span>
+                                    </div>
+                                    <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="h-full rounded-full" style="width: 100%; background: #EA580C;"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[10px] text-slate-500 mb-1">
+                                        <span>Positive</span><span class="font-mono-data">307</span>
+                                    </div>
+                                    <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="h-full rounded-full" style="width: 76%; background: #10B981;"></div>
+                                    </div>
+                                </div>
                             </div>
                             <p class="text-xs text-slate-500 leading-relaxed">
-                                Text standardization required filtering ubiquitous e-commerce terms like
-                                <em>"product"</em> or <em>"bought"</em> to prevent TF-IDF frequency analysis from
-                                rendering generic noise.
+                                Neutral reviews are <strong>37% longer</strong> than positive ones. Users justify
+                                ambivalence with detail — extremes are concise.
                             </p>
                         </div>
                     </div>
@@ -926,16 +958,16 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                     displayColors: false
                 };
 
-                // EDA Chart — visible on load (active tab)
+                // EDA Chart — 5-star distribution with 3-class grouping band
                 this.charts.eda = new Chart(document.getElementById('edaChart').getContext('2d'), {
                     type: 'bar',
                     data: {
-                        labels: ['Negative (1-2★)', 'Neutral (3★)', 'Positive (4-5★)'],
+                        labels: ['1★', '2★', '3★', '4★', '5★'],
                         datasets: [{
-                            data: [10.8, 7.6, 81.6],
-                            backgroundColor: [this.colors.red, this.colors.slateLight, this.colors.neoSuccess],
+                            data: [6.5, 4.1, 7.5, 14.7, 67.1],
+                            backgroundColor: ['#DC2626', '#F87171', this.colors.slateLight, '#6EE7B7', this.colors.neoSuccess],
                             borderRadius: 4,
-                            barThickness: 40
+                            barThickness: 36
                         }]
                     },
                     options: {
@@ -945,13 +977,13 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                             y: {
                                 grid: { borderDash: [4, 4], color: this.colors.gridAlpha },
                                 ticks: { font: { size: 10, family: 'JetBrains Mono' }, callback: v => v + '%' },
-                                max: 100
+                                max: 80
                             },
                             x: { grid: { display: false } }
                         },
                         plugins: {
                             legend: { display: false },
-                            tooltip: { ...commonTooltip, callbacks: { label: c => ' ' + c.raw + '% of Corpus' } }
+                            tooltip: { ...commonTooltip, callbacks: { label: c => ' ' + c.raw + '% of 976K reviews' } }
                         }
                     }
                 });
