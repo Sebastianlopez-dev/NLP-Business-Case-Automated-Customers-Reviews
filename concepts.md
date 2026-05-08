@@ -12,7 +12,7 @@
 | 1–7 | **[concepts-foundation.md](concepts-foundation.md)** | Data loading, storage, accumulation, balancing, sentiment models, embedding models, clustering algorithm | 177 |
 | 8–13 | **[concepts-methodology.md](concepts-methodology.md)** | Summarization model & method, EDA voice, stopwords, quick reference, pipeline architecture, `load_dataset` API | 187 |
 | 14–16 | **[concepts-advanced.md](concepts-advanced.md)** | Cross-notebook audit patterns, clustering alternatives (LDA vs K-Means), nomic-embed upgrade | 165 |
-| 17–18 | **[concepts-enterprise.md](concepts-enterprise.md)** | BERTopic + HDBSCAN (enterprise clustering), LoRA vs Full Fine-Tuning (both deferred) | 198 |
+| 17–19 | **[concepts-enterprise.md](concepts-enterprise.md)** | BERTopic + HDBSCAN (enterprise clustering), LoRA vs Full Fine-Tuning, W&B Experiment Tracking (all deferred) | ~300 |
 
 ---
 
@@ -39,3 +39,4 @@
 | 16 | Embedding Model: nomic-embed vs MiniLM | [advanced](concepts-advanced.md#L138) |
 | 17 | Clustering Profesional: BERTopic + HDBSCAN | [enterprise](concepts-enterprise.md#L12) |
 | 18 | Fine-Tuning Eficiente: LoRA vs Full Fine-Tuning | [enterprise](concepts-enterprise.md#L97) |
+| 19 | Experiment Tracking: W&B Dashboard (deferred) | [enterprise](concepts-enterprise.md#L199) |
