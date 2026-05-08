@@ -5,6 +5,27 @@
 
 ---
 
+> | # | Concept | Line |
+> |---|---------|------|
+> | 1 | Data Loading: Streaming vs Full Download | L29 |
+> | 2 | Storage Format: Arrow vs CSV | L68 |
+> | 3 | Data Accumulation: Python Dicts vs Stream→Arrow | L84 |
+> | 4 | Dataset Balancing: Cap vs No Cap | L99 |
+> | 5 | Sentiment Models: DistilBERT vs RoBERTa | L116 |
+> | 6 | Embedding Model: MiniLM vs Alternatives | L145 |
+> | 7 | Clustering Algorithm: MiniBatchKMeans vs KMeans | L161 |
+> | 8 | Summarization Model: Mistral Medium 3.5 | L178 |
+> | 9 | Summarization Method: Extractive-Abstractive | L198 |
+> | 10 | EDA Voice: Research Tone vs Assertive Tone | L213 |
+> | 11 | Stopwords: NLTK + Domain-Specific Hybrid | L232 |
+> | — | Quick Reference: Models at a Glance | — |
+> | 12 | Pipeline Architecture: Why CSVs? | L267 |
+> | 13 | `load_dataset` API: `split` + `streaming` Deprecation | L306 |
+> | 14 | N02/N03 Audit: Cross-Notebook Bug Patterns | L346 |
+> | 15 | Clustering — LDA, K-Means vs MiniBatchKMeans | L410 |
+
+---
+
 ## 1. Data Loading: Streaming vs Full Download *(N01)*
 
 **Problem**: The Amazon Reviews 2023 dataset is 750 GB compressed. Downloading it all would fill any hard drive. Loading it all into RAM is impossible.
@@ -383,3 +404,60 @@ The audit established a protocol that future cross-notebook checks must follow:
 ### What Was Deferred
 
 5 SUGGESTION-level items were deferred to [itwouldenhance.md](itwouldenhance.md): duplicate label mappings, padding strategy, warmup estimation, buried imports, and hardcoded DistilBERT parameter count in display strings. None affect execution correctness.
+
+---
+
+## 15. Clustering Alternatives — LDA, K-Means vs MiniBatchKMeans *(N04)*
+
+**Problem**: We chose MiniBatchKMeans for clustering in N04. But is it the best algorithm for discovering product categories from review text? Two alternatives were considered: LDA (topic modeling) and standard K-Means (exact Lloyd's algorithm).
+
+### LDA (Latent Dirichlet Allocation) — why not?
+
+LDA is a probabilistic topic model that discovers latent topics directly from word frequencies — no embeddings needed. Each topic is a distribution over words, making interpretation **native** (no post-hoc TF-IDF step).
+
+| | MiniLM + MiniBatchKMeans (current) | LDA |
+|---|---|---|
+| **How it represents text** | 384-dimensional dense vectors capturing semantic meaning | Bag-of-words — word counts only |
+| **Clustering method** | Euclidean distance in embedding space | Probabilistic topic assignment (each review is a mixture of topics) |
+| **Interpretability** | Requires post-hoc TF-IDF to find key terms | Topics ARE word lists — inherently interpretable |
+| **Handles negation?** | ✅ "Not good" ≠ "good" in embedding space | ❌ "Not good" and "good" share words — LDA sees them as similar |
+| **Handles synonyms?** | ✅ "Amazing" ≈ "excellent" via semantic similarity | ❌ "Amazing" and "excellent" are unrelated words |
+| **Multiple cluster membership** | ❌ Each review assigned to exactly 1 cluster | ✅ Each review is a mixture of topics (soft assignment) |
+| **Scalability** | ✅ MiniBatchKMeans handles millions | ✅ Online LDA exists but less mature in sklearn |
+| **Works best with** | Short, diverse text where context matters | Long documents with clear topical vocabulary |
+
+**Why we did NOT use LDA**:
+1. **Amazon reviews are short** (median ~52 tokens). LDA struggles with short texts because word co-occurrence statistics are sparse — there simply aren't enough words per document to reliably estimate topic distributions.
+2. **Context matters for reviews** — "This battery is terrible" and "The battery life is amazing" share the word "battery" but have opposite sentiment. LDA would conflate them into the same topic; embeddings separate them.
+3. **MiniLM embeddings capture more signal** — a 384-dim vector encodes semantic relationships (synonyms, analogies, negation) that bag-of-words discards. For product review clustering, this semantic depth matters more than LDA's native interpretability.
+
+> **Analogy**: LDA is like sorting books by which words they contain — "battery" appears in both a 5-star and a 1-star review, so they end up on the same shelf. MiniLM + K-Means is like sorting books by what they *mean* — the glowing review and the angry complaint go to different shelves even though they use similar vocabulary.
+
+### K-Means vs MiniBatchKMeans — empirical comparison
+
+The project brief requires 4–6 meta-categories, so k must be controllable. Both K-Means and MiniBatchKMeans satisfy this constraint, but they differ in convergence quality:
+
+| Algorithm | Memory | Convergence | Quality | Best for |
+|-----------|--------|-------------|---------|----------|
+| **K-Means (Lloyd's)** | O(n·k·d) — all data in RAM | Iterates until no points change cluster | Exact Lloyd's optimum | Datasets that fit in memory |
+| **MiniBatchKMeans** | O(batch·k·d) — one batch at a time | Approximate — random batches | ~98–99% of K-Means quality | Datasets too large for RAM |
+
+**Our approach**: Instead of choosing one blindly, Notebook 04 runs **both algorithms** on the same MiniLM embeddings and compares them empirically:
+
+```
+K_VALUES = range(2, 11)  →  for each k:
+    ├── K-Means (Lloyd's)    → inertia_km, silhouette_km, time_km
+    └── MiniBatchKMeans      → inertia_mb, silhouette_mb, time_mb
+```
+
+The results are displayed as:
+- **Overlaid elbow and silhouette plots** — K-Means (solid cyan) vs MiniBatchKMeans (dashed orange) on the same axes
+- **Comparison table** — per-k metrics for both algorithms side by side
+- **Quality retention score** — what percentage of K-Means silhouette does MiniBatchKMeans retain?
+
+**Why this matters for a bootcamp**:
+1. It demonstrates **empirical thinking** — we don't just claim MiniBatchKMeans is "almost as good," we measure it.
+2. It shows understanding of the **scale-quality tradeoff** — MiniBatchKMeans exists because K-Means doesn't scale; both have their place.
+3. The final model is MiniBatchKMeans (scalable to 571M reviews), but K-Means serves as the **gold-standard baseline** that validates our choice.
+
+> **Analogy**: K-Means is the architect who measures every wall before placing furniture. MiniBatchKMeans is the mover who eyeballs it — slightly less precise, but finishes before the truck leaves. We hired the mover (MiniBatchKMeans) because the house has 571 million rooms, but we measured one room with the architect (K-Means) just to confirm the mover's eye is good enough.
