@@ -191,7 +191,7 @@
 <body class="flex h-screen w-full">
 
     <!-- SIDEBAR -->
-    <aside class="w-[240px] flex-shrink-0 bg-white border-r border-slate-200 flex flex-col h-full z-20">
+    <aside class="w-[240px] flex-shrink-0 bg-white border-r border-slate-200 flex flex-col h-full z-20" aria-label="Main navigation">
         <div class="p-6 mb-4 flex items-center gap-3">
             <i class="ph-duotone ph-hexagon text-2xl text-[#0891B2]"></i>
             <div>
@@ -204,42 +204,49 @@
         <nav class="flex-1 px-3 space-y-1 overflow-y-auto">
             <p class="px-3 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pipeline</p>
             <button onclick="app.switchTab('tab-eda')" id="nav-eda"
-                class="nav-item active w-full px-3 py-2.5 rounded-md gap-3 text-sm">
-                <i class="ph ph-chart-bar text-lg"></i><span>1. Data & EDA</span>
+                class="nav-item active w-full px-3 py-2.5 rounded-md gap-3 text-sm"
+                aria-current="page" aria-label="Data and EDA section">
+                <i class="ph ph-chart-bar text-lg" aria-hidden="true"></i><span>1. Data & EDA</span>
             </button>
             <button onclick="app.switchTab('tab-benchmark')" id="nav-benchmark"
-                class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm">
-                <i class="ph ph-cpu text-lg"></i><span>2. Architecture</span>
+                class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm"
+                aria-label="Architecture and Benchmark section">
+                <i class="ph ph-cpu text-lg" aria-hidden="true"></i><span>2. Architecture</span>
             </button>
             <button onclick="app.switchTab('tab-clusters')" id="nav-clusters"
-                class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm">
-                <i class="ph ph-circles-three-plus text-lg"></i><span>3. Clustering</span>
+                class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm"
+                aria-label="Clustering section">
+                <i class="ph ph-circles-three-plus text-lg" aria-hidden="true"></i><span>3. Clustering</span>
             </button>
             <button onclick="app.switchTab('tab-summarization')" id="nav-summarization"
-                class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm">
-                <i class="ph ph-text-align-justify text-lg"></i><span>4. Summarization</span>
+                class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm"
+                aria-label="Summarization section">
+                <i class="ph ph-text-align-justify text-lg" aria-hidden="true"></i><span>4. Summarization</span>
             </button>
             <button onclick="app.switchTab('tab-web')" id="nav-web"
-                class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm">
-                <i class="ph ph-browsers text-lg"></i><span>5. Web & HF</span>
+                class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm"
+                aria-label="Web and Hugging Face section">
+                <i class="ph ph-browsers text-lg" aria-hidden="true"></i><span>5. Web & HF</span>
             </button>
 
             <div class="pt-6">
                 <p class="px-3 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Application</p>
                 <button onclick="app.switchTab('tab-play')" id="nav-play"
-                    class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm">
-                    <i class="ph ph-lightning text-lg"></i><span>6. Playground</span>
+                    class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm"
+                    aria-label="Inference Playground section">
+                    <i class="ph ph-lightning text-lg" aria-hidden="true"></i><span>6. Playground</span>
                 </button>
                 <button onclick="app.switchTab('tab-docs')" id="nav-docs"
-                    class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm">
-                    <i class="ph ph-book-open-text text-lg"></i><span>7. Documentation</span>
+                    class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm"
+                    aria-label="Documentation Concepts section">
+                    <i class="ph ph-book-open-text text-lg" aria-hidden="true"></i><span>7. Documentation</span>
                 </button>
             </div>
         </nav>
     </aside>
 
     <!-- MAIN AREA -->
-    <main class="flex-1 h-full overflow-y-auto flex flex-col relative">
+    <main class="flex-1 h-full overflow-y-auto flex flex-col relative" aria-label="Main content">
 
         <!-- HEADER (V1 Restored) -->
         <header
@@ -253,7 +260,7 @@
             </div>
             <div class="flex items-center gap-4">
                 <i class="ph ph-bell text-slate-400 hover:text-slate-600 cursor-pointer text-lg"></i>
-                <div class="w-8 h-8 rounded-full bg-slate-200 border border-slate-300"></div>
+                <div class="w-8 h-8 rounded-full bg-slate-200 border border-slate-300" aria-hidden="true"></div>
             </div>
         </header>
 
@@ -801,10 +808,14 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                 if (!tab || !nav) return;
 
                 document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.nav-item').forEach(el => {
+                    el.classList.remove('active');
+                    el.removeAttribute('aria-current');
+                });
 
                 tab.classList.add('active');
                 nav.classList.add('active');
+                nav.setAttribute('aria-current', 'page');
 
                 // Lazy-init cluster chart when its tab becomes visible for the first time
                 if (id === 'tab-clusters') {
