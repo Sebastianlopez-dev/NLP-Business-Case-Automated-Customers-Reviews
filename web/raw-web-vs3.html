@@ -109,6 +109,11 @@
             /* Fixed height to prevent grid layout shifts */
         }
 
+        .code-viewport-auto {
+            height: auto;
+            min-height: 280px;
+        }
+
         /* Syntax Highlighting */
         .syn-pink {
             color: #D946EF;
@@ -513,7 +518,7 @@
                                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">NVIDIA API
                                     Config</p>
                             </div>
-                            <div class="code-viewport" id="llm-code-display" style="height: auto; min-height: 280px;">
+                            <div class="code-viewport code-viewport-auto" id="llm-code-display">
                             </div>
                         </div>
                     </div>
