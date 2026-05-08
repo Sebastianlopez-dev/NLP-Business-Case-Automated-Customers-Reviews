@@ -259,22 +259,6 @@
     <!-- MAIN AREA -->
     <main class="flex-1 h-full overflow-y-auto flex flex-col relative" aria-label="Main content">
 
-        <!-- HEADER (V1 Restored) -->
-        <header
-            class="h-14 bg-white border-b border-slate-200 sticky top-0 z-10 flex items-center justify-between px-8 flex-shrink-0">
-            <div class="flex items-center gap-4">
-                <span
-                    class="bg-slate-100 text-slate-500 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider">Project
-                    v4.0</span>
-                <div class="h-4 w-[1px] bg-slate-200"></div>
-                <p class="text-xs text-slate-500 font-medium">Dataset: Amazon Reviews 2023 (UCSD)</p>
-            </div>
-            <div class="flex items-center gap-4">
-                <i class="ph ph-bell text-slate-400 hover:text-slate-600 cursor-pointer text-lg"></i>
-                <div class="w-8 h-8 rounded-full bg-slate-200 border border-slate-300" aria-hidden="true"></div>
-            </div>
-        </header>
-
         <!-- CONTENT WRAPPER -->
         <div class="p-10 max-w-[1200px] w-full mx-auto">
 
@@ -284,19 +268,79 @@
                     <h2 class="text-2xl font-bold text-slate-800 tracking-tight mb-1">Data & Exploratory Analysis</h2>
                     <p class="text-sm text-slate-500">Corpus volume, class distribution, and preprocessing strategy for 571.54M Amazon reviews.</p>
                 </div>
-                <div class="mb-10">
-                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Total Corpus Volume
-                    </p>
-                    <div
-                        class="font-mono-data text-6xl md:text-7xl font-bold text-slate-800 tracking-tighter leading-none mb-4">
-                        571.54M</div>
-                    <div class="flex flex-wrap items-center gap-4 text-sm text-slate-600">
-                        <p class="flex items-center gap-2"><i class="ph ph-files text-slate-400"></i> Amazon Reviews
-                            2023 Dataset</p>
-                        <span class="w-1 h-1 rounded-full bg-slate-300"></span>
-                        <p class="flex items-center gap-2"><i class="ph ph-hard-drives text-slate-400"></i> Disk Cost:
-                            <span class="font-mono-data font-bold text-cyan-600">0 GB</span> (Raw JSONL Streaming)</p>
+                <!-- Pipeline Data Flow — 4-stage reduction, inline (no card box) -->
+                <div class="mb-8">
+                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-5">Pipeline Data Flow</p>
+                    <div class="flex items-stretch">
+                        <div class="flex-1 text-center">
+                            <div class="font-mono-data text-3xl font-bold text-slate-800 mb-1">571.54M</div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-tight">Full
+                                Dataset</p>
+                            <p class="text-[10px] text-slate-400 mt-0.5">Amazon 2023</p>
+                        </div>
+                        <div class="flex-shrink-0 flex items-center px-4" style="color: #EA580C;">
+                            <i class="ph ph-caret-right text-xl"></i>
+                        </div>
+                        <div class="flex-1 text-center">
+                            <div class="font-mono-data text-3xl font-bold text-slate-800 mb-1">976K</div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-tight">Sampled
+                            </p>
+                            <p class="text-[10px] text-slate-400 mt-0.5">33 cats × 30K</p>
+                        </div>
+                        <div class="flex-shrink-0 flex items-center px-4" style="color: #EA580C;">
+                            <i class="ph ph-caret-right text-xl"></i>
+                        </div>
+                        <div class="flex-1 text-center">
+                            <div class="font-mono-data text-3xl font-bold text-slate-800 mb-1">942K</div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-tight">Cleaned
+                            </p>
+                            <p class="text-[10px] text-slate-400 mt-0.5">−3.4% noise</p>
+                        </div>
+                        <div class="flex-shrink-0 flex items-center px-4" style="color: #EA580C;">
+                            <i class="ph ph-caret-right text-xl"></i>
+                        </div>
+                        <div class="flex-1 text-center">
+                            <div class="font-mono-data text-3xl font-bold text-slate-800 mb-1">214K</div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-tight">Balanced
+                            </p>
+                            <p class="text-[10px] text-slate-400 mt-0.5">×3 classes</p>
+                        </div>
                     </div>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-4 text-sm text-slate-600 mb-10">
+                    <p class="flex items-center gap-2">
+                        <i class="ph ph-files text-slate-400"></i>
+                        <a href="https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023"
+                            target="_blank" rel="noopener"
+                            class="text-cyan-600 hover:text-cyan-700 transition-colors">Amazon Reviews 2023 Dataset <i class="ph ph-arrow-square-out text-[10px] ml-0.5 opacity-60"></i></a>
+                    </p>
+                    <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+                    <p class="flex items-center gap-2">
+                        <i class="ph ph-hard-drives text-slate-400"></i> Disk Cost:
+                        <span class="font-mono-data font-bold" style="color: #EA580C;">0 GB</span>
+                        <span class="relative group cursor-help border-b border-dotted text-slate-500" style="border-color: #0891B2;">Raw JSONL Streaming
+                            <span
+                                class="hidden group-hover:block absolute left-1/2 z-50"
+                                style="width: 380px; transform: translate(-50%, 4px); top: 100%;">
+                                <span class="ide-container shadow-lg block">
+                                    <span class="flex bg-[#1E293B] border-b border-white/5 px-3 py-1.5">
+                                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Streaming Pattern — N01</span>
+                                    </span>
+                                    <span class="code-viewport code-viewport-auto block text-[10px] leading-snug p-3">
+<span class="syn-pink">import</span> requests, gzip, json
+
+<span class="syn-grey"># Stream .jsonl.gz from UCSD — zero disk</span>
+response = requests.get(url, stream=<span class="syn-pink">True</span>, timeout=<span class="syn-orange">600</span>)
+
+<span class="syn-pink">with</span> gzip.GzipFile(fileobj=response.raw) <span class="syn-pink">as</span> gz:
+    <span class="syn-pink">for</span> line <span class="syn-pink">in</span> gz:
+        record = json.loads(line.decode(<span class="syn-cyan">'utf-8'</span>))
+                                    </span>
+                                </span>
+                            </span>
+                        </span>
+                    </p>
                 </div>
 
                 <div class="grid grid-cols-12 gap-6 mb-8">
