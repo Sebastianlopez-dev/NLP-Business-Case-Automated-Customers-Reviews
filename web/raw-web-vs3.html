@@ -210,7 +210,8 @@
             <i class="ph-duotone ph-hexagon text-2xl text-[#0891B2]"></i>
             <div>
                 <span class="text-sm font-bold text-slate-800 tracking-tight">NLP Business</span>
-                <p class="text-slate-400 text-[10px] font-mono-data tracking-widest uppercase mt-0.5">v1.0 Research Pipeline
+                <p class="text-slate-400 text-[10px] font-mono-data tracking-widest uppercase mt-0.5">v1.0 Research
+                    Pipeline
                 </p>
             </div>
         </div>
@@ -224,8 +225,8 @@
             </button>
             <button onclick="app.switchTab('tab-benchmark')" id="nav-benchmark"
                 class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm"
-                aria-label="Architecture and Benchmark section">
-                <i class="ph ph-cpu text-lg" aria-hidden="true"></i><span>2. Architecture</span>
+                aria-label="Emotion Engine section">
+                <i class="ph ph-cpu text-lg" aria-hidden="true"></i><span>2. Emotion Engine</span>
             </button>
             <button onclick="app.switchTab('tab-clusters')" id="nav-clusters"
                 class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-label="Clustering section">
@@ -241,7 +242,8 @@
             </button>
 
             <div class="pt-6">
-                <p class="pr-3 pl-[42px] mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Application</p>
+                <p class="pr-3 pl-[42px] mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    Application</p>
                 <button onclick="app.switchTab('tab-play')" id="nav-play"
                     class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm"
                     aria-label="Inference Playground section">
@@ -257,7 +259,8 @@
 
         <div class="py-4 border-t border-slate-100 mt-auto bg-slate-50/50">
             <p class="pl-[42px] text-[10px] text-slate-400 font-mono-data">
-                &copy; 2026 <a href="https://www.sebaslopez.com" target="_blank" rel="noopener noreferrer" class="text-cyan-600 hover:text-cyan-500 transition-colors font-bold">BastianLopez</a>
+                &copy; 2026 <a href="https://www.sebaslopez.com" target="_blank" rel="noopener noreferrer"
+                    class="text-cyan-600 hover:text-cyan-500 transition-colors font-bold">BastianLopez</a>
             </p>
         </div>
     </aside>
@@ -334,37 +337,45 @@
                                 style="width: 380px; transform: translate(-50%, 4px); top: 100%;">
                                 <span class="ide-container shadow-lg block">
                                     <span class="flex bg-[#1E293B] border-b border-white/5 px-3 py-1.5">
-                                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Streaming Pattern — N01</span>
+                                        <span
+                                            class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Streaming
+                                            Pattern — N01</span>
                                     </span>
                                     <span class="block p-3 text-[10px] leading-snug whitespace-pre-wrap font-mono-data">
-<span class="syn-pink">import</span> requests, gzip, json
+                                        <span class="syn-pink">import</span> requests, gzip, json
 
-<span class="syn-grey"># Stream .jsonl.gz from UCSD — zero disk</span>
-response = requests.get(url, stream=<span class="syn-pink">True</span>, timeout=<span class="syn-orange">600</span>)
+                                        <span class="syn-grey"># Stream .jsonl.gz from UCSD — zero disk</span>
+                                        response = requests.get(url, stream=<span class="syn-pink">True</span>,
+                                        timeout=<span class="syn-orange">600</span>)
 
-<span class="syn-pink">with</span> gzip.GzipFile(fileobj=response.raw) <span class="syn-pink">as</span> gz:
-    <span class="syn-pink">for</span> line <span class="syn-pink">in</span> gz:
-        record = json.loads(line.decode(<span class="syn-cyan">'utf-8'</span>))
+                                        <span class="syn-pink">with</span> gzip.GzipFile(fileobj=response.raw) <span
+                                            class="syn-pink">as</span> gz:
+                                        <span class="syn-pink">for</span> line <span class="syn-pink">in</span> gz:
+                                        record = json.loads(line.decode(<span class="syn-cyan">'utf-8'</span>))
                                     </span>
                                     <span class="block px-4 py-3 bg-[#0F172A] border-t border-white/5">
                                         <span class="flex flex-col space-y-2 text-[10px] font-mono-data text-slate-400">
                                             <span class="flex items-center gap-2">
-                                                <span class="w-4 h-4 rounded-full bg-cyan-400/10 text-cyan-400 flex items-center justify-center text-[8px] font-bold">1</span>
+                                                <span
+                                                    class="w-4 h-4 rounded-full bg-cyan-400/10 text-cyan-400 flex items-center justify-center text-[8px] font-bold">1</span>
                                                 <span class="text-slate-300">HTTP Stream</span>
                                                 <span class="text-slate-500 ml-auto">requests.get</span>
                                             </span>
                                             <span class="flex items-center gap-2">
-                                                <span class="w-4 h-4 rounded-full bg-cyan-400/10 text-cyan-400 flex items-center justify-center text-[8px] font-bold">2</span>
+                                                <span
+                                                    class="w-4 h-4 rounded-full bg-cyan-400/10 text-cyan-400 flex items-center justify-center text-[8px] font-bold">2</span>
                                                 <span class="text-slate-300">Decompress</span>
                                                 <span class="text-slate-500 ml-auto">gzip.GzipFile</span>
                                             </span>
                                             <span class="flex items-center gap-2">
-                                                <span class="w-4 h-4 rounded-full bg-cyan-400/10 text-cyan-400 flex items-center justify-center text-[8px] font-bold">3</span>
+                                                <span
+                                                    class="w-4 h-4 rounded-full bg-cyan-400/10 text-cyan-400 flex items-center justify-center text-[8px] font-bold">3</span>
                                                 <span class="text-slate-300">Parse JSON</span>
                                                 <span class="text-slate-500 ml-auto">json.loads</span>
                                             </span>
                                             <span class="flex items-center gap-2 pt-2 mt-1 border-t border-white/5">
-                                                <span class="w-4 h-4 rounded-full bg-orange-400/10 text-orange-400 flex items-center justify-center text-[8px] font-bold">4</span>
+                                                <span
+                                                    class="w-4 h-4 rounded-full bg-orange-400/10 text-orange-400 flex items-center justify-center text-[8px] font-bold">4</span>
                                                 <span class="text-slate-300">Accumulate in RAM</span>
                                                 <span class="text-orange-400 ml-auto">~90 MB / category</span>
                                             </span>
@@ -384,9 +395,11 @@ response = requests.get(url, stream=<span class="syn-pink">True</span>, timeout=
                             </h3>
                             <div class="flex gap-4">
                                 <button onclick="app.switchEDATab('star')" id="eda-tab-star"
-                                    class="text-[10px] font-bold uppercase tracking-wider pb-1 border-b-2 border-cyan-500 text-slate-700 transition-all">By Star</button>
+                                    class="text-[10px] font-bold uppercase tracking-wider pb-1 border-b-2 border-cyan-500 text-slate-700 transition-all">By
+                                    Star</button>
                                 <button onclick="app.switchEDATab('cat')" id="eda-tab-cat"
-                                    class="text-[10px] font-bold uppercase tracking-wider pb-1 border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all">Top Negative</button>
+                                    class="text-[10px] font-bold uppercase tracking-wider pb-1 border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all">Top
+                                    Negative</button>
                             </div>
                         </div>
                         <div class="chart-container flex-1">
@@ -396,32 +409,40 @@ response = requests.get(url, stream=<span class="syn-pink">True</span>, timeout=
                         <div id="eda-band" class="mt-4 pt-3 border-t-0 relative overflow-hidden">
                             <!-- Animated Line Layer -->
                             <div class="flex gap-1 mb-2 h-[3px]">
-                                <div id="eda-line-neg" class="transition-all duration-700 rounded-full" style="flex: 2; background-color: #DC2626;"></div>
-                                <div id="eda-line-neu" class="transition-all duration-700 rounded-full" style="flex: 1; background-color: #94A3B8;"></div>
-                                <div id="eda-line-pos" class="transition-all duration-700 rounded-full" style="flex: 2; background-color: #10B981;"></div>
+                                <div id="eda-line-neg" class="transition-all duration-700 rounded-full"
+                                    style="flex: 2; background-color: #DC2626;"></div>
+                                <div id="eda-line-neu" class="transition-all duration-700 rounded-full"
+                                    style="flex: 1; background-color: #94A3B8;"></div>
+                                <div id="eda-line-pos" class="transition-all duration-700 rounded-full"
+                                    style="flex: 2; background-color: #10B981;"></div>
                             </div>
                             <!-- Labels Layer -->
                             <div class="flex items-center gap-1 min-h-[20px]">
                                 <div id="eda-label-neg" class="flex-[2] text-center transition-all duration-500">
                                     <p class="text-[10px] whitespace-nowrap">
-                                        <span id="eda-title-neg" class="font-bold text-slate-500 uppercase tracking-wider">Negative</span>
+                                        <span id="eda-title-neg"
+                                            class="font-bold text-slate-500 uppercase tracking-wider">Negative</span>
                                         <span id="eda-val-neg" class="text-slate-400 ml-1">· 1–2★ · 10.6%</span>
                                     </p>
                                 </div>
                                 <div id="eda-label-neu" class="flex-[1] text-center transition-all duration-500">
                                     <p class="text-[10px] whitespace-nowrap">
-                                        <span id="eda-title-neu" class="font-bold text-slate-500 uppercase tracking-wider">Neutral</span>
+                                        <span id="eda-title-neu"
+                                            class="font-bold text-slate-500 uppercase tracking-wider">Neutral</span>
                                         <span id="eda-val-neu" class="text-slate-400 ml-1">· 3★ · 7.5%</span>
                                     </p>
                                 </div>
                                 <div id="eda-label-pos" class="flex-[2] text-center transition-all duration-500">
                                     <p class="text-[10px] whitespace-nowrap">
-                                        <span id="eda-title-pos" class="font-bold text-slate-500 uppercase tracking-wider">Positive</span>
+                                        <span id="eda-title-pos"
+                                            class="font-bold text-slate-500 uppercase tracking-wider">Positive</span>
                                         <span id="eda-val-pos" class="text-slate-400 ml-1">· 4–5★ · 81.8%</span>
                                     </p>
                                 </div>
-                                <div id="eda-label-info" class="hidden flex-[3] text-left transition-all duration-500 pl-4 border-l border-slate-200">
-                                    <p class="text-[10px] text-slate-500 font-medium">All bars above focus on Negative Sentiment distribution by category</p>
+                                <div id="eda-label-info"
+                                    class="hidden flex-[3] text-left transition-all duration-500 pl-4 border-l border-slate-200">
+                                    <p class="text-[10px] text-slate-500 font-medium">All bars above focus on Negative
+                                        Sentiment distribution by category</p>
                                 </div>
                             </div>
                         </div>
@@ -431,75 +452,104 @@ response = requests.get(url, stream=<span class="syn-pink">True</span>, timeout=
                         <div class="card-standard relative flex flex-col justify-between h-[250px]">
                             <!-- Controls -->
                             <div class="absolute top-4 right-4 flex gap-2 z-10">
-                                <button onclick="app.prevCardSlide('eda-insights')" class="text-[#EA580C] hover:opacity-75 transition-opacity" aria-label="Previous insight"><i class="ph ph-caret-left text-xl"></i></button>
-                                <button onclick="app.nextCardSlide('eda-insights')" class="text-[#EA580C] hover:opacity-75 transition-opacity" aria-label="Next insight"><i class="ph ph-caret-right text-xl"></i></button>
+                                <button onclick="app.prevCardSlide('eda-insights')"
+                                    class="text-[#EA580C] hover:opacity-75 transition-opacity"
+                                    aria-label="Previous insight"><i class="ph ph-caret-left text-xl"></i></button>
+                                <button onclick="app.nextCardSlide('eda-insights')"
+                                    class="text-[#EA580C] hover:opacity-75 transition-opacity"
+                                    aria-label="Next insight"><i class="ph ph-caret-right text-xl"></i></button>
                             </div>
-                            
+
                             <div id="eda-insights-container" class="min-h-[140px] relative">
                                 <div class="card-slide block" data-index="0">
-                                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 pr-16">Natural Imbalance</h4>
+                                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 pr-16">
+                                        Natural Imbalance</h4>
                                     <div class="text-3xl font-bold font-mono-data text-slate-800 mb-2">213.9K</div>
                                     <p class="text-xs text-slate-500 leading-relaxed">
-                                        We processed 33 categories. However, the data revealed an 81.6% positive skew. The
-                                        minority class dictated the final balanced corpus size. We discarded ~728K positive
+                                        We processed 33 categories. However, the data revealed an 81.6% positive skew.
+                                        The
+                                        minority class dictated the final balanced corpus size. We discarded ~728K
+                                        positive
                                         reviews.
                                     </p>
                                 </div>
                                 <div class="card-slide hidden" data-index="1">
-                                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 pr-16">Word Count Limit</h4>
+                                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 pr-16">
+                                        Word Count Limit</h4>
                                     <div class="flex items-baseline gap-2 mb-2">
                                         <div class="text-3xl font-bold font-mono-data text-slate-800">98.5%</div>
-                                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">fit in 128 tokens</div>
+                                        <div
+                                            class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">
+                                            fit in 128 tokens</div>
                                     </div>
                                     <p class="text-xs text-slate-500 leading-relaxed">
-                                        Median length is 27 words. Truncating at <strong class="text-slate-700">max_length=128</strong> yields a 4&times; training speedup with negligible signal loss (&lt;1.5%).
+                                        Median length is 27 words. Truncating at <strong
+                                            class="text-slate-700">max_length=128</strong> yields a 4&times; training
+                                        speedup with negligible signal loss (&lt;1.5%).
                                     </p>
                                 </div>
                                 <div class="card-slide hidden" data-index="2">
-                                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 pr-16">Data Quality</h4>
+                                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 pr-16">
+                                        Data Quality</h4>
                                     <div class="flex items-baseline gap-2 mb-2">
-                                        <div class="text-3xl font-bold font-mono-data text-slate-800" style="color: #EA580C;">8.4%</div>
-                                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">duplicates</div>
+                                        <div class="text-3xl font-bold font-mono-data text-slate-800"
+                                            style="color: #EA580C;">8.4%</div>
+                                        <div
+                                            class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">
+                                            duplicates</div>
                                     </div>
                                     <p class="text-xs text-slate-500 leading-relaxed">
-                                        <strong class="text-slate-700">81,901</strong> duplicated wildcards (e.g. <code>"Great"</code>, <code>"Good"</code>). This strict noise filter prevents model overfitting on low-signal repeats.
+                                        <strong class="text-slate-700">81,901</strong> duplicated wildcards (e.g.
+                                        <code>"Great"</code>, <code>"Good"</code>). This strict noise filter prevents
+                                        model overfitting on low-signal repeats.
                                     </p>
                                 </div>
                             </div>
-                            
+
                             <!-- Dots -->
                             <div class="flex justify-center gap-1.5 mt-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 slide-dot-eda-insights transition-colors duration-300"></span>
-                                <span class="w-1.5 h-1.5 rounded-full bg-slate-200 slide-dot-eda-insights transition-colors duration-300"></span>
-                                <span class="w-1.5 h-1.5 rounded-full bg-slate-200 slide-dot-eda-insights transition-colors duration-300"></span>
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-cyan-500 slide-dot-eda-insights transition-colors duration-300"></span>
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-slate-200 slide-dot-eda-insights transition-colors duration-300"></span>
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-slate-200 slide-dot-eda-insights transition-colors duration-300"></span>
                             </div>
                         </div>
                         <div class="card-standard relative flex flex-col justify-between h-[250px]">
                             <!-- Controls -->
                             <div class="absolute top-4 right-4 flex gap-2 z-10">
-                                <button onclick="app.prevCardSlide('behavior-insights')" class="text-[#EA580C] hover:opacity-75 transition-opacity" aria-label="Previous insight"><i class="ph ph-caret-left text-xl"></i></button>
-                                <button onclick="app.nextCardSlide('behavior-insights')" class="text-[#EA580C] hover:opacity-75 transition-opacity" aria-label="Next insight"><i class="ph ph-caret-right text-xl"></i></button>
+                                <button onclick="app.prevCardSlide('behavior-insights')"
+                                    class="text-[#EA580C] hover:opacity-75 transition-opacity"
+                                    aria-label="Previous insight"><i class="ph ph-caret-left text-xl"></i></button>
+                                <button onclick="app.nextCardSlide('behavior-insights')"
+                                    class="text-[#EA580C] hover:opacity-75 transition-opacity"
+                                    aria-label="Next insight"><i class="ph ph-caret-right text-xl"></i></button>
                             </div>
-                            
+
                             <div id="behavior-insights-container" class="min-h-[140px] relative">
                                 <!-- Slide 0: Neutral Paradox -->
                                 <div class="card-slide block" data-index="0">
-                                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 pr-16">The Neutral Paradox</h4>
+                                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 pr-16">
+                                        The Neutral Paradox</h4>
                                     <div class="space-y-2 mb-3">
                                         <div>
                                             <div class="flex justify-between text-[10px] text-slate-500 mb-1">
                                                 <span>Negative</span><span class="font-mono-data">295</span>
                                             </div>
                                             <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                                                <div class="h-full rounded-full" style="width: 73%; background: #DC2626;"></div>
+                                                <div class="h-full rounded-full"
+                                                    style="width: 73%; background: #DC2626;"></div>
                                             </div>
                                         </div>
                                         <div>
                                             <div class="flex justify-between text-[10px] text-slate-500 mb-1">
-                                                <span>Neutral</span><span class="font-mono-data font-bold" style="color: #EA580C;">405</span>
+                                                <span>Neutral</span><span class="font-mono-data font-bold"
+                                                    style="color: #EA580C;">405</span>
                                             </div>
                                             <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                                                <div class="h-full rounded-full" style="width: 100%; background: #EA580C;"></div>
+                                                <div class="h-full rounded-full"
+                                                    style="width: 100%; background: #EA580C;"></div>
                                             </div>
                                         </div>
                                         <div>
@@ -507,125 +557,234 @@ response = requests.get(url, stream=<span class="syn-pink">True</span>, timeout=
                                                 <span>Positive</span><span class="font-mono-data">307</span>
                                             </div>
                                             <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                                                <div class="h-full rounded-full" style="width: 76%; background: #10B981;"></div>
+                                                <div class="h-full rounded-full"
+                                                    style="width: 76%; background: #10B981;"></div>
                                             </div>
                                         </div>
                                     </div>
                                     <p class="text-xs text-slate-500 leading-relaxed">
-                                        Neutral reviews are <strong>37% longer</strong>. Users justify ambivalence with detail. Extremes are concise.
+                                        Neutral reviews are <strong>37% longer</strong>. Users justify ambivalence with
+                                        detail. Extremes are concise.
                                     </p>
                                 </div>
-                                
+
                                 <!-- Slide 1: Extreme Vocabulary -->
                                 <div class="card-slide hidden" data-index="1">
-                                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 pr-16">Lexical Extremes</h4>
+                                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 pr-16">
+                                        Lexical Extremes</h4>
                                     <div class="flex items-baseline gap-2 mb-2">
-                                        <div class="text-3xl font-bold font-mono-data text-slate-800" style="color: #DC2626;">31</div>
-                                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">vs 14,735 words</div>
+                                        <div class="text-3xl font-bold font-mono-data text-slate-800"
+                                            style="color: #DC2626;">31</div>
+                                        <div
+                                            class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">
+                                            vs 14,735 words</div>
                                     </div>
                                     <p class="text-xs text-slate-500 leading-relaxed">
-                                        Negatives use a compact vocabulary of <strong style="color: #DC2626;">31 words</strong> (<i>waste, broke</i>). Positives use a rich lexicon of <strong style="color: #10B981;">14,735</strong> variations. Praise is diverse; complaints are repetitive.
+                                        Negatives use a compact vocabulary of <strong style="color: #DC2626;">31
+                                            words</strong> (<i>waste, broke</i>). Positives use a rich lexicon of
+                                        <strong style="color: #10B981;">14,735</strong> variations. Praise is diverse;
+                                        complaints are repetitive.
                                     </p>
                                 </div>
 
                                 <!-- Slide 2: Platform Sociology -->
                                 <div class="card-slide hidden" data-index="2">
-                                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 pr-16">Platform Sociology</h4>
+                                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 pr-16">
+                                        Platform Sociology</h4>
                                     <ul class="space-y-3 mt-2">
                                         <li class="flex items-start gap-2">
                                             <i class="ph ph-thumbs-up text-red-500 mt-0.5"></i>
                                             <p class="text-xs text-slate-500 leading-tight">
-                                                <strong class="text-slate-700">Helpful Votes:</strong> 1★ reviews get <strong class="text-red-600">2.5&times;</strong> more votes. Users engage with alerts.
+                                                <strong class="text-slate-700">Helpful Votes:</strong> 1★ reviews get
+                                                <strong class="text-red-600">2.5&times;</strong> more votes. Users
+                                                engage with alerts.
                                             </p>
                                         </li>
                                         <li class="flex items-start gap-2">
                                             <i class="ph ph-shield-warning text-cyan-600 mt-0.5"></i>
                                             <p class="text-xs text-slate-500 leading-tight">
-                                                <strong class="text-slate-700">Unverified:</strong> Spike heavily at <strong class="text-cyan-600">4★</strong>. A common tactic to inflate ratings covertly.
+                                                <strong class="text-slate-700">Unverified:</strong> Spike heavily at
+                                                <strong class="text-cyan-600">4★</strong>. A common tactic to inflate
+                                                ratings covertly.
                                             </p>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
-                            
+
                             <!-- Dots -->
                             <div class="flex justify-center gap-1.5 mt-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 slide-dot-behavior-insights transition-colors duration-300"></span>
-                                <span class="w-1.5 h-1.5 rounded-full bg-slate-200 slide-dot-behavior-insights transition-colors duration-300"></span>
-                                <span class="w-1.5 h-1.5 rounded-full bg-slate-200 slide-dot-behavior-insights transition-colors duration-300"></span>
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-cyan-500 slide-dot-behavior-insights transition-colors duration-300"></span>
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-slate-200 slide-dot-behavior-insights transition-colors duration-300"></span>
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-slate-200 slide-dot-behavior-insights transition-colors duration-300"></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 2. ARCHITECTURE & BENCHMARK -->
+            <!-- 2. EMOTION ENGINE -->
             <section id="tab-benchmark" class="tab-content">
-                <div class="mb-10">
-                    <h2 class="text-2xl font-bold text-slate-800 tracking-tight mb-1">Architecture & Benchmark</h2>
-                    <p class="text-sm text-slate-500">OOM mitigation on Colab T4 and operational trade-offs: speed vs
-                        contextual depth.</p>
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-slate-800 tracking-tight mb-1">Emotion Engine</h2>
+                    <p class="text-sm text-slate-500">Evaluating model efficiency: balancing predictive accuracy against
+                        hardware memory limits and training speed.</p>
                 </div>
 
-                <div class="grid grid-cols-12 gap-6 mb-8">
-                    <div class="col-span-12 lg:col-span-7">
-                        <div class="ide-container shadow-sm">
-                            <div class="flex bg-[#1E293B] border-b border-white/5 px-4 py-1 gap-6">
-                                <button onclick="app.toggleCode('distil')" id="btn-code-distil"
-                                    class="text-[10px] font-bold py-3 text-cyan-400 border-b-2 border-cyan-400 transition-all uppercase tracking-wider">distilbert.py</button>
-                                <button onclick="app.toggleCode('roberta')" id="btn-code-roberta"
-                                    class="text-[10px] font-bold py-3 text-white/30 hover:text-white/60 border-b-2 border-transparent transition-all uppercase tracking-wider">roberta.py</button>
-                            </div>
-                            <div class="code-viewport" id="code-display">
-                                <!-- Code injected via JS -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-span-12 lg:col-span-5 flex flex-col gap-6">
-                        <div class="card-standard" id="model-insight-card">
-                            <h4 class="text-sm font-bold text-slate-800 mb-2 flex items-center gap-2">
-                                <i class="ph ph-memory text-slate-400"></i> Memory Asymmetry
-                            </h4>
-                            <p class="text-sm text-slate-600 leading-relaxed" id="model-insight-text">
-                                <!-- Text via JS -->
-                            </p>
-                        </div>
-
-                        <div class="card-standard">
-                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Spatial
-                                Optimization</h4>
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="bg-slate-50 border border-slate-200 p-2 rounded-lg">
-                                    <span class="text-sm font-mono-data font-bold text-slate-700">max_length=256</span>
+                <div class="grid grid-cols-12 gap-6 mb-6 lg:h-[352px]">
+                    <div class="col-span-12 lg:col-span-7 h-full">
+                        <div class="ide-container shadow-sm h-full flex flex-col">
+                            <div
+                                class="flex bg-[#1E293B] border-b border-white/5 px-4 py-1 gap-6 justify-between items-center">
+                                <div class="flex gap-6">
+                                    <button onclick="app.toggleCode('distil')" id="btn-code-distil"
+                                        class="text-[10px] font-bold py-3 text-cyan-400 border-b-2 border-cyan-400 transition-all uppercase tracking-wider">DistilBERT</button>
+                                    <button onclick="app.toggleCode('roberta')" id="btn-code-roberta"
+                                        class="text-[10px] font-bold py-3 text-orange-400 border-b-2 border-orange-400 transition-all uppercase tracking-wider">RoBERTa</button>
+                                </div>
+                                <div class="flex bg-slate-800 rounded p-1">
+                                    <button onclick="app.toggleView('metrics')" id="btn-view-metrics"
+                                        class="text-[10px] font-bold px-3 py-1 rounded bg-slate-700 text-white transition-all">Metrics</button>
+                                    <button onclick="app.toggleView('code')" id="btn-view-code"
+                                        class="text-[10px] font-bold px-3 py-1 rounded text-slate-400 hover:text-white transition-all">Code</button>
                                 </div>
                             </div>
-                            <p class="text-xs text-slate-500 leading-relaxed">
-                                Truncating from 512 to 256 speeds up training significantly due to quadratic attention
-                                reduction, safely retaining context for ~95%+ of reviews.
-                            </p>
+                            <div class="code-viewport hidden" id="code-display">
+                                <!-- Code injected via JS -->
+                            </div>
+                            <div class="code-viewport flex relative items-center justify-center" id="metrics-display">
+                                <canvas id="modelMetricsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-span-12 lg:col-span-5 h-full relative">
+                        <!-- Default Emotion Engine View -->
+                        <div id="arch-cards" class="hidden flex-col gap-6 h-full">
+                            <div class="card-standard flex-1 flex flex-col justify-center" id="model-insight-card">
+                                <h4 class="text-sm font-bold text-slate-800 mb-2 flex items-center gap-2">
+                                    <i class="ph ph-memory text-slate-400"></i> Memory Asymmetry
+                                </h4>
+                                <p class="text-sm text-slate-600 leading-relaxed" id="model-insight-text">
+                                    <!-- Text via JS -->
+                                </p>
+                            </div>
+
+                            <div class="card-standard flex-1 flex flex-col justify-center">
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Spatial
+                                    Optimization</h4>
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="bg-slate-50 border border-slate-200 p-2 rounded-lg">
+                                        <span
+                                            class="text-sm font-mono-data font-bold text-slate-700">max_length=256</span>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-slate-500 leading-relaxed">
+                                    Truncating from 512 to 256 speeds up training significantly due to quadratic
+                                    attention
+                                    reduction, safely retaining context for ~95%+ of reviews.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Metrics View -->
+                        <div id="metrics-cards" class="flex flex-col gap-6 h-full">
+                            <div class="card-standard flex-1 flex flex-col justify-center" id="card-metrics-distil">
+                                <h4 class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+                                    <i class="ph-fill ph-circle text-[10px] text-cyan-500"></i> DistilBERT
+                                    <span
+                                        class="bg-emerald-50 text-emerald-600 border border-emerald-200 text-[9px] font-bold px-1.5 py-0.5 rounded tracking-widest ml-auto">CHAMPION</span>
+                                </h4>
+                                <div class="grid grid-cols-4 gap-2 pt-3 border-t border-slate-100">
+                                    <div class="flex flex-col"><span
+                                            class="text-[9px] uppercase text-slate-400 font-bold mb-1 tracking-widest truncate">Accuracy</span><span
+                                            class="font-mono-data font-bold text-cyan-600 text-lg">77.3%</span></div>
+                                    <div class="flex flex-col"><span
+                                            class="text-[9px] uppercase text-slate-400 font-bold mb-1 tracking-widest truncate">F1
+                                            Pos</span><span
+                                            class="font-mono-data font-bold text-slate-700 text-lg">87.7%</span></div>
+                                    <div class="flex flex-col"><span
+                                            class="text-[9px] uppercase text-slate-400 font-bold mb-1 tracking-widest truncate">F1
+                                            Neu</span><span
+                                            class="font-mono-data font-bold text-slate-700 text-lg">67.1%</span></div>
+                                    <div class="flex flex-col"><span
+                                            class="text-[9px] uppercase text-slate-400 font-bold mb-1 tracking-widest truncate">F1
+                                            Neg</span><span
+                                            class="font-mono-data font-bold text-slate-700 text-lg">76.7%</span></div>
+                                </div>
+                            </div>
+
+                            <div class="card-standard flex-1 flex flex-col justify-center" id="card-metrics-roberta">
+                                <h4 class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+                                    <i class="ph-fill ph-circle text-[10px] text-orange-500"></i> RoBERTa
+                                    <span
+                                        class="bg-slate-100 text-slate-500 border border-slate-200 text-[9px] font-bold px-1.5 py-0.5 rounded tracking-widest ml-auto">RUNNER-UP</span>
+                                </h4>
+                                <div class="grid grid-cols-4 gap-2 pt-3 border-t border-slate-100">
+                                    <div class="flex flex-col"><span
+                                            class="text-[9px] uppercase text-slate-400 font-bold mb-1 tracking-widest truncate">Accuracy</span><span
+                                            class="font-mono-data font-bold text-orange-600 text-lg">69.1%</span></div>
+                                    <div class="flex flex-col"><span
+                                            class="text-[9px] uppercase text-slate-400 font-bold mb-1 tracking-widest truncate">F1
+                                            Pos</span><span
+                                            class="font-mono-data font-bold text-slate-700 text-lg">79.5%</span></div>
+                                    <div class="flex flex-col"><span
+                                            class="text-[9px] uppercase text-slate-400 font-bold mb-1 tracking-widest truncate">F1
+                                            Neu</span><span
+                                            class="font-mono-data font-bold text-slate-700 text-lg">58.7%</span></div>
+                                    <div class="flex flex-col"><span
+                                            class="text-[9px] uppercase text-slate-400 font-bold mb-1 tracking-widest truncate">F1
+                                            Neg</span><span
+                                            class="font-mono-data font-bold text-slate-700 text-lg">69.3%</span></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-200">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 border-t border-slate-200">
                     <div class="card-standard">
                         <div class="flex justify-between items-start mb-4">
                             <div>
                                 <h3 class="font-bold text-slate-800">DistilBERT</h3>
-                                <p class="text-xs text-slate-400 uppercase font-bold tracking-widest mt-1">Sanh et al.,
-                                    2019</p>
+                                <p class="text-[10px] uppercase font-medium tracking-widest mt-1">
+                                    <a href="https://arxiv.org/pdf/1910.01108" target="_blank" title="Ver PDF Original"
+                                        class="flex items-center gap-1.5 w-fit text-cyan-600 border-b border-dotted border-cyan-600/50 hover:border-cyan-500 hover:text-cyan-500 transition-all pb-[1px]">
+                                        PAPER: Sanh et al., 2019 <i class="ph-duotone ph-file-pdf text-[14px] ml-0.5"></i><i class="ph ph-arrow-square-out text-[10px] ml-0.5"></i>
+                                    </a>
+                                </p>
                             </div>
                             <span
-                                class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-1 rounded">BASELINE</span>
+                                class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-1 rounded">BASELINE
+                                & CHAMPION</span>
                         </div>
                         <ul class="space-y-4">
                             <li class="flex gap-3">
-                                <i class="ph ph-cpu text-lg text-slate-400"></i>
-                                <div>
-                                    <p class="text-xs font-bold text-slate-700">Pure Efficiency</p>
-                                    <p class="text-xs text-slate-500">66M parameters. Knowledge distillation.
-                                        Prioritizes isolated polar tokens (e.g., "bad", "perfect").</p>
+                                <i class="ph ph-trophy text-lg text-emerald-500 mt-0.5"></i>
+                                <div class="w-full">
+                                    <p class="text-xs font-bold text-slate-700">Winner — Highest Accuracy (77.3%)</p>
+                                    <p class="text-xs text-slate-500 mb-3">Outperformed RoBERTa across all metrics,
+                                        proving highly effective despite its smaller footprint.</p>
+                                    <div class="pt-3 border-t border-slate-100 mt-3">
+                                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
+                                            Key Parameters</p>
+                                        <div
+                                            class="grid grid-cols-2 gap-y-2 gap-x-4 text-[10px] font-mono-data text-slate-600">
+                                            <div class="flex justify-between border-b border-slate-100 pb-1">
+                                                <span>Parameters:</span><span
+                                                    class="font-bold text-slate-800">66M</span></div>
+                                            <div class="flex justify-between border-b border-slate-100 pb-1"><span>Learn
+                                                    Rate:</span><span class="font-bold text-slate-800">2e-5</span></div>
+                                            <div class="flex justify-between border-b border-slate-100 pb-1"><span>Batch
+                                                    Size:</span><span class="font-bold text-slate-800">32</span></div>
+                                            <div class="flex justify-between border-b border-slate-100 pb-1">
+                                                <span>Tokenizer:</span><span
+                                                    class="font-bold text-slate-800">WordPiece</span></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                         </ul>
@@ -634,19 +793,40 @@ response = requests.get(url, stream=<span class="syn-pink">True</span>, timeout=
                         <div class="flex justify-between items-start mb-4">
                             <div>
                                 <h3 class="font-bold text-slate-800">RoBERTa</h3>
-                                <p class="text-xs text-slate-400 uppercase font-bold tracking-widest mt-1">Liu et al.,
-                                    2019</p>
+                                <p class="text-[10px] uppercase font-medium tracking-widest mt-1">
+                                    <a href="https://arxiv.org/pdf/1907.11692" target="_blank" title="Ver PDF Original"
+                                        class="flex items-center gap-1.5 w-fit text-cyan-600 border-b border-dotted border-cyan-600/50 hover:border-cyan-500 hover:text-cyan-500 transition-all pb-[1px]">
+                                        PAPER: Liu et al., 2019 <i class="ph-duotone ph-file-pdf text-[14px] ml-0.5"></i><i class="ph ph-arrow-square-out text-[10px] ml-0.5"></i>
+                                    </a>
+                                </p>
                             </div>
-                            <span
-                                class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-1 rounded">CHAMPION</span>
+                            <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-1 rounded">RUNNER
+                                UP</span>
                         </div>
                         <ul class="space-y-4">
                             <li class="flex gap-3">
-                                <i class="ph ph-check-circle text-lg text-slate-400"></i>
-                                <div>
-                                    <p class="text-xs font-bold text-slate-700">Contextual Resolution</p>
-                                    <p class="text-xs text-slate-500">Successfully disambiguates the neutral class and
-                                        resolves irony by correlating distant syntax over 125M params.</p>
+                                <i class="ph ph-warning-circle text-lg text-slate-400 mt-0.5"></i>
+                                <div class="w-full">
+                                    <p class="text-xs font-bold text-slate-700">Suboptimal Generalization (69.1%)</p>
+                                    <p class="text-xs text-slate-500 mb-3">Stagnated 8 points below DistilBERT. The
+                                        learning rate bottleneck prevented it from resolving nuances.</p>
+                                    <div class="pt-3 border-t border-slate-100 mt-3">
+                                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
+                                            Differential Parameters</p>
+                                        <div
+                                            class="grid grid-cols-2 gap-y-2 gap-x-4 text-[10px] font-mono-data text-slate-600">
+                                            <div class="flex justify-between border-b border-slate-100 pb-1">
+                                                <span>Parameters:</span><span
+                                                    class="font-bold text-slate-800">125M</span></div>
+                                            <div class="flex justify-between border-b border-slate-100 pb-1"><span>Learn
+                                                    Rate:</span><span class="font-bold text-red-600">1e-5</span></div>
+                                            <div class="flex justify-between border-b border-slate-100 pb-1"><span>Batch
+                                                    Size:</span><span class="font-bold text-orange-600">16</span></div>
+                                            <div class="flex justify-between border-b border-slate-100 pb-1">
+                                                <span>Tokenizer:</span><span class="font-bold text-slate-800">BPE</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                         </ul>
@@ -795,7 +975,7 @@ response = requests.get(url, stream=<span class="syn-pink">True</span>, timeout=
                         <ul class="text-xs text-slate-500 space-y-3 mt-4 border-t border-slate-100 pt-4">
                             <li class="flex items-start gap-2"><i
                                     class="ph ph-circle text-slate-300 text-base"></i><span>Containerization of the
-                                    RoBERTa (Champion) model.</span></li>
+                                    DistilBERT (Champion) model.</span></li>
                             <li class="flex items-start gap-2"><i
                                     class="ph ph-circle text-slate-300 text-base"></i><span>API endpoints creation
                                     (Gradio or FastAPI backend).</span></li>
@@ -828,8 +1008,8 @@ response = requests.get(url, stream=<span class="syn-pink">True</span>, timeout=
                         <div class="flex items-center gap-4">
                             <select id="play-model"
                                 class="flex-1 text-sm border border-slate-200 rounded-lg p-3 text-slate-600 bg-white outline-none cursor-pointer hover:border-slate-300">
-                                <option value="distilbert">DistilBERT (Baseline)</option>
-                                <option value="roberta">RoBERTa (Champion)</option>
+                                <option value="distilbert">DistilBERT (Champion)</option>
+                                <option value="roberta">RoBERTa (Runner Up)</option>
                             </select>
                             <button onclick="app.runInference()" id="play-btn"
                                 class="btn-cta px-8 py-3 rounded-lg text-sm flex justify-center items-center gap-2">
@@ -889,46 +1069,64 @@ response = requests.get(url, stream=<span class="syn-pink">True</span>, timeout=
                         <i class="ph ph-scales text-2xl text-cyan-600"></i>
                         <h3 class="text-lg font-bold text-slate-800 tracking-tight">Architectural Trade-offs Matrix</h3>
                     </div>
-                    
+
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-slate-200">
-                                    <th class="py-3 px-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Decision</th>
-                                    <th class="py-3 px-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Discarded Alternative</th>
-                                    <th class="py-3 px-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Rationale (N01 EDA)</th>
+                                    <th class="py-3 px-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                                        Decision</th>
+                                    <th class="py-3 px-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                                        Discarded Alternative</th>
+                                    <th class="py-3 px-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                                        Rationale (N01 EDA)</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm">
                                 <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                                     <td class="py-3 px-4 font-semibold text-slate-800">Stream gzip from UCSD</td>
-                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">HF datasets streaming</td>
-                                    <td class="py-3 px-4 text-slate-600">Avoided unstable Hugging Face API errors and duplicate caching on local disk.</td>
+                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">HF datasets
+                                        streaming</td>
+                                    <td class="py-3 px-4 text-slate-600">Avoided unstable Hugging Face API errors and
+                                        duplicate caching on local disk.</td>
                                 </tr>
                                 <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                                     <td class="py-3 px-4 font-semibold text-slate-800">Merge all 33 categories</td>
-                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">1-2 specific categories</td>
-                                    <td class="py-3 px-4 text-slate-600">Maximizes lexical diversity to prevent the model from merely memorizing category-specific nouns.</td>
+                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">1-2 specific
+                                        categories</td>
+                                    <td class="py-3 px-4 text-slate-600">Maximizes lexical diversity to prevent the
+                                        model from merely memorizing category-specific nouns.</td>
                                 </tr>
                                 <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                                     <td class="py-3 px-4 font-semibold text-slate-800">Uncapped Undersampling</td>
-                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">SMOTE / Class weights</td>
-                                    <td class="py-3 px-4 text-slate-600">Maintains data transparency with 100% real human text. No synthetic artifacts introduced.</td>
+                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">SMOTE / Class
+                                        weights</td>
+                                    <td class="py-3 px-4 text-slate-600">Maintains data transparency with 100% real
+                                        human text. No synthetic artifacts introduced.</td>
                                 </tr>
                                 <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                                    <td class="py-3 px-4 font-semibold text-slate-800">Noise Filter <code>len &lt; 10</code></td>
-                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">No filter / len &lt; 20</td>
-                                    <td class="py-3 px-4 text-slate-600">Optimal tradeoff to remove 8.4% of duplicate wildcards (e.g. "Great") without losing valid short complaints.</td>
+                                    <td class="py-3 px-4 font-semibold text-slate-800">Noise Filter
+                                        <code>len &lt; 10</code></td>
+                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">No filter / len
+                                        &lt; 20</td>
+                                    <td class="py-3 px-4 text-slate-600">Optimal tradeoff to remove 8.4% of duplicate
+                                        wildcards (e.g. "Great") without losing valid short complaints.</td>
                                 </tr>
                                 <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                                     <td class="py-3 px-4 font-semibold text-slate-800">Apache Arrow format</td>
-                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">CSV / Parquet</td>
-                                    <td class="py-3 px-4 text-slate-600">Provides zero-copy memory mapping, enabling native ultra-fast streaming in HF Trainer.</td>
+                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">CSV / Parquet
+                                    </td>
+                                    <td class="py-3 px-4 text-slate-600">Provides zero-copy memory mapping, enabling
+                                        native ultra-fast streaming in HF Trainer.</td>
                                 </tr>
                                 <tr class="hover:bg-slate-50 transition-colors">
-                                    <td class="py-3 px-4 font-semibold text-slate-800">Tokenizer <code>max_length=128</code></td>
-                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">max_length=512</td>
-                                    <td class="py-3 px-4 text-slate-600">EDA proved 98.5% of reviews fit within 128 tokens, yielding a 4&times; training speedup with negligible signal loss.</td>
+                                    <td class="py-3 px-4 font-semibold text-slate-800">Tokenizer
+                                        <code>max_length=256</code></td>
+                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">max_length=512
+                                    </td>
+                                    <td class="py-3 px-4 text-slate-600">Truncating to 256 tokens captures ~98%+ of
+                                        reviews while reducing quadratic attention time, yielding a massive training
+                                        speedup.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -954,7 +1152,7 @@ response = requests.get(url, stream=<span class="syn-pink">True</span>, timeout=
             codeSnippets: {
                 distil: `<span class="syn-pink">from</span> transformers <span class="syn-pink">import</span> TrainingArguments
 
-<span class="syn-grey"># Baseline Model (~66M parameters)</span>
+<span class="syn-grey"># Champion Model (~66M parameters)</span>
 model_name = <span class="syn-cyan">"distilbert-base-uncased"</span>
 
 <span class="syn-grey"># Training on 149,761 balanced samples</span>
@@ -968,7 +1166,7 @@ training_args = TrainingArguments(
 <span class="syn-grey"># Tokenizer max_length=256 (WordPiece)</span>`,
                 roberta: `<span class="syn-pink">from</span> transformers <span class="syn-pink">import</span> TrainingArguments
 
-<span class="syn-grey"># Champion Model (~125M parameters)</span>
+<span class="syn-grey"># Runner Up Model (~125M parameters)</span>
 model_name = <span class="syn-cyan">"roberta-base"</span>
 
 <span class="syn-grey"># Training on 149,761 balanced samples</span>
@@ -1006,34 +1204,216 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                 nav.classList.add('active');
                 nav.setAttribute('aria-current', 'page');
 
-                // Lazy-init cluster chart when its tab becomes visible for the first time
+                // Lazy-init charts when their tab becomes visible
                 if (id === 'tab-clusters') {
                     this.initClusterChart();
+                } else if (id === 'tab-benchmark' && this.currentMode === 'metrics') {
+                    this.initMetricsChart();
                 }
 
                 document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
             },
 
-            toggleCode: function (model) {
+            currentMode: 'metrics',
+            metricsVisibility: { distil: true, roberta: true },
+
+            toggleView: function (view) {
+                this.currentMode = view;
+                const btnCode = document.getElementById('btn-view-code');
+                const btnMetrics = document.getElementById('btn-view-metrics');
+                const codeDisplay = document.getElementById('code-display');
+                const metricsDisplay = document.getElementById('metrics-display');
+                const archCards = document.getElementById('arch-cards');
+                const metricsCards = document.getElementById('metrics-cards');
+                const btnD = document.getElementById('btn-code-distil');
+                const btnR = document.getElementById('btn-code-roberta');
+
+                if (view === 'code') {
+                    btnD.innerText = 'DistilBERT';
+                    btnR.innerText = 'RoBERTa';
+                    btnCode.className = "text-[10px] font-bold px-3 py-1 rounded bg-slate-700 text-white transition-all";
+                    btnMetrics.className = "text-[10px] font-bold px-3 py-1 rounded text-slate-400 hover:text-white transition-all";
+                    codeDisplay.classList.remove('hidden');
+                    metricsDisplay.classList.add('hidden');
+                    metricsDisplay.classList.remove('flex');
+                    archCards.classList.remove('hidden');
+                    archCards.classList.add('flex');
+                    metricsCards.classList.add('hidden');
+                    metricsCards.classList.remove('flex');
+
+                    this.toggleCode(this.lastSelectedCode || 'distil', true);
+                } else {
+                    btnD.innerText = 'DistilBERT';
+                    btnR.innerText = 'RoBERTa';
+                    btnMetrics.className = "text-[10px] font-bold px-3 py-1 rounded bg-slate-700 text-white transition-all";
+                    btnCode.className = "text-[10px] font-bold px-3 py-1 rounded text-slate-400 hover:text-white transition-all";
+                    codeDisplay.classList.add('hidden');
+                    metricsDisplay.classList.remove('hidden');
+                    metricsDisplay.classList.add('flex');
+                    archCards.classList.add('hidden');
+                    archCards.classList.remove('flex');
+                    metricsCards.classList.remove('hidden');
+                    metricsCards.classList.add('flex');
+
+                    this.initMetricsChart();
+                    this.updateMetricsTabStyles();
+                }
+            },
+
+            lastSelectedCode: 'distil',
+            toggleCode: function (model, forceCodeUpdate = false) {
                 const btnD = document.getElementById('btn-code-distil');
                 const btnR = document.getElementById('btn-code-roberta');
                 const display = document.getElementById('code-display');
                 const insightText = document.getElementById('model-insight-text');
 
+                if (this.currentMode === 'metrics' && !forceCodeUpdate) {
+                    this.metricsVisibility[model] = !this.metricsVisibility[model];
+                    this.updateMetricsTabStyles();
+
+                    if (this.metricsChartInstance) {
+                        const datasetIndex = model === 'distil' ? 0 : 1;
+                        this.metricsChartInstance.setDatasetVisibility(datasetIndex, this.metricsVisibility[model]);
+                        this.metricsChartInstance.update();
+                    }
+                    return;
+                }
+
+                this.lastSelectedCode = model;
                 if (model === 'distil') {
                     btnD.className = "text-[10px] font-bold py-3 text-cyan-400 border-b-2 border-cyan-400 transition-all uppercase tracking-wider";
                     btnR.className = "text-[10px] font-bold py-3 text-white/30 hover:text-white/60 border-b-2 border-transparent transition-all uppercase tracking-wider";
                     display.innerHTML = this.codeSnippets.distil;
-                    insightText.innerHTML = `DistilBERT seamlessly processes the standard <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-xs">batch_size=32</code>, achieving fast training but lacking depth for complex ironic reviews.`;
+                    insightText.innerHTML = `DistilBERT seamlessly processes the standard <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-xs">batch_size=32</code> and <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-xs">lr=2e-5</code>, unexpectedly outperforming RoBERTa with 77.3% accuracy.`;
                 } else {
                     btnR.className = "text-[10px] font-bold py-3 text-orange-400 border-b-2 border-orange-400 transition-all uppercase tracking-wider";
                     btnD.className = "text-[10px] font-bold py-3 text-white/30 hover:text-white/60 border-b-2 border-transparent transition-all uppercase tracking-wider";
                     display.innerHTML = this.codeSnippets.roberta;
-                    insightText.innerHTML = `RoBERTa's ~125M parameters quickly saturate the GPU VRAM. We mitigate this by reducing to <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-xs">batch_size=16</code> and lowering the learning rate to <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-xs">1e-5</code>.`;
+                    insightText.innerHTML = `RoBERTa's ~125M parameters quickly saturate the GPU VRAM. We mitigated this by reducing to <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-xs">batch_size=16</code> and <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-xs">lr=1e-5</code>, but it stagnated at 69.1% accuracy.`;
+                }
+            },
+
+            updateMetricsTabStyles: function () {
+                const btnD = document.getElementById('btn-code-distil');
+                const btnR = document.getElementById('btn-code-roberta');
+
+                if (this.metricsVisibility.distil) {
+                    btnD.className = "text-[10px] font-bold py-3 text-cyan-400 border-b-2 border-cyan-400 transition-all uppercase tracking-wider";
+                } else {
+                    btnD.className = "text-[10px] font-bold py-3 text-white/30 hover:text-white/60 border-b-2 border-transparent transition-all uppercase tracking-wider opacity-40";
+                }
+
+                if (this.metricsVisibility.roberta) {
+                    btnR.className = "text-[10px] font-bold py-3 text-orange-400 border-b-2 border-orange-400 transition-all uppercase tracking-wider";
+                } else {
+                    btnR.className = "text-[10px] font-bold py-3 text-white/30 hover:text-white/60 border-b-2 border-transparent transition-all uppercase tracking-wider opacity-40";
+                }
+
+                const cardDistil = document.getElementById('card-metrics-distil');
+                const cardRoberta = document.getElementById('card-metrics-roberta');
+                if (cardDistil) {
+                    if (this.metricsVisibility.distil) { cardDistil.classList.remove('hidden'); cardDistil.classList.add('flex'); }
+                    else { cardDistil.classList.add('hidden'); cardDistil.classList.remove('flex'); }
+                }
+                if (cardRoberta) {
+                    if (this.metricsVisibility.roberta) { cardRoberta.classList.remove('hidden'); cardRoberta.classList.add('flex'); }
+                    else { cardRoberta.classList.add('hidden'); cardRoberta.classList.remove('flex'); }
                 }
             },
 
             charts: {},
+
+            metricsChartInstance: null,
+            initMetricsChart: function () {
+                if (this.metricsChartInstance) return;
+
+                const ctx = document.getElementById('modelMetricsChart').getContext('2d');
+
+                const colorDistilFill = 'rgba(8, 145, 178, 0.4)';
+                const colorDistilStroke = '#06b6d4';
+
+                const colorRobertaFill = 'rgba(234, 88, 12, 0.4)';
+                const colorRobertaStroke = '#f97316';
+
+                this.metricsChartInstance = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Accuracy', 'Precision (W)', 'Recall (W)', 'F1 Positive', 'F1 Neutral', 'F1 Negative'],
+                        datasets: [
+                            {
+                                label: 'DistilBERT',
+                                data: [0.773, 0.771, 0.773, 0.877, 0.671, 0.767],
+                                backgroundColor: colorDistilFill,
+                                borderColor: colorDistilStroke,
+                                borderDash: [6, 6],
+                                pointBackgroundColor: colorDistilStroke,
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: colorDistilStroke,
+                                borderWidth: 2,
+                                pointRadius: 2,
+                                pointHoverRadius: 4,
+                                pointBorderWidth: 1,
+                                tension: 0,
+                            },
+                            {
+                                label: 'RoBERTa',
+                                data: [0.693, 0.691, 0.693, 0.795, 0.587, 0.693],
+                                backgroundColor: colorRobertaFill,
+                                borderColor: colorRobertaStroke,
+                                borderDash: [6, 6],
+                                pointBackgroundColor: colorRobertaStroke,
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: colorRobertaStroke,
+                                borderWidth: 2,
+                                pointRadius: 2,
+                                pointHoverRadius: 4,
+                                pointBorderWidth: 1,
+                                tension: 0,
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            duration: 1500,
+                            easing: 'easeOutElastic',
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                                titleColor: '#F8FAFC',
+                                bodyColor: '#CBD5E1',
+                                padding: 10,
+                                cornerRadius: 4,
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.dataset.label + ': ' + (context.raw * 100).toFixed(1) + '%';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            r: {
+                                min: 0.4,
+                                max: 1.0,
+                                angleLines: { color: 'rgba(255, 255, 255, 0.1)', borderDash: [4, 4] },
+                                grid: { color: 'rgba(255, 255, 255, 0.15)', borderDash: [4, 4] },
+                                pointLabels: {
+                                    color: '#94A3B8',
+                                    font: { size: 10, family: "'Inter', sans-serif", weight: 'bold' }
+                                },
+                                ticks: { display: false, stepSize: 0.1 }
+                            }
+                        }
+                    }
+                });
+            },
 
             initCharts: function () {
                 Chart.defaults.font.family = "'Inter', sans-serif";
@@ -1078,14 +1458,14 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                         },
                         plugins: {
                             legend: { display: false },
-                            tooltip: { 
-                                ...commonTooltip, 
-                                callbacks: { 
+                            tooltip: {
+                                ...commonTooltip,
+                                callbacks: {
                                     label: c => {
                                         const rawCounts = [63617, 40016, 73200, 143472, 655474];
-                                        return ` ${rawCounts[c.dataIndex].toLocaleString()} reviews`; 
+                                        return ` ${rawCounts[c.dataIndex].toLocaleString()} reviews`;
                                     }
-                                } 
+                                }
                             }
                         }
                     },
@@ -1221,17 +1601,17 @@ REASONING    = <span class="syn-cyan">"high"</span>`
             },
 
             slideIndices: { 'eda-insights': 0 },
-            setCardSlide: function(sliderId, index) {
+            setCardSlide: function (sliderId, index) {
                 const container = document.getElementById(sliderId + '-container');
                 if (!container) return;
                 const slides = container.querySelectorAll('.card-slide');
                 const dots = document.querySelectorAll('.slide-dot-' + sliderId);
-                
+
                 if (index >= slides.length) index = 0;
                 if (index < 0) index = slides.length - 1;
-                
+
                 this.slideIndices[sliderId] = index;
-                
+
                 slides.forEach((slide, i) => {
                     if (i === index) {
                         slide.classList.remove('hidden');
@@ -1241,7 +1621,7 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                         slide.classList.add('hidden');
                     }
                 });
-                
+
                 dots.forEach((dot, i) => {
                     if (i === index) {
                         dot.classList.remove('bg-slate-200');
@@ -1252,10 +1632,10 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                     }
                 });
             },
-            nextCardSlide: function(sliderId) {
+            nextCardSlide: function (sliderId) {
                 this.setCardSlide(sliderId, (this.slideIndices[sliderId] || 0) + 1);
             },
-            prevCardSlide: function(sliderId) {
+            prevCardSlide: function (sliderId) {
                 this.setCardSlide(sliderId, (this.slideIndices[sliderId] || 0) - 1);
             },
 
@@ -1268,7 +1648,7 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                 const chart = this.charts.eda;
                 const btnStar = document.getElementById('eda-tab-star');
                 const btnCat = document.getElementById('eda-tab-cat');
-                
+
                 const lineNeg = document.getElementById('eda-line-neg');
                 const lineNeu = document.getElementById('eda-line-neu');
                 const linePos = document.getElementById('eda-line-pos');
@@ -1348,7 +1728,6 @@ REASONING    = <span class="syn-cyan">"high"</span>`
 
         document.addEventListener('DOMContentLoaded', () => {
             app.initCharts();
-            app.toggleCode('distil');
         });
     </script>
 </body>
