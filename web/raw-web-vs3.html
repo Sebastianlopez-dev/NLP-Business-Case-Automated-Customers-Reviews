@@ -650,6 +650,8 @@
                                         class="text-[10px] font-bold px-3 py-1 rounded bg-slate-700 text-white transition-all">Metrics</button>
                                     <button onclick="app.toggleView('code')" id="btn-view-code"
                                         class="text-[10px] font-bold px-3 py-1 rounded text-slate-400 hover:text-white transition-all">Code</button>
+                                    <button onclick="app.toggleView('evolution')" id="btn-view-evolution"
+                                        class="text-[10px] font-bold px-3 py-1 rounded text-slate-400 hover:text-white transition-all">Evolution</button>
                                 </div>
                             </div>
                             <div class="code-viewport hidden" id="code-display">
@@ -657,6 +659,9 @@
                             </div>
                             <div class="code-viewport flex relative items-center justify-center" id="metrics-display">
                                 <canvas id="modelMetricsChart"></canvas>
+                            </div>
+                            <div class="code-viewport hidden relative items-center justify-center p-4" id="evolution-display">
+                                <canvas id="modelEvolutionChart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -739,6 +744,35 @@
                                             class="text-[9px] uppercase text-slate-400 font-bold mb-1 tracking-widest truncate">F1
                                             Neg</span><span
                                             class="font-mono-data font-bold text-slate-700 text-lg">69.3%</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Evolution View -->
+                        <div id="evolution-cards" class="hidden flex-col gap-6 h-full">
+                            <div class="card-standard flex-1 flex flex-col justify-center" id="card-evolution-distil">
+                                <h4 class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+                                    <i class="ph-fill ph-circle text-[10px] text-cyan-500"></i> DistilBERT
+                                </h4>
+                                <p class="text-xs text-slate-500 leading-relaxed mb-3">
+                                    The graph visualizes the <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-xs">train_loss</code> measured every 50 steps. DistilBERT exhibits a smoother descent, indicating stable convergence.
+                                </p>
+                                <div class="bg-slate-50 border border-slate-200 p-2 rounded-lg text-center w-1/2">
+                                    <span class="text-[10px] text-slate-400 block uppercase tracking-widest font-bold mb-1">Learning Rate</span>
+                                    <span class="text-sm font-mono-data font-bold text-slate-700">2e-5</span>
+                                </div>
+                            </div>
+
+                            <div class="card-standard flex-1 flex flex-col justify-center" id="card-evolution-roberta">
+                                <h4 class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+                                    <i class="ph-fill ph-circle text-[10px] text-orange-500"></i> RoBERTa
+                                </h4>
+                                <p class="text-xs text-slate-500 leading-relaxed mb-3">
+                                    Visibly struggling to converge compared to the champion. A lower learning rate and smaller batch size were required to prevent GPU OOM limits on a 16GB T4.
+                                </p>
+                                <div class="bg-slate-50 border border-slate-200 p-2 rounded-lg text-center w-1/2">
+                                    <span class="text-[10px] text-slate-400 block uppercase tracking-widest font-bold mb-1">Learning Rate</span>
+                                    <span class="text-sm font-mono-data font-bold text-slate-700">1e-5</span>
                                 </div>
                             </div>
                         </div>
@@ -1137,6 +1171,7 @@
         </div>
     </main>
 
+    <script src="train_history.js"></script>
     <script>
         const app = {
             colors: {
@@ -1207,8 +1242,9 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                 // Lazy-init charts when their tab becomes visible
                 if (id === 'tab-clusters') {
                     this.initClusterChart();
-                } else if (id === 'tab-benchmark' && this.currentMode === 'metrics') {
-                    this.initMetricsChart();
+                } else if (id === 'tab-benchmark') {
+                    if (this.currentMode === 'metrics') this.initMetricsChart();
+                    if (this.currentMode === 'evolution') this.initEvolutionChart();
                 }
 
                 document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
@@ -1221,41 +1257,60 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                 this.currentMode = view;
                 const btnCode = document.getElementById('btn-view-code');
                 const btnMetrics = document.getElementById('btn-view-metrics');
+                const btnEvolution = document.getElementById('btn-view-evolution');
                 const codeDisplay = document.getElementById('code-display');
                 const metricsDisplay = document.getElementById('metrics-display');
+                const evolutionDisplay = document.getElementById('evolution-display');
                 const archCards = document.getElementById('arch-cards');
                 const metricsCards = document.getElementById('metrics-cards');
+                const evolutionCards = document.getElementById('evolution-cards');
                 const btnD = document.getElementById('btn-code-distil');
                 const btnR = document.getElementById('btn-code-roberta');
 
+                const inactiveBtn = "text-[10px] font-bold px-3 py-1 rounded text-slate-400 hover:text-white transition-all";
+                const activeBtn = "text-[10px] font-bold px-3 py-1 rounded bg-slate-700 text-white transition-all";
+
+                btnCode.className = inactiveBtn;
+                btnMetrics.className = inactiveBtn;
+                btnEvolution.className = inactiveBtn;
+
+                codeDisplay.classList.add('hidden');
+                metricsDisplay.classList.add('hidden');
+                metricsDisplay.classList.remove('flex');
+                evolutionDisplay.classList.add('hidden');
+                evolutionDisplay.classList.remove('flex');
+
+                archCards.classList.add('hidden');
+                archCards.classList.remove('flex');
+                metricsCards.classList.add('hidden');
+                metricsCards.classList.remove('flex');
+                evolutionCards.classList.add('hidden');
+                evolutionCards.classList.remove('flex');
+
+                btnD.innerText = 'DistilBERT';
+                btnR.innerText = 'RoBERTa';
+
                 if (view === 'code') {
-                    btnD.innerText = 'DistilBERT';
-                    btnR.innerText = 'RoBERTa';
-                    btnCode.className = "text-[10px] font-bold px-3 py-1 rounded bg-slate-700 text-white transition-all";
-                    btnMetrics.className = "text-[10px] font-bold px-3 py-1 rounded text-slate-400 hover:text-white transition-all";
+                    btnCode.className = activeBtn;
                     codeDisplay.classList.remove('hidden');
-                    metricsDisplay.classList.add('hidden');
-                    metricsDisplay.classList.remove('flex');
                     archCards.classList.remove('hidden');
                     archCards.classList.add('flex');
-                    metricsCards.classList.add('hidden');
-                    metricsCards.classList.remove('flex');
-
                     this.toggleCode(this.lastSelectedCode || 'distil', true);
-                } else {
-                    btnD.innerText = 'DistilBERT';
-                    btnR.innerText = 'RoBERTa';
-                    btnMetrics.className = "text-[10px] font-bold px-3 py-1 rounded bg-slate-700 text-white transition-all";
-                    btnCode.className = "text-[10px] font-bold px-3 py-1 rounded text-slate-400 hover:text-white transition-all";
-                    codeDisplay.classList.add('hidden');
+                } else if (view === 'metrics') {
+                    btnMetrics.className = activeBtn;
                     metricsDisplay.classList.remove('hidden');
                     metricsDisplay.classList.add('flex');
-                    archCards.classList.add('hidden');
-                    archCards.classList.remove('flex');
                     metricsCards.classList.remove('hidden');
                     metricsCards.classList.add('flex');
-
                     this.initMetricsChart();
+                    this.updateMetricsTabStyles();
+                } else if (view === 'evolution') {
+                    btnEvolution.className = activeBtn;
+                    evolutionDisplay.classList.remove('hidden');
+                    evolutionDisplay.classList.add('flex');
+                    evolutionCards.classList.remove('hidden');
+                    evolutionCards.classList.add('flex');
+                    this.initEvolutionChart();
                     this.updateMetricsTabStyles();
                 }
             },
@@ -1267,14 +1322,19 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                 const display = document.getElementById('code-display');
                 const insightText = document.getElementById('model-insight-text');
 
-                if (this.currentMode === 'metrics' && !forceCodeUpdate) {
+                if ((this.currentMode === 'metrics' || this.currentMode === 'evolution') && !forceCodeUpdate) {
                     this.metricsVisibility[model] = !this.metricsVisibility[model];
                     this.updateMetricsTabStyles();
 
-                    if (this.metricsChartInstance) {
+                    if (this.currentMode === 'metrics' && this.metricsChartInstance) {
                         const datasetIndex = model === 'distil' ? 0 : 1;
                         this.metricsChartInstance.setDatasetVisibility(datasetIndex, this.metricsVisibility[model]);
                         this.metricsChartInstance.update();
+                    }
+                    if (this.currentMode === 'evolution' && this.evolutionChartInstance) {
+                        const datasetIndex = model === 'distil' ? 0 : 1;
+                        this.evolutionChartInstance.setDatasetVisibility(datasetIndex, this.metricsVisibility[model]);
+                        this.evolutionChartInstance.update();
                     }
                     return;
                 }
@@ -1311,6 +1371,9 @@ REASONING    = <span class="syn-cyan">"high"</span>`
 
                 const cardDistil = document.getElementById('card-metrics-distil');
                 const cardRoberta = document.getElementById('card-metrics-roberta');
+                const evoDistil = document.getElementById('card-evolution-distil');
+                const evoRoberta = document.getElementById('card-evolution-roberta');
+
                 if (cardDistil) {
                     if (this.metricsVisibility.distil) { cardDistil.classList.remove('hidden'); cardDistil.classList.add('flex'); }
                     else { cardDistil.classList.add('hidden'); cardDistil.classList.remove('flex'); }
@@ -1318,6 +1381,15 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                 if (cardRoberta) {
                     if (this.metricsVisibility.roberta) { cardRoberta.classList.remove('hidden'); cardRoberta.classList.add('flex'); }
                     else { cardRoberta.classList.add('hidden'); cardRoberta.classList.remove('flex'); }
+                }
+                
+                if (evoDistil) {
+                    if (this.metricsVisibility.distil) { evoDistil.classList.remove('hidden'); evoDistil.classList.add('flex'); }
+                    else { evoDistil.classList.add('hidden'); evoDistil.classList.remove('flex'); }
+                }
+                if (evoRoberta) {
+                    if (this.metricsVisibility.roberta) { evoRoberta.classList.remove('hidden'); evoRoberta.classList.add('flex'); }
+                    else { evoRoberta.classList.add('hidden'); evoRoberta.classList.remove('flex'); }
                 }
             },
 
@@ -1412,6 +1484,125 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                             }
                         }
                     }
+                });
+            },
+
+            evolutionChartInstance: null,
+            initEvolutionChart: function () {
+                if (this.evolutionChartInstance) return;
+
+                const ctx = document.getElementById('modelEvolutionChart').getContext('2d');
+
+                const dataDistil = typeof trainingHistory !== 'undefined' ? trainingHistory.distil : [];
+                const dataRoberta = typeof trainingHistory !== 'undefined' ? trainingHistory.roberta : [];
+
+                const colorDistilStroke = '#06b6d4';
+                const colorRobertaStroke = '#f97316';
+
+                this.evolutionChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        datasets: [
+                            {
+                                label: 'DistilBERT',
+                                data: dataDistil,
+                                borderColor: colorDistilStroke,
+                                backgroundColor: 'transparent',
+                                borderWidth: 1.5,
+                                pointRadius: 0,
+                                pointHoverRadius: 5,
+                                pointBackgroundColor: colorDistilStroke,
+                                tension: 0.1
+                            },
+                            {
+                                label: 'RoBERTa',
+                                data: dataRoberta,
+                                borderColor: colorRobertaStroke,
+                                backgroundColor: 'transparent',
+                                borderWidth: 1.5,
+                                pointRadius: 0,
+                                pointHoverRadius: 5,
+                                pointBackgroundColor: colorRobertaStroke,
+                                tension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        animation: {
+                            duration: 0
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                                titleColor: '#F8FAFC',
+                                bodyColor: '#CBD5E1',
+                                padding: 10,
+                                cornerRadius: 4,
+                                callbacks: {
+                                    title: function(context) {
+                                        const step = context[0].parsed.x;
+                                        let epInfo = '';
+                                        if (context[0].dataset.label === 'DistilBERT') {
+                                            epInfo = `(~Epoch ${(step / 4680).toFixed(1)})`;
+                                        } else {
+                                            epInfo = `(~Epoch ${(step / 9360).toFixed(1)})`;
+                                        }
+                                        return `Step: ${step.toLocaleString()} ${epInfo}`;
+                                    },
+                                    label: function(context) {
+                                        return context.dataset.label + ' Loss: ' + context.parsed.y.toFixed(4);
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                type: 'linear',
+                                grid: { color: 'rgba(255,255,255,0.05)' },
+                                ticks: { 
+                                    color: '#94A3B8',
+                                    maxTicksLimit: 8,
+                                    callback: function(value) { return value.toLocaleString(); }
+                                }
+                            },
+                            y: {
+                                grid: { color: 'rgba(255,255,255,0.05)' },
+                                ticks: { color: '#94A3B8' },
+                                title: {
+                                    display: true,
+                                    text: 'Training Loss',
+                                    color: '#94A3B8',
+                                    font: { size: 10, weight: 'bold', family: "'Inter', sans-serif" }
+                                }
+                            }
+                        }
+                    },
+                    plugins: [{
+                        id: 'verticalLine',
+                        afterDraw: (chart) => {
+                            if (chart.tooltip?._active?.length) {
+                                let x = chart.tooltip._active[0].element.x;
+                                let yAxis = chart.scales.y;
+                                let ctx = chart.ctx;
+                                ctx.save();
+                                ctx.beginPath();
+                                ctx.moveTo(x, yAxis.top);
+                                ctx.lineTo(x, yAxis.bottom);
+                                ctx.lineWidth = 1;
+                                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                                ctx.setLineDash([3, 3]);
+                                ctx.stroke();
+                                ctx.restore();
+                            }
+                        }
+                    }]
                 });
             },
 
