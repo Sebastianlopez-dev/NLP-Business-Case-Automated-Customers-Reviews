@@ -147,12 +147,10 @@
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(4px);
             }
 
             to {
                 opacity: 1;
-                transform: translateY(0);
             }
         }
 
@@ -192,6 +190,68 @@
             filter: brightness(0.9);
         }
 
+        .blog-card {
+            cursor: pointer;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .blog-card-active {
+            background-color: rgba(248, 250, 252, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        #blog-article-content h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1E293B;
+            margin-bottom: 1rem;
+        }
+
+        #blog-article-content h3 {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #334155;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        #blog-article-content h4 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #334155;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        #blog-article-content p {
+            font-size: 0.875rem;
+            color: #475569;
+            line-height: 1.625;
+            margin-bottom: 0.75rem;
+        }
+
+        #blog-article-content ul,
+        #blog-article-content ol {
+            font-size: 0.875rem;
+            color: #475569;
+            margin-bottom: 0.75rem;
+        }
+
+        #blog-article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        #blog-article-content strong {
+            color: #334155;
+        }
+
         .chart-container {
             position: relative;
             height: 250px;
@@ -217,42 +277,50 @@
         </div>
 
         <nav class="flex-1 px-3 space-y-1 overflow-y-auto">
-            <p class="pr-3 pl-[42px] mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pipeline</p>
-            <button onclick="app.switchTab('tab-eda')" id="nav-eda"
+            <p class="pr-3 pl-[42px] mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Application
+            </p>
+            <button onclick="app.switchTab('tab-play')" id="nav-play"
                 class="nav-item active w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-current="page"
-                aria-label="Data and EDA section">
-                <i class="ph ph-chart-bar text-lg" aria-hidden="true"></i><span>1. Data & EDA</span>
+                aria-label="Inference Playground section">
+                <i class="ph ph-lightning text-lg" aria-hidden="true"></i><span>1. Playground</span>
             </button>
-            <button onclick="app.switchTab('tab-benchmark')" id="nav-benchmark"
-                class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm"
-                aria-label="Emotion Engine section">
-                <i class="ph ph-cpu text-lg" aria-hidden="true"></i><span>2. Emotion Engine</span>
-            </button>
-            <button onclick="app.switchTab('tab-clusters')" id="nav-clusters"
-                class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-label="Clustering section">
-                <i class="ph ph-circles-three-plus text-lg" aria-hidden="true"></i><span>3. Clustering</span>
-            </button>
-            <button onclick="app.switchTab('tab-summarization')" id="nav-summarization"
-                class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-label="Summarization section">
-                <i class="ph ph-text-align-justify text-lg" aria-hidden="true"></i><span>4. Summarization</span>
-            </button>
-            <button onclick="app.switchTab('tab-web')" id="nav-web"
-                class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-label="Web and Hugging Face section">
-                <i class="ph ph-browsers text-lg" aria-hidden="true"></i><span>5. Web & HF</span>
+            <button onclick="app.switchTab('tab-blog')" id="nav-blog"
+                class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-label="Blog — AI-generated summaries">
+                <i class="ph ph-newspaper text-lg" aria-hidden="true"></i><span>2. Blog</span>
             </button>
 
             <div class="pt-6">
-                <p class="pr-3 pl-[42px] mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                    Application</p>
-                <button onclick="app.switchTab('tab-play')" id="nav-play"
-                    class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm"
-                    aria-label="Inference Playground section">
-                    <i class="ph ph-lightning text-lg" aria-hidden="true"></i><span>6. Playground</span>
+                <p class="pr-3 pl-[42px] mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pipeline
+                </p>
+                <button onclick="app.switchTab('tab-eda')" id="nav-eda"
+                    class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-label="Data and EDA section">
+                    <i class="ph ph-chart-bar text-lg" aria-hidden="true"></i><span>3. Data & EDA</span>
                 </button>
+                <button onclick="app.switchTab('tab-benchmark')" id="nav-benchmark"
+                    class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-label="Emotion Engine section">
+                    <i class="ph ph-cpu text-lg" aria-hidden="true"></i><span>4. Emotion Engine</span>
+                </button>
+                <button onclick="app.switchTab('tab-clusters')" id="nav-clusters"
+                    class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-label="Clustering section">
+                    <i class="ph ph-circles-three-plus text-lg" aria-hidden="true"></i><span>5. Clustering</span>
+                </button>
+                <button onclick="app.switchTab('tab-summarization')" id="nav-summarization"
+                    class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-label="Summarization section">
+                    <i class="ph ph-text-align-justify text-lg" aria-hidden="true"></i><span>6. Summarization</span>
+                </button>
+                <button onclick="app.switchTab('tab-web')" id="nav-web"
+                    class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm"
+                    aria-label="Web and Hugging Face section">
+                    <i class="ph ph-browsers text-lg" aria-hidden="true"></i><span>7. Web & HF</span>
+                </button>
+            </div>
+
+            <div class="pt-6">
+                <p class="pr-3 pl-[42px] mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Docs</p>
                 <button onclick="app.switchTab('tab-docs')" id="nav-docs"
                     class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm"
                     aria-label="Documentation Concepts section">
-                    <i class="ph ph-book-open-text text-lg" aria-hidden="true"></i><span>7. Documentation</span>
+                    <i class="ph ph-book-open-text text-lg" aria-hidden="true"></i><span>8. Documentation</span>
                 </button>
             </div>
         </nav>
@@ -272,7 +340,7 @@
         <div class="p-10 max-w-[1200px] w-full mx-auto">
 
             <!-- 1. DATA & EDA -->
-            <section id="tab-eda" class="tab-content active">
+            <section id="tab-eda" class="tab-content">
                 <div class="mb-6">
                     <h2 class="text-2xl font-bold text-slate-800 tracking-tight mb-1">Data & Exploratory Analysis</h2>
                 </div>
@@ -333,25 +401,31 @@
                         <span class="font-mono-data font-bold" style="color: #EA580C;">0 GB</span>
                         <span class="relative group cursor-help border-b border-dotted text-slate-500"
                             style="border-color: #0891B2;">Raw JSONL Streaming
-                            <span class="hidden group-hover:block absolute left-1/2 z-50"
-                                style="width: 380px; transform: translate(-50%, 4px); top: 100%;">
+                            <span class="hidden group-hover:block absolute left-0 z-50"
+                                style="width: 380px; transform: translateY(4px); top: 100%;">
                                 <span class="ide-container shadow-lg block">
                                     <span class="flex bg-[#1E293B] border-b border-white/5 px-3 py-1.5">
                                         <span
                                             class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Streaming
                                             Pattern — N01</span>
                                     </span>
-                                    <span class="block p-3 text-[10px] leading-snug whitespace-pre-wrap font-mono-data">
-                                        <span class="syn-pink">import</span> requests, gzip, json
-
-                                        <span class="syn-grey"># Stream .jsonl.gz from UCSD — zero disk</span>
-                                        response = requests.get(url, stream=<span class="syn-pink">True</span>,
-                                        timeout=<span class="syn-orange">600</span>)
-
-                                        <span class="syn-pink">with</span> gzip.GzipFile(fileobj=response.raw) <span
-                                            class="syn-pink">as</span> gz:
-                                        <span class="syn-pink">for</span> line <span class="syn-pink">in</span> gz:
-                                        record = json.loads(line.decode(<span class="syn-cyan">'utf-8'</span>))
+                                    <span class="block p-3 text-[10px] leading-relaxed font-mono-data bg-[#0F172A]">
+                                        <span class="block whitespace-pre"><span class="syn-pink">import</span>
+                                            requests, gzip, json</span>
+                                        <span class="block h-2"></span>
+                                        <span class="block whitespace-pre syn-grey"># Stream .jsonl.gz from UCSD — zero
+                                            disk</span>
+                                        <span class="block whitespace-pre">response = requests.get(url, stream=<span
+                                                class="syn-pink">True</span>, timeout=<span
+                                                class="syn-orange">600</span>)</span>
+                                        <span class="block h-2"></span>
+                                        <span class="block whitespace-pre"><span class="syn-pink">with</span>
+                                            gzip.GzipFile(fileobj=response.raw) <span class="syn-pink">as</span>
+                                            gz:</span>
+                                        <span class="block whitespace-pre"> <span class="syn-pink">for</span> line <span
+                                                class="syn-pink">in</span> gz:</span>
+                                        <span class="block whitespace-pre"> record = json.loads(line.decode(<span
+                                                class="syn-cyan">'utf-8'</span>))</span>
                                     </span>
                                     <span class="block px-4 py-3 bg-[#0F172A] border-t border-white/5">
                                         <span class="flex flex-col space-y-2 text-[10px] font-mono-data text-slate-400">
@@ -409,12 +483,12 @@
                         <div id="eda-band" class="mt-4 pt-3 border-t-0 relative overflow-hidden">
                             <!-- Animated Line Layer -->
                             <div class="flex gap-1 mb-2 h-[3px]">
-                                <div id="eda-line-neg" class="transition-all duration-700 rounded-full"
-                                    style="flex: 2; background-color: #DC2626;"></div>
-                                <div id="eda-line-neu" class="transition-all duration-700 rounded-full"
-                                    style="flex: 1; background-color: #94A3B8;"></div>
-                                <div id="eda-line-pos" class="transition-all duration-700 rounded-full"
-                                    style="flex: 2; background-color: #10B981;"></div>
+                                <div id="eda-line-neg" class="rounded-full" style="flex: 2; background-color: #DC2626;">
+                                </div>
+                                <div id="eda-line-neu" class="rounded-full" style="flex: 1; background-color: #94A3B8;">
+                                </div>
+                                <div id="eda-line-pos" class="rounded-full" style="flex: 2; background-color: #10B981;">
+                                </div>
                             </div>
                             <!-- Labels Layer -->
                             <div class="flex items-center gap-1 min-h-[20px]">
@@ -660,7 +734,8 @@
                             <div class="code-viewport flex relative items-center justify-center" id="metrics-display">
                                 <canvas id="modelMetricsChart"></canvas>
                             </div>
-                            <div class="code-viewport hidden relative items-center justify-center p-4" id="evolution-display">
+                            <div class="code-viewport hidden relative items-center justify-center"
+                                id="evolution-display">
                                 <canvas id="modelEvolutionChart"></canvas>
                             </div>
                         </div>
@@ -696,84 +771,116 @@
                         </div>
 
                         <!-- Metrics View -->
-                        <div id="metrics-cards" class="flex flex-col gap-6 h-full">
-                            <div class="card-standard flex-1 flex flex-col justify-center" id="card-metrics-distil">
-                                <h4 class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+                        <div id="metrics-cards" class="flex flex-col justify-center gap-3 h-full">
+                            <div class="bg-white border border-slate-200/60 rounded-xl p-3 shadow-sm flex flex-col"
+                                id="card-metrics-distil">
+                                <h4 class="text-xs font-bold text-slate-800 mb-2 flex items-center gap-2">
                                     <i class="ph-fill ph-circle text-[10px] text-cyan-500"></i> DistilBERT
                                     <span
                                         class="bg-emerald-50 text-emerald-600 border border-emerald-200 text-[9px] font-bold px-1.5 py-0.5 rounded tracking-widest ml-auto">CHAMPION</span>
                                 </h4>
-                                <div class="grid grid-cols-4 gap-2 pt-3 border-t border-slate-100">
+                                <div class="grid grid-cols-4 gap-2 pt-2 border-t border-slate-100">
                                     <div class="flex flex-col"><span
-                                            class="text-[9px] uppercase text-slate-400 font-bold mb-1 tracking-widest truncate">Accuracy</span><span
-                                            class="font-mono-data font-bold text-cyan-600 text-lg">77.3%</span></div>
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Accuracy</span><span
+                                            class="font-mono-data font-bold text-cyan-600 text-sm">77.3%</span></div>
                                     <div class="flex flex-col"><span
-                                            class="text-[9px] uppercase text-slate-400 font-bold mb-1 tracking-widest truncate">F1
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">F1
                                             Pos</span><span
-                                            class="font-mono-data font-bold text-slate-700 text-lg">87.7%</span></div>
+                                            class="font-mono-data font-bold text-slate-700 text-sm">87.7%</span></div>
                                     <div class="flex flex-col"><span
-                                            class="text-[9px] uppercase text-slate-400 font-bold mb-1 tracking-widest truncate">F1
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">F1
                                             Neu</span><span
-                                            class="font-mono-data font-bold text-slate-700 text-lg">67.1%</span></div>
+                                            class="font-mono-data font-bold text-slate-700 text-sm">67.1%</span></div>
                                     <div class="flex flex-col"><span
-                                            class="text-[9px] uppercase text-slate-400 font-bold mb-1 tracking-widest truncate">F1
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">F1
                                             Neg</span><span
-                                            class="font-mono-data font-bold text-slate-700 text-lg">76.7%</span></div>
+                                            class="font-mono-data font-bold text-slate-700 text-sm">76.7%</span></div>
                                 </div>
                             </div>
 
-                            <div class="card-standard flex-1 flex flex-col justify-center" id="card-metrics-roberta">
-                                <h4 class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <div class="bg-white border border-slate-200/60 rounded-xl p-3 shadow-sm flex flex-col"
+                                id="card-metrics-roberta">
+                                <h4 class="text-xs font-bold text-slate-800 mb-2 flex items-center gap-2">
                                     <i class="ph-fill ph-circle text-[10px] text-orange-500"></i> RoBERTa
                                     <span
                                         class="bg-slate-100 text-slate-500 border border-slate-200 text-[9px] font-bold px-1.5 py-0.5 rounded tracking-widest ml-auto">RUNNER-UP</span>
                                 </h4>
-                                <div class="grid grid-cols-4 gap-2 pt-3 border-t border-slate-100">
+                                <div class="grid grid-cols-4 gap-2 pt-2 border-t border-slate-100">
                                     <div class="flex flex-col"><span
-                                            class="text-[9px] uppercase text-slate-400 font-bold mb-1 tracking-widest truncate">Accuracy</span><span
-                                            class="font-mono-data font-bold text-orange-600 text-lg">69.1%</span></div>
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Accuracy</span><span
+                                            class="font-mono-data font-bold text-orange-600 text-sm">69.1%</span></div>
                                     <div class="flex flex-col"><span
-                                            class="text-[9px] uppercase text-slate-400 font-bold mb-1 tracking-widest truncate">F1
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">F1
                                             Pos</span><span
-                                            class="font-mono-data font-bold text-slate-700 text-lg">79.5%</span></div>
+                                            class="font-mono-data font-bold text-slate-700 text-sm">79.5%</span></div>
                                     <div class="flex flex-col"><span
-                                            class="text-[9px] uppercase text-slate-400 font-bold mb-1 tracking-widest truncate">F1
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">F1
                                             Neu</span><span
-                                            class="font-mono-data font-bold text-slate-700 text-lg">58.7%</span></div>
+                                            class="font-mono-data font-bold text-slate-700 text-sm">58.7%</span></div>
                                     <div class="flex flex-col"><span
-                                            class="text-[9px] uppercase text-slate-400 font-bold mb-1 tracking-widest truncate">F1
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">F1
                                             Neg</span><span
-                                            class="font-mono-data font-bold text-slate-700 text-lg">69.3%</span></div>
+                                            class="font-mono-data font-bold text-slate-700 text-sm">69.3%</span></div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Evolution View -->
-                        <div id="evolution-cards" class="hidden flex-col gap-6 h-full">
-                            <div class="card-standard flex-1 flex flex-col justify-center" id="card-evolution-distil">
-                                <h4 class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+                        <div id="evolution-cards" class="hidden flex-col justify-center gap-3 h-full">
+                            <div class="bg-white border border-slate-200/60 rounded-xl p-3 shadow-sm flex flex-col"
+                                id="card-evolution-distil">
+                                <h4 class="text-xs font-bold text-slate-800 mb-2 flex items-center gap-2">
                                     <i class="ph-fill ph-circle text-[10px] text-cyan-500"></i> DistilBERT
                                 </h4>
-                                <p class="text-xs text-slate-500 leading-relaxed mb-3">
-                                    The graph visualizes the <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-xs">train_loss</code> measured every 50 steps. DistilBERT exhibits a smoother descent, indicating stable convergence.
-                                </p>
-                                <div class="bg-slate-50 border border-slate-200 p-2 rounded-lg text-center w-1/2">
-                                    <span class="text-[10px] text-slate-400 block uppercase tracking-widest font-bold mb-1">Learning Rate</span>
-                                    <span class="text-sm font-mono-data font-bold text-slate-700">2e-5</span>
+                                <div class="grid grid-cols-4 gap-2 pt-2 border-t border-slate-100 mb-2">
+                                    <div class="flex flex-col"><span
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Init
+                                            Loss</span><span
+                                            class="font-mono-data font-bold text-slate-400 text-sm line-through">1.09</span>
+                                    </div>
+                                    <div class="flex flex-col"><span
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Final
+                                            Loss</span><span
+                                            class="font-mono-data font-bold text-cyan-600 text-sm">0.50</span></div>
+                                    <div class="flex flex-col"><span
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Batch</span><span
+                                            class="font-mono-data font-bold text-slate-700 text-sm">32</span></div>
+                                    <div class="flex flex-col"><span
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Steps</span><span
+                                            class="font-mono-data font-bold text-slate-700 text-sm">23.4k</span></div>
                                 </div>
+                                <p class="text-[10px] text-slate-500 leading-relaxed">
+                                    <strong class="text-slate-700 font-bold">Insight:</strong> Optimal convergence (-54%
+                                    loss). Batch 32 stabilized gradients, keeping training within VRAM limits.
+                                </p>
                             </div>
 
-                            <div class="card-standard flex-1 flex flex-col justify-center" id="card-evolution-roberta">
-                                <h4 class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <div class="bg-white border border-slate-200/60 rounded-xl p-3 shadow-sm flex flex-col"
+                                id="card-evolution-roberta">
+                                <h4 class="text-xs font-bold text-slate-800 mb-2 flex items-center gap-2">
                                     <i class="ph-fill ph-circle text-[10px] text-orange-500"></i> RoBERTa
                                 </h4>
-                                <p class="text-xs text-slate-500 leading-relaxed mb-3">
-                                    Visibly struggling to converge compared to the champion. A lower learning rate and smaller batch size were required to prevent GPU OOM limits on a 16GB T4.
-                                </p>
-                                <div class="bg-slate-50 border border-slate-200 p-2 rounded-lg text-center w-1/2">
-                                    <span class="text-[10px] text-slate-400 block uppercase tracking-widest font-bold mb-1">Learning Rate</span>
-                                    <span class="text-sm font-mono-data font-bold text-slate-700">1e-5</span>
+                                <div class="grid grid-cols-4 gap-2 pt-2 border-t border-slate-100 mb-2">
+                                    <div class="flex flex-col"><span
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Init
+                                            Loss</span><span
+                                            class="font-mono-data font-bold text-slate-400 text-sm line-through">1.10</span>
+                                    </div>
+                                    <div class="flex flex-col"><span
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Final
+                                            Loss</span><span
+                                            class="font-mono-data font-bold text-orange-600 text-sm">0.65</span></div>
+                                    <div class="flex flex-col"><span
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Batch</span><span
+                                            class="font-mono-data font-bold text-slate-700 text-sm">16</span></div>
+                                    <div class="flex flex-col"><span
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Steps</span><span
+                                            class="font-mono-data font-bold text-slate-700 text-sm">46.8k</span></div>
                                 </div>
+                                <p class="text-[10px] text-slate-500 leading-relaxed">
+                                    <strong class="text-slate-700 font-bold">Insight:</strong> Stagnated convergence
+                                    (-40% loss). The smaller batch (16) doubled the required steps, introducing noise.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -787,7 +894,9 @@
                                 <p class="text-[10px] uppercase font-medium tracking-widest mt-1">
                                     <a href="https://arxiv.org/pdf/1910.01108" target="_blank" title="Ver PDF Original"
                                         class="flex items-center gap-1.5 w-fit text-cyan-600 border-b border-dotted border-cyan-600/50 hover:border-cyan-500 hover:text-cyan-500 transition-all pb-[1px]">
-                                        PAPER: Sanh et al., 2019 <i class="ph-duotone ph-file-pdf text-[14px] ml-0.5"></i><i class="ph ph-arrow-square-out text-[10px] ml-0.5"></i>
+                                        PAPER: Sanh et al., 2019 <i
+                                            class="ph-duotone ph-file-pdf text-[14px] ml-0.5"></i><i
+                                            class="ph ph-arrow-square-out text-[10px] ml-0.5"></i>
                                     </a>
                                 </p>
                             </div>
@@ -809,14 +918,16 @@
                                             class="grid grid-cols-2 gap-y-2 gap-x-4 text-[10px] font-mono-data text-slate-600">
                                             <div class="flex justify-between border-b border-slate-100 pb-1">
                                                 <span>Parameters:</span><span
-                                                    class="font-bold text-slate-800">66M</span></div>
+                                                    class="font-bold text-slate-800">66M</span>
+                                            </div>
                                             <div class="flex justify-between border-b border-slate-100 pb-1"><span>Learn
                                                     Rate:</span><span class="font-bold text-slate-800">2e-5</span></div>
                                             <div class="flex justify-between border-b border-slate-100 pb-1"><span>Batch
                                                     Size:</span><span class="font-bold text-slate-800">32</span></div>
                                             <div class="flex justify-between border-b border-slate-100 pb-1">
                                                 <span>Tokenizer:</span><span
-                                                    class="font-bold text-slate-800">WordPiece</span></div>
+                                                    class="font-bold text-slate-800">WordPiece</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -830,7 +941,9 @@
                                 <p class="text-[10px] uppercase font-medium tracking-widest mt-1">
                                     <a href="https://arxiv.org/pdf/1907.11692" target="_blank" title="Ver PDF Original"
                                         class="flex items-center gap-1.5 w-fit text-cyan-600 border-b border-dotted border-cyan-600/50 hover:border-cyan-500 hover:text-cyan-500 transition-all pb-[1px]">
-                                        PAPER: Liu et al., 2019 <i class="ph-duotone ph-file-pdf text-[14px] ml-0.5"></i><i class="ph ph-arrow-square-out text-[10px] ml-0.5"></i>
+                                        PAPER: Liu et al., 2019 <i
+                                            class="ph-duotone ph-file-pdf text-[14px] ml-0.5"></i><i
+                                            class="ph ph-arrow-square-out text-[10px] ml-0.5"></i>
                                     </a>
                                 </p>
                             </div>
@@ -851,7 +964,8 @@
                                             class="grid grid-cols-2 gap-y-2 gap-x-4 text-[10px] font-mono-data text-slate-600">
                                             <div class="flex justify-between border-b border-slate-100 pb-1">
                                                 <span>Parameters:</span><span
-                                                    class="font-bold text-slate-800">125M</span></div>
+                                                    class="font-bold text-slate-800">125M</span>
+                                            </div>
                                             <div class="flex justify-between border-b border-slate-100 pb-1"><span>Learn
                                                     Rate:</span><span class="font-bold text-red-600">1e-5</span></div>
                                             <div class="flex justify-between border-b border-slate-100 pb-1"><span>Batch
@@ -916,10 +1030,10 @@
                 <div class="mb-10">
                     <h2 class="text-2xl font-bold text-slate-800 tracking-tight mb-1">Executive Summarization (N05)</h2>
                     <p class="text-sm text-slate-500">Executive abstraction of latent topologies using Foundational
-                        Models via NVIDIA NIM.</p>
+                        Models via Google AI Studio.</p>
                 </div>
 
-                <div class="grid grid-cols-12 gap-6">
+                <div class="grid grid-cols-12 gap-6 mb-8">
                     <div class="col-span-12 lg:col-span-6 flex flex-col gap-6">
                         <div class="card-standard">
                             <h3 class="text-sm font-bold text-slate-800 mb-4">Extractive-Abstractive Workflow</h3>
@@ -937,7 +1051,7 @@
                                     <i class="ph ph-robot text-2xl text-slate-400 mb-2"></i>
                                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                                         Abstraction</p>
-                                    <p class="text-xs font-medium text-slate-600">Mistral 128B</p>
+                                    <p class="text-xs font-medium text-slate-600">Gemini 3.1 Flash-Lite</p>
                                 </div>
                             </div>
                             <p class="text-xs text-slate-500 leading-relaxed">
@@ -950,13 +1064,78 @@
                     <div class="col-span-12 lg:col-span-6">
                         <div class="ide-container shadow-sm h-full">
                             <div class="flex bg-[#1E293B] border-b border-white/5 px-4 py-3">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">NVIDIA API
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Google Gemini
+                                    API
                                     Config</p>
                             </div>
                             <div class="code-viewport code-viewport-auto" id="llm-code-display">
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Gemini Model Card -->
+                <div class="card-standard">
+                    <div class="flex items-start justify-between mb-5">
+                        <div class="flex items-center gap-3">
+                            <i class="ph ph-robot text-2xl" style="color: #0891B2;"></i>
+                            <div>
+                                <h3 class="text-sm font-bold text-slate-800 leading-tight">Gemini 3.1 Flash-Lite</h3>
+                                <p class="text-[10px] font-mono-data mt-0.5" style="color: #0891B2;">google /
+                                    gemini-3.1-flash-lite</p>
+                            </div>
+                        </div>
+                        <a href="https://deepmind.google/models/gemini/flash-lite/" target="_blank"
+                            rel="noopener noreferrer"
+                            class="text-[10px] font-bold text-slate-400 hover:text-cyan-600 transition-colors flex items-center gap-1 border-b border-dotted border-slate-300 hover:border-cyan-500 pb-px">
+                            Official Model Card <i class="ph ph-arrow-square-out text-[10px]"></i>
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5 pb-5 border-b border-slate-100">
+                        <div>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Architecture
+                            </p>
+                            <p class="text-xs font-semibold text-slate-700 font-mono-data">Gemini 3 Pro Based</p>
+                            <p class="text-[10px] text-slate-400">Native Multimodal</p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Context Window
+                            </p>
+                            <p class="text-xs font-semibold font-mono-data" style="color: #0891B2;">1M tokens</p>
+                            <p class="text-[10px] text-slate-400">1,048,576 Tokens</p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Performance
+                            </p>
+                            <p class="text-xs font-semibold font-mono-data" style="color: #10B981;">Lite Efficiency</p>
+                            <p class="text-[10px] text-slate-400">High-Volume Optimized</p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Release</p>
+                            <p class="text-xs font-semibold text-slate-700 font-mono-data">03 / 01 / 2026</p>
+                            <p class="text-[10px] text-slate-400">deepmind.google</p>
+                        </div>
+                    </div>
+
+                    <p class="text-xs text-slate-500 leading-relaxed mb-5">
+                        Gemini 3.1 Flash-Lite is a cost-efficient and fast addition to the <strong
+                            class="text-slate-700">Gemini 3 series</strong>,
+                        optimized for high-volume, latency-sensitive tasks like translation and classification.
+                        It retains the massive 1M context window of its predecessors while significantly improving
+                        safety and reasoning performance.
+                        <strong class="text-slate-700">Ideal for this pipeline</strong>: lightning-fast abstractive
+                        synthesis
+                        of clustered customer sentiment with a sub-second response threshold.
+                    </p>
+
+                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Capabilities</p>
+                    <p class="text-[10px] font-mono-data text-slate-500 leading-relaxed">
+                        <span style="color: #EA580C;">reasoning</span> · cost-efficient · fast · chat · text ·
+                        <span style="color: #0891B2;">multimodal</span> ·
+                        <span style="color: #10B981;">JSON extraction</span> ·
+                        <span style="color: #10B981;">high-volume latency</span>
+                    </p>
                 </div>
             </section>
 
@@ -1021,76 +1200,372 @@
                 </div>
             </section>
 
-            <!-- 6. PLAYGROUND -->
-            <section id="tab-play" class="tab-content">
-                <div class="mb-10">
-                    <h2 class="text-2xl font-bold text-slate-800 tracking-tight mb-1">Inference Playground</h2>
-                    <p class="text-sm text-slate-500">Live simulation of combined inference: Transformer Evaluator → LLM
-                        Synthesis.</p>
-                    <span
-                        class="inline-block mt-3 bg-amber-50 border border-amber-200 text-amber-700 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                        ⚠ Simulation — real model pending HF deployment
-                    </span>
+            <!-- 6. PLAYGROUND — active by default (first in nav) -->
+            <section id="tab-play" class="tab-content active">
+                <div class="mb-8 flex justify-between items-start">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800 tracking-tight mb-1">Inference Engine v1.0</h2>
+                        <p class="text-sm text-slate-500">Live simulation of combined inference: Transformer Evaluator →
+                            LLM Synthesis.</p>
+                    </div>
+                    <button onclick="app.toggleSettings(true)"
+                        class="p-2 text-slate-400 hover:text-cyan-500 hover:bg-cyan-50 rounded-lg transition-all"
+                        title="API Settings">
+                        <i class="ph ph-gear text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- HERO METRICS -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                    <div class="border-l-[3px] border-cyan-500 pl-4 py-1">
+                        <p
+                            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 group relative cursor-help border-b border-dotted border-[#0891B2] inline-block">
+                            Corpus Scale
+                            <span class="hidden group-hover:block absolute left-0 z-50"
+                                style="width: 380px; transform: translateY(4px); top: 100%;">
+                                <span class="ide-container shadow-lg block normal-case">
+                                    <span class="flex bg-[#1E293B] border-b border-white/5 px-3 py-1.5">
+                                        <span
+                                            class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Dataset
+                                            Access — HF</span>
+                                    </span>
+                                    <span
+                                        class="block p-4 text-[10px] leading-relaxed font-mono-data bg-[#0F172A] text-slate-300">
+                                        <span class="block mb-3">
+                                            <span
+                                                class="syn-pink font-bold uppercase block mb-1">McAuley-Lab/Amazon-Reviews-2023</span>
+                                            <span class="block text-slate-500 text-[9px]">The largest public collection
+                                                of Amazon reviews.</span>
+                                        </span>
+
+                                        <span class="block py-2 border-t border-b border-white/5 my-3">
+                                            <span class="grid grid-cols-4 gap-y-3 gap-x-2">
+                                                <span class="flex flex-col"><span
+                                                        class="font-bold text-slate-500 uppercase text-[8px]">Year</span><span>2023</span></span>
+                                                <span class="flex flex-col"><span
+                                                        class="font-bold text-slate-500 uppercase text-[8px]">#Review</span><span>571.54M</span></span>
+                                                <span class="flex flex-col"><span
+                                                        class="font-bold text-slate-500 uppercase text-[8px]">#User</span><span>54.51M</span></span>
+                                                <span class="flex flex-col"><span
+                                                        class="font-bold text-slate-500 uppercase text-[8px]">#Item</span><span>48.19M</span></span>
+                                                <span class="flex flex-col"><span
+                                                        class="font-bold text-slate-500 uppercase text-[8px]">#R_Token</span><span>30.14B</span></span>
+                                                <span class="flex flex-col"><span
+                                                        class="font-bold text-slate-500 uppercase text-[8px]">#M_Token</span><span>30.78B</span></span>
+                                                <span class="flex flex-col"><span
+                                                        class="font-bold text-slate-500 uppercase text-[8px]">#Domain</span><span>33</span></span>
+                                                <span class="flex flex-col"><span
+                                                        class="font-bold text-slate-500 uppercase text-[8px]">Timespan</span><span
+                                                        class="text-[9px] whitespace-nowrap">96-23</span></span>
+                                            </span>
+                                        </span>
+
+                                        <span class="block space-y-1.5 text-slate-400">
+                                            <span class="text-pink-500 font-bold uppercase block mb-1">Dataset
+                                                includes:</span>
+                                            <span class="block">• User Reviews (ratings, text, helpfulness)</span>
+                                            <span class="block">• Item Metadata (price, images, descriptions)</span>
+                                            <span class="block">• Knowledge Graphs (user-item / bought together)</span>
+                                        </span>
+                                    </span>
+                                </span>
+                            </span>
+                        </p>
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-3xl font-bold text-slate-800 font-mono-data tracking-tight">571.5M</span>
+                            <span class="text-xs text-slate-500 font-medium">reviews</span>
+                        </div>
+                    </div>
+                    <div class="border-l-[3px] border-slate-200 pl-4 py-1">
+                        <p
+                            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 group relative cursor-help border-b border-dotted border-[#0891B2] inline-block">
+                            Models Baseline
+                            <span class="hidden group-hover:block absolute left-0 z-50"
+                                style="width: 380px; transform: translateY(4px); top: 100%;">
+                                <span class="ide-container shadow-lg block text-left normal-case">
+                                    <span class="flex bg-[#1E293B] border-b border-white/5 px-3 py-1.5">
+                                        <span
+                                            class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Model
+                                            Specs — N01</span>
+                                    </span>
+                                    <span
+                                        class="block p-4 text-[10px] leading-relaxed font-mono-data bg-[#0F172A] text-slate-300">
+                                        <span class="block mb-3">
+                                            <span class="text-cyan-400 font-bold uppercase block mb-1">DistilBERT
+                                                (Sentiment)</span>
+                                            <span class="block text-slate-400">• 66M Parameters / 6 Layers</span>
+                                            <span class="block text-slate-400">• Context: 512 Tokens max</span>
+                                            <span class="block text-slate-400">• Performance: 77.3% Accuracy</span>
+                                        </span>
+                                        <span class="block pt-3 border-t border-white/5">
+                                            <span class="text-orange-400 font-bold uppercase block mb-1">MiniBatchKMeans
+                                                (Clusters)</span>
+                                            <span class="block text-slate-400">• Online Learning / Low RAM</span>
+                                            <span class="block text-slate-400">• Centroids: K=3 to K=10</span>
+                                            <span class="block text-slate-400">• Task: Unsupervised Topics</span>
+                                        </span>
+                                    </span>
+                                </span>
+                            </span>
+                        </p>
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-3xl font-bold text-slate-800 font-mono-data tracking-tight">77.3%</span>
+                            <span class="text-xs text-slate-500 font-medium">accuracy</span>
+                        </div>
+                    </div>
+                    <div class="border-l-[3px] border-slate-200 pl-4 py-1">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Synthesis Core
+                        </p>
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-3xl font-bold text-slate-800 font-mono-data tracking-tight">1M</span>
+                            <span class="text-xs text-slate-500 font-medium">token context</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-12 gap-8">
-                    <div class="col-span-12 lg:col-span-6 flex flex-col gap-4">
-                        <textarea id="play-input"
-                            class="w-full h-48 p-5 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 resize-none shadow-sm transition-all"
-                            placeholder="Type or paste a product review to analyze its polarity..."></textarea>
+                    <!-- INPUT -->
+                    <div class="col-span-12 lg:col-span-5 flex flex-col gap-6">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Inference
+                                Payload</label>
+                            <textarea id="play-input"
+                                class="w-full h-40 p-4 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 resize-none transition-all shadow-sm"
+                                placeholder="Paste a customer review here... e.g. 'The product broke after two days, completely useless.'"></textarea>
+                        </div>
 
-                        <div class="flex items-center gap-4">
-                            <select id="play-model"
-                                class="flex-1 text-sm border border-slate-200 rounded-lg p-3 text-slate-600 bg-white outline-none cursor-pointer hover:border-slate-300">
-                                <option value="distilbert">DistilBERT (Champion)</option>
-                                <option value="roberta">RoBERTa (Runner Up)</option>
-                            </select>
+                        <div class="flex flex-col gap-4 bg-slate-50 p-5 rounded-lg border border-slate-100">
+                            <div>
+                                <label
+                                    class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">1.
+                                    Transformer Selector</label>
+                                <select id="play-model"
+                                    class="w-full text-sm border border-slate-200 rounded-md p-2.5 text-slate-700 bg-white outline-none cursor-pointer hover:border-slate-300 transition-colors shadow-sm">
+                                    <option value="distilbert">DistilBERT (Champion) — Primary</option>
+                                    <option value="roberta">RoBERTa (Runner Up) — Fallback</option>
+                                </select>
+                            </div>
+
                             <button onclick="app.runInference()" id="play-btn"
-                                class="btn-cta px-8 py-3 rounded-lg text-sm flex justify-center items-center gap-2">
-                                <span id="play-btn-txt">Evaluate</span>
+                                class="btn-cta w-full py-3.5 rounded-md text-sm flex justify-center items-center gap-2 mt-2 shadow-sm">
+                                <span id="play-btn-txt">Run Inference Pipeline</span>
                                 <span id="play-spinner"
                                     class="hidden w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
                             </button>
                         </div>
                     </div>
 
-                    <div class="col-span-12 lg:col-span-6">
-                        <div class="card-standard h-full flex flex-col min-h-[260px]">
-                            <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6">Analytical
-                                Output</h4>
+                    <!-- OUTPUT PIPELINE -->
+                    <div class="col-span-12 lg:col-span-7 flex flex-col">
+                        <div
+                            class="card-standard h-full flex flex-col min-h-[360px] relative overflow-hidden p-0 border-slate-200/60 shadow-sm">
 
-                            <div id="play-empty"
-                                class="flex-1 flex flex-col items-center justify-center text-slate-400 gap-3">
-                                <i class="ph ph-terminal text-3xl opacity-20"></i>
-                                <p class="text-xs">Waiting for text input to start inference...</p>
+                            <div
+                                class="flex justify-between items-center px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+                                <h4
+                                    class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                    <i class="ph ph-git-merge text-sm"></i> Live Pipeline Execution
+                                </h4>
+                                <span
+                                    class="flex items-center gap-1.5 text-[9px] text-slate-400 font-mono-data font-bold tracking-widest bg-white border border-slate-200 px-2 py-1 rounded shadow-sm">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-slate-300" id="pipeline-status-dot"></span>
+                                    <span id="pipeline-status-text">IDLE</span>
+                                </span>
                             </div>
 
-                            <div id="play-results" class="hidden flex-col gap-8">
-                                <div>
-                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">1.
-                                        Base Classification</p>
-                                    <div class="flex items-center gap-4">
-                                        <div id="play-badge"
-                                            class="px-3 py-1.5 rounded text-white text-[11px] font-bold tracking-wide flex items-center gap-2">
+                            <div class="p-6 flex-1 flex flex-col relative">
+                                <!-- Empty State -->
+                                <div id="play-empty"
+                                    class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 gap-4 bg-white z-10 transition-opacity">
+                                    <div class="flex gap-4 items-center opacity-40">
+                                        <div
+                                            class="w-12 h-12 rounded-xl border border-dashed border-slate-300 flex items-center justify-center bg-slate-50">
+                                            <i class="ph ph-text-aa text-xl"></i></div>
+                                        <i class="ph ph-arrow-right text-slate-300"></i>
+                                        <div
+                                            class="w-12 h-12 rounded-xl border border-dashed border-slate-300 flex items-center justify-center bg-slate-50">
+                                            <i class="ph ph-cpu text-xl"></i></div>
+                                        <i class="ph ph-arrow-right text-slate-300"></i>
+                                        <div
+                                            class="w-12 h-12 rounded-xl border border-dashed border-slate-300 flex items-center justify-center bg-slate-50">
+                                            <i class="ph ph-robot text-xl"></i></div>
+                                    </div>
+                                    <p class="text-xs text-slate-500 font-mono-data">Awaiting input payload...</p>
+                                </div>
+
+                                <!-- Results State -->
+                                <div id="play-results" class="hidden flex-col gap-6 h-full relative z-20">
+
+                                    <!-- Connecting Line (Desktop) -->
+                                    <div
+                                        class="absolute left-6 top-10 bottom-10 w-px bg-slate-200 -z-10 hidden md:block">
+                                    </div>
+
+                                    <!-- Step 1 -->
+                                    <div class="bg-white border border-slate-200 shadow-sm rounded-lg p-5 flex gap-5 relative group"
+                                        id="step-1-container">
+                                        <div class="absolute -left-[5px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-white border-2 border-cyan-500 hidden md:block"
+                                            id="step-1-dot"></div>
+                                        <div class="flex-shrink-0 mt-0.5 md:hidden">
+                                            <i class="ph-fill ph-check-circle text-cyan-500 text-lg"
+                                                id="step-1-icon"></i>
                                         </div>
-                                        <span id="play-conf" class="text-xs font-mono-data text-slate-500"></span>
+                                        <div class="flex-1">
+                                            <div class="flex justify-between items-start mb-3">
+                                                <p
+                                                    class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                                                    1. Vector Classification</p>
+                                                <span
+                                                    class="text-[9px] font-mono-data text-slate-400 border border-slate-200 px-1.5 py-0.5 rounded bg-slate-50">~12ms</span>
+                                            </div>
+
+                                            <div class="flex items-center justify-between">
+                                                <div id="play-badge"
+                                                    class="px-2.5 py-1 rounded text-white text-[11px] font-bold tracking-wide flex items-center gap-1.5">
+                                                    <!-- Filled by JS -->
+                                                </div>
+                                                <div class="text-right">
+                                                    <p
+                                                        class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">
+                                                        Confidence</p>
+                                                    <p id="play-conf"
+                                                        class="text-sm font-mono-data text-slate-700 font-bold"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Step 2 -->
+                                    <div class="bg-white border border-slate-200 shadow-sm rounded-lg p-5 flex gap-5 flex-1 relative group"
+                                        id="step-2-container">
+                                        <div class="absolute -left-[5px] top-8 w-2.5 h-2.5 rounded-full bg-white border-2 border-slate-200 hidden md:block"
+                                            id="step-2-dot"></div>
+                                        <div class="flex-shrink-0 mt-0.5 md:hidden">
+                                            <i class="ph-fill ph-circle text-slate-300 text-lg" id="step-2-icon"></i>
+                                        </div>
+                                        <div class="flex-1 flex flex-col">
+                                            <div class="flex justify-between items-start mb-3">
+                                                <p
+                                                    class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                                                    2. Contextual Synthesis</p>
+                                                <span
+                                                    class="text-[9px] font-mono-data text-slate-400 border border-slate-200 px-1.5 py-0.5 rounded bg-slate-50">~450ms</span>
+                                            </div>
+                                            <p id="play-llm"
+                                                class="text-sm text-slate-600 leading-relaxed font-medium mt-1"></p>
+
+                                            <!-- Trace Toggle -->
+                                            <div class="mt-6 pt-4 border-t border-slate-100">
+                                                <button onclick="app.toggleTrace()"
+                                                    class="text-[9px] font-bold text-slate-400 hover:text-slate-600 uppercase tracking-widest flex items-center gap-1.5 transition-colors">
+                                                    <i class="ph ph-terminal-window"></i> View Technical Trace
+                                                </button>
+                                                <div id="play-trace-container"
+                                                    class="hidden mt-3 bg-[#0F172A] rounded-lg p-4 overflow-x-auto border border-slate-800 shadow-inner">
+                                                    <div
+                                                        class="flex justify-between items-center mb-2 border-b border-slate-800 pb-2">
+                                                        <span
+                                                            class="text-[9px] font-bold text-slate-600 uppercase">System
+                                                            Log</span>
+                                                        <button
+                                                            onclick="document.getElementById('play-trace').textContent = ''"
+                                                            class="text-[9px] text-slate-600 hover:text-slate-400">Clear</button>
+                                                    </div>
+                                                    <pre id="play-trace"
+                                                        class="text-[10px] text-cyan-400/80 font-mono-data leading-relaxed"></pre>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="border-t border-slate-100 pt-6">
-                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">2.
-                                        Contextual Synthesis (<span style="color: var(--brand-orange)">Mistral</span>)
-                                    </p>
-                                    <p id="play-llm"
-                                        class="text-sm text-slate-600 leading-relaxed border-l-2 border-slate-200 pl-4">
-                                    </p>
-                                </div>
                             </div>
+                        </div>
+                    </div>
+            </section>
+
+
+            <!-- BLOG -->
+            <!-- BLOG -->
+            <section id="tab-blog" class="tab-content">
+                <!-- Top: Horizontal Technical Banner -->
+                <div
+                    class="card-standard bg-white border-slate-200/60 shadow-sm p-4 mb-8 flex items-center justify-between overflow-hidden relative">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-50 flex items-center justify-center">
+                            <i class="ph ph-fingerprint text-cyan-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xs font-bold text-slate-800 tracking-tight">Analytical DNA</h3>
+                            <p class="text-[9px] text-slate-400 uppercase tracking-widest">Metadata & Pipeline Engine
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-12 mr-4">
+                        <div class="flex flex-col">
+                            <span
+                                class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Architecture</span>
+                            <span class="text-xs font-mono-data text-slate-700">gemini-3-flash-preview</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span
+                                class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Methodology</span>
+                            <span class="text-xs font-mono-data text-slate-700">Hybrid Extractive-Abstractive</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span
+                                class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Clusters</span>
+                            <span class="text-xs font-mono-data text-slate-800 font-bold">06 Groups</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Success
+                                Rate</span>
+                            <span class="text-xs font-mono-data text-emerald-500 font-bold">100% Verified</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Middle: Section Title -->
+                <div class="mb-10">
+                    <h2 class="text-2xl font-bold text-slate-800 tracking-tight mb-1">AI-Generated Insights</h2>
+                    <p class="text-sm text-slate-500 leading-relaxed max-w-3xl">
+                        Autonomous narratives synthesized by Gemini 3 Flash Preview from customer cluster centroids
+                        identified within the Amazon review corpus.
+                    </p>
+                </div>
+
+                <!-- Bottom: Main Content Grid -->
+                <div class="grid grid-cols-12 gap-8">
+                    <!-- Left: Selected Article -->
+                    <div class="col-span-12 lg:col-span-8">
+                        <div id="blog-article-content" class="card-standard min-h-[600px] mb-6">
+                            <!-- Injected by JS -->
+                        </div>
+
+                        <div id="blog-dev-note"
+                            class="mb-6 p-4 bg-slate-50 border border-slate-100 rounded-lg flex items-start gap-2">
+                            <i class="ph ph-info text-slate-400 text-xs mt-0.5 flex-shrink-0"></i>
+                            <p class="text-[10px] text-slate-400 leading-relaxed italic">
+                                <strong>Technical Note:</strong> Article statistics reflect the full filtered dataset
+                                (~1.89M reviews).
+                                Narratives are strictly conditioned on Python-extracted facts to ensure factual
+                                groundedness.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Right: Article Navigator -->
+                    <div class="col-span-12 lg:col-span-4">
+                        <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Cluster
+                            Navigation</h4>
+                        <div id="blog-card-strip" class="flex flex-col gap-3">
+                            <!-- Injected by JS -->
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 7. DOCUMENTATION -->
+            <!-- 8. DOCUMENTATION -->
             <section id="tab-docs" class="tab-content">
                 <div class="mb-10">
                     <h2 class="text-2xl font-bold text-slate-800 tracking-tight mb-1">Documentation Concepts</h2>
@@ -1140,7 +1615,8 @@
                                 </tr>
                                 <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                                     <td class="py-3 px-4 font-semibold text-slate-800">Noise Filter
-                                        <code>len &lt; 10</code></td>
+                                        <code>len &lt; 10</code>
+                                    </td>
                                     <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">No filter / len
                                         &lt; 20</td>
                                     <td class="py-3 px-4 text-slate-600">Optimal tradeoff to remove 8.4% of duplicate
@@ -1155,7 +1631,8 @@
                                 </tr>
                                 <tr class="hover:bg-slate-50 transition-colors">
                                     <td class="py-3 px-4 font-semibold text-slate-800">Tokenizer
-                                        <code>max_length=256</code></td>
+                                        <code>max_length=256</code>
+                                    </td>
                                     <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">max_length=512
                                     </td>
                                     <td class="py-3 px-4 text-slate-600">Truncating to 256 tokens captures ~98%+ of
@@ -1171,7 +1648,57 @@
         </div>
     </main>
 
+
     <script src="train_history.js"></script>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal"
+        class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+        <div class="card-standard w-full max-w-md shadow-2xl animate-in fade-in zoom-in duration-200">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <i class="ph ph-gear-six text-cyan-500"></i> API Configuration
+                </h3>
+                <button onclick="app.toggleSettings(false)" class="text-slate-400 hover:text-slate-600">
+                    <i class="ph ph-x text-xl"></i>
+                </button>
+            </div>
+
+            <div class="space-y-5">
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">Hugging
+                        Face Read Token</label>
+                    <input type="text" id="setting-hf-token"
+                        onfocus="this.value = localStorage.getItem('nlp_hf_token') || ''"
+                        onblur="this.value = app.maskKey(this.value)"
+                        class="w-full text-sm border border-slate-200 rounded-lg p-3 text-slate-700 bg-slate-50 focus:bg-white focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all font-mono-data"
+                        placeholder="hf_xxxxxxxxxxxxxxxxxxxx">
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">Gemini API
+                        Key</label>
+                    <input type="text" id="setting-gemini-key"
+                        onfocus="this.value = localStorage.getItem('nlp_gemini_key') || ''"
+                        onblur="this.value = app.maskKey(this.value)"
+                        class="w-full text-sm border border-slate-200 rounded-lg p-3 text-slate-700 bg-slate-50 focus:bg-white focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all font-mono-data"
+                        placeholder="AIzaSyXXXXXXXXXXXXXXXXXXXX">
+                </div>
+
+                <div class="bg-amber-50 border border-amber-100 rounded-lg p-3 flex gap-3">
+                    <i class="ph ph-info text-amber-500 text-lg"></i>
+                    <p class="text-[10px] text-amber-700 leading-relaxed">
+                        Keys are stored locally in your browser's <strong class="font-bold">localStorage</strong>. They
+                        are never sent to our servers, only directly to HF/Google endpoints.
+                    </p>
+                </div>
+
+                <button onclick="app.saveKeys()" class="btn-cta w-full py-3 rounded-lg text-sm font-bold shadow-md">
+                    Save Configuration
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const app = {
             colors: {
@@ -1182,6 +1709,230 @@
                 slate: '#334155',
                 slateLight: '#94A3B8',
                 gridAlpha: 'rgba(148, 163, 184, 0.2)'
+            },
+
+            // Playground API Config
+            playground: {
+                hfToken: localStorage.getItem('nlp_hf_token') || 'HF_TOKEN_PLACEHOLDER',
+                geminiToken: localStorage.getItem('nlp_gemini_key') || 'GEMINI_API_KEY_PLACEHOLDER',
+                endpoints: {
+                    distilbert: 'https://api-inference.huggingface.co/models/basstianlopez/distilbert-amazon-reviews',
+                    roberta: 'https://api-inference.huggingface.co/models/basstianlopez/roberta-amazon-reviews',
+                    llm: (key) => `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`
+                }
+            },
+
+            blogState: {
+                activeArticle: 0,
+                initialized: false,
+                clusterColors: ['#0891B2', '#7C3AED', '#D97706', '#0D9488', '#4F46E5', '#BE185D'],
+                articles: [
+                    {
+                        cluster: 0,
+                        title: "The Performance Gap: Analyzing Consumer Disconnect in Personal Care and Consumables",
+                        reviews: "~30K",
+                        rating: "2.69",
+                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">The Performance Gap: Analyzing Consumer Disconnect in Personal Care and Consumables</h2>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Executive Summary</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Cluster 0, representing nearly 30,000 customer touchpoints across the Beauty, Grocery, and Health sectors, currently sits at a critical performance crossroads with a lackluster average rating of 2.69/5. With 37.7% of customers expressing active dissatisfaction and a heavy 45.7% remaining neutral, the data reveals a category plagued by functional failures and unmet efficacy promises. For executives, this cluster represents a high-churn environment where brand loyalty is fragile and the "quality ceiling" is surprisingly low.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Love: Niche Success Amidst General Mediocrity</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">While the overall sentiment of the cluster is suppressed, there are pockets of excellence that provide a roadmap for success. The "Best Rated" product in this analysis, <strong class="text-slate-700 font-mono-data">Product B000UW2DTE</strong>, boasts a near-perfect average rating of 4.8/5. Though its sample size is smaller (5 reviews), it highlights a crucial insight: when products in these categories—particularly Grocery and Personal Care—hit the mark on sensory experience, consumers respond with fierce loyalty.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Positive sentiment (16.6%) is often driven by the intersection of texture and flavor profile. For instance, high-performing consumables are praised for being "soft and chewy" without being "too sweet," as seen in the reviews for licorice-flavored taffy. The key takeaway for the "positive" minority is that satisfaction is derived from a product doing exactly what it says on the tin—whether that is a specific taste profile or a physical result in hair care.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Complain About: The High Cost of Functional Failure</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The most sobering data point in this cluster is the performance of its high-volume leaders. The most reviewed item, <strong class="text-slate-700 font-mono-data">Product B07N1572VL</strong> (217 reviews), maintains a dismal 2.4/5 rating, with a staggering 49.8% of its reviews being negative. This is not an isolated incident; <strong class="text-slate-700 font-mono-data">Product B0759B7KLH</strong> sinks even lower with a 1.8/5 average rating and a 65.2% negative sentiment rate. The "Worst Rated" distinction goes to <strong class="text-slate-700 font-mono-data">Product B01AYTGWA8</strong>, which bottomed out at a 1.3/5 rating.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The qualitative data explains why:</p>
+<ol class="list-decimal list-inside space-y-2 text-sm text-slate-600 mb-3">
+<li> <strong class="text-slate-700">Fundamental Functional Failure:</strong> Customers report basic operational issues, such as "coffee grinds still in my coffee." In the Grocery and Health space, a failure in the delivery mechanism (like a filter or a seal) renders the entire product useless.</li>
+<li> <strong class="text-slate-700">Lack of Efficacy in Health/Wellness:</strong> A representative neutral-to-negative review regarding pet anxiety supplements noted that the product provided no visible difference in behavior. Even more concerning, the product mirrored the side effects of prescription medications (incontinence), leading to a total loss of consumer trust.</li>
+<li> <strong class="text-slate-700">High Stakes, Low Delivery:</strong> In the "Health and Household" and "Beauty" categories, customers are looking for solutions to problems—anxiety, hair health, or dietary needs. When <strong class="text-slate-700 font-mono-data">Product B0BM6V2SH8</strong> yields a 59.5% negative rating, it suggests a systemic failure to deliver on the core value proposition.</li>
+</ol>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Sentiment at a Glance: The Danger of the "Neutral Trap"</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution for Cluster 0 is a bell curve that shifts uncomfortably toward the negative:</p>
+<ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
+<li><strong class="text-slate-700">Positive: 16.6%</strong></li>
+<li><strong class="text-slate-700">Neutral: 45.7%</strong></li>
+<li><strong class="text-slate-700">Negative: 37.7%</strong></li>
+</ul>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">As a senior analyst, the 45.7% neutral segment is the most telling. In many categories, "Neutral" means "it worked, but I wasn't impressed." In the Health and Beauty clusters, however, "Neutral" often signifies a failed experiment. Consumers are trying these products as alternatives to existing routines, finding them "just okay" or "not making a difference," and then moving on.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">When you combine the Negative and Neutral segments, a massive 83.4% of the customer base is currently "at-risk" or actively dissatisfied. This indicates a market ripe for disruption by any competitor that can provide a consistent, high-quality experience that moves the needle from "no difference" to "visible results."</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Key Takeaways for Decision-Makers</h3>
+<h4 class="text-xs font-bold text-slate-700 mt-4 mb-2">1. Fix the "Functional Basics" to Reduce Churn</h4>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The high negative sentiment (up to 65.2% for <strong class="text-slate-700 font-mono-data">Product B0759B7KLH</strong>) is often tied to basic quality control. Whether it’s grinds in a coffee cup or a supplement causing unwanted side effects, the first step to stabilizing this cluster is a rigorous audit of manufacturing and formulation standards. Consumers in this category are unforgiving of products that add more problems than they solve.</p>
+<h4 class="text-xs font-bold text-slate-700 mt-4 mb-2">2. Bridge the Efficacy Gap in Wellness</h4>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">A significant portion of the neutral sentiment (45.7%) stems from products that simply don't work as advertised. For products in the Health and Personal Care categories, "good enough" is not a sustainable business model. To capture the market, brands must move beyond vague promises and provide measurable results that justify the consumer's switch from their current brand or prescription.</p>
+<h4 class="text-xs font-bold text-slate-700 mt-4 mb-2">3. Capture the Sensory "High Ground"</h4>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The success of <strong class="text-slate-700 font-mono-data">Product B000UW2DTE</strong> (4.8/5) and the positive feedback on taffy textures suggest that sensory delight is a major differentiator. In a cluster where most products are rated poorly, focusing on the "experience" of the product—the scent of hair care, the texture of a snack, or the ease of use of a household item—can help a brand stand out as a premium, reliable option.</p>
+<h4 class="text-xs font-bold text-slate-700 mt-4 mb-2">4. Monitor the Leaders for Market Share Acquisition</h4>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The top five most reviewed products in this cluster all have average ratings between 1.8 and 2.6. This is an extraordinary weakness in the market. There is no "incumbent" here that actually owns consumer hearts. A strategic entry with a product rated even 3.5 or higher would likely see rapid market share acquisition, as customers are clearly searching for better alternatives to the current high-volume, low-satisfaction offerings.</p>`
+                    },
+                    {
+                        cluster: 1,
+                        title: "Understanding the \"Utility King\": A Deep Dive into Market Cluster 1",
+                        reviews: "1.5M",
+                        rating: "4.79",
+                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">Understanding the "Utility King": A Deep Dive into Market Cluster 1</h2>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Executive Summary</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Cluster 1 represents the dominant force in the current consumer landscape, accounting for <strong class="text-slate-700">79.7% of the total dataset</strong> with over <strong class="text-slate-700">1.5 million reviews</strong>. Boasting an exceptional <strong class="text-slate-700">average rating of 4.79/5</strong>, this cluster indicates a market where "utility and reliability" are the primary drivers of consumer satisfaction across diversified categories ranging from Electronics to Home and Kitchen. For executives, the takeaway is clear: in this segment, high performance is not a differentiator—it is the entry fee.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Love</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">In a cluster where <strong class="text-slate-700">94.7% of sentiments are positive</strong>, the "Best Rated" products set a staggering benchmark for excellence. <strong class="text-slate-700">Product 0137140762</strong> stands out as a paragon of consumer trust, maintaining a <strong class="text-slate-700">5.0/5 average rating across 5,322 reviews</strong>. Similarly, <strong class="text-slate-700 font-mono-data">Product B00IX1I3G6</strong> commands the highest volume of feedback with <strong class="text-slate-700">9,497 reviews</strong>, yet remarkably sustains a <strong class="text-slate-700">100.0% positive sentiment</strong> profile and a perfect <strong class="text-slate-700">5.0/5 rating</strong>.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The recurring themes in these high-performing products are captured by the keywords "works," "great," and "good product." This suggests that for products in the Appliances, Electronics, and Health & Household categories, consumers value functional consistency above all else. When a product simply "works" as advertised, the likelihood of a 5-star review increases exponentially. The data shows that top-tier products like <strong class="text-slate-700 font-mono-data">Product B00N3QS622</strong> (5,347 reviews, 5.0 rating) have effectively commoditized excellence, leaving no room for error.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Complain About</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Despite the overwhelming positivity, the cluster contains sharp warnings for manufacturers who fail to meet basic functional standards. The "Worst Rated" product, <strong class="text-slate-700 font-mono-data">Product B0006IX850</strong>, carries a dismal <strong class="text-slate-700">1.0/5 rating across 1,892 reviews</strong>. In a market where the average is 4.79, a 1.0 rating is not just a failure; it is a brand-damaging anomaly.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">We also see a fascinating "middle-ground failure" in <strong class="text-slate-700 font-mono-data">Product B086KKT3RX</strong>. Despite having a significant volume of <strong class="text-slate-700">7,698 reviews</strong>, it holds a mediocre <strong class="text-slate-700">3.6/5 rating</strong> and a surprisingly low <strong class="text-slate-700">30.9% positive sentiment</strong> rate. While it reports 0.0% negative sentiment in this specific data slice, the high volume of neutral or lukewarm feedback suggests a "disappointment gap."</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Interestingly, the qualitative data reveals a nuance in consumer language: a review with a 1/5 rating was still tagged with the phrase "great product." This indicates that even when a product is fundamentally "great" in concept or design, a failure in delivery, longevity, or specific utility can lead to a total collapse in rating. Executives must realize that a "good product" (a keyword appearing across all sentiment levels) is no longer enough to guarantee loyalty; it is merely the baseline.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Sentiment at a Glance</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution for Cluster 1 is heavily skewed toward the top end of the scale:</p>
+<ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
+<li><strong class="text-slate-700">Positive: 94.7%</strong></li>
+<li><strong class="text-slate-700">Neutral: 5.1%</strong></li>
+<li><strong class="text-slate-700">Negative: 0.3%</strong></li>
+</ul>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">This distribution tells a story of a "Winner-Take-All" market. With only <strong class="text-slate-700">0.3% negative sentiment</strong> across <strong class="text-slate-700">1,506,820 reviews</strong>, consumers in these categories (including Clothing, Shoes, and Jewelry) are generally satisfied with their purchases. However, this high baseline creates a "ceiling effect." When nearly everything is rated 4.8 or higher, the 5.3% of reviews that are not positive represent a significant risk. In this environment, a slide into the "Neutral" category (like Product B086KKT3RX) can result in a massive loss of market share to competitors who are maintaining 100% positivity.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Key Takeaways</h3>
+<ol class="list-decimal list-inside space-y-2 text-sm text-slate-600 mb-3">
+<li> <strong class="text-slate-700">Reliability is the Primary Value Driver:</strong> The prevalence of the term "works" across 1.5 million reviews confirms that for household, electronic, and appliance goods, functional reliability is the most critical metric. Executives should prioritize QA and "out-of-the-box" functionality over flashier, secondary features.</li>
+<li> <strong class="text-slate-700">The "Good Product" Paradox:</strong> Because the phrase "good product" appears in 1-star, 3-star, and 5-star reviews, it has become a generic descriptor. To differentiate, brands must move beyond being "good" and aim for specific emotional or high-performance descriptors that move the needle from neutral to positive.</li>
+<li> <strong class="text-slate-700">Monitor the "Neutral" Drift:</strong> With 5.1% of the cluster sitting in the neutral zone, there is a significant volume of customers (approx. 76,000) who are neither advocates nor detractors. Transitioning these customers to the 94.7% positive bracket through minor iterative improvements could solidify a market-leading position.</li>
+<li> <strong class="text-slate-700">Category Cross-Pollination:</strong> This cluster spans from Appliances to Clothing. The high average rating suggests that consumers are applying similar "utility-based" logic across these diverse categories. Consistency in brand experience across these different product lines is essential for maintaining the high trust levels seen in Product 0137140762.</li>
+</ol>`
+                    },
+                    {
+                        cluster: 2,
+                        title: "The Expectation Gap: Analyzing Consumer Volatility in Media and Digital Content",
+                        reviews: "~51K",
+                        rating: "2.89",
+                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">The Expectation Gap: Analyzing Consumer Volatility in Media and Digital Content</h2>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Executive Summary</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Cluster 2 represents a significant cross-section of media and digital content, characterized by a lukewarm average rating of 2.89/5 across 51,402 reviews. With neutral and negative sentiment combined accounting for over 75% of the data, the cluster reveals a critical "expectation gap" where products are failing to deliver on their marketing promises or foundational value propositions. Business leaders must focus on content alignment and clarity to convert the massive 41.5% neutral audience into brand advocates.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Love</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Despite the low overall average, there are pockets of excellence within this cluster that provide a blueprint for success. The best-rated product, <strong class="text-slate-700">031008962X</strong>, boasts a perfect 5.0/5 average rating (from 16 reviews), signaling that when the product hits the mark, consumer satisfaction is absolute.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">When customers are satisfied, the feedback points to a desire for immersive, transformative experiences. One positive reviewer described their experience as a "fantastic roller coaster ride," specifically praising a storyline that was "so different from anything" they had encountered. This suggests that in the saturated markets of Books, Kindle Store, and Movies_and_TV, high-performing products are those that break conventional molds and offer unique, mind-bending narratives.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Furthermore, <strong class="text-slate-700 font-mono-data">Product B002PXVYSC</strong> stands out among the most-reviewed items with a healthy 62.1% positive sentiment and a 3.3/5 rating. While not perfect, its ability to maintain a majority positive sentiment in a largely disgruntled cluster suggests a stronger-than-average alignment between what was marketed and what was delivered.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Complain About</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The "expectation gap" is most visible in the negative data. The worst-rated product in the cluster, <strong class="text-slate-700">0312573375</strong>, carries a dismal 1.0/5 rating across 33 reviews. However, the most alarming data points come from high-volume products that have failed to resonate with their audience.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Consider <strong class="text-slate-700 font-mono-data">Product B004GVZUTU</strong> and <strong class="text-slate-700 font-mono-data">Product B003O5MNSK</strong>. These products have 173 and 170 reviews respectively, yet their negative sentiment levels are staggering: 89.6% for the former and 85.9% for the latter. Ratings of 2.2 and 2.4 indicate a systemic failure. The common refrain in negative feedback—"not what I expected"—points toward a disconnect in the sales funnel. Whether through misleading metadata, poor software optimization, or confusing narrative structures (as hinted at by the keywords "confusing" and "expected"), these products are actively eroding brand equity.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Even the most reviewed item, <strong class="text-slate-700 font-mono-data">Product B00IX1I3G6</strong>, displays a high degree of polarization. With 273 reviews and an average rating of 3.0/5, it is split perfectly between 42.1% positive and 42.1% negative sentiment. This "love it or hate it" dynamic is a risky position for any executive to manage, as it indicates a lack of broad-market appeal.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Sentiment at a Glance</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution for Cluster 2 paints a picture of a category in crisis:</p>
+<ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
+<li><strong class="text-slate-700">Positive (24.4%):</strong> Less than one-quarter of customers are genuinely satisfied.</li>
+<li><strong class="text-slate-700">Neutral (41.5%):</strong> This is the largest segment. In consulting terms, "neutral" often means "uninspired." These are customers who did not find enough value to praise the product, but were not sufficiently aggrieved to demand a refund. This represents a massive untapped opportunity for product refinement.</li>
+<li><strong class="text-slate-700">Negative (34.1%):</strong> Over a third of the 51,402 reviews are detractors. In a category where 2.7% of the total dataset resides, this level of negativity can lead to high churn rates and increased customer acquisition costs.</li>
+</ul>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">With an average rating of 2.89/5, this cluster significantly underperforms the typical 4.0+ benchmark expected for healthy e-commerce categories. The high neutral-to-negative ratio suggests that the current offerings are either technically flawed (Software) or narratively unsatisfying (Books/Kindle/Movies).</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Key Takeaways</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">For executives looking to turn these insights into action, three strategic pivots are necessary:</p>
+<ol class="list-decimal list-inside space-y-2 text-sm text-slate-600 mb-3">
+<li> <strong class="text-slate-700">Close the Expectation Gap:</strong> The recurring theme of "not what I expected" suggests that marketing and product descriptions are misaligned with the actual content. Audit the metadata and promotional materials for products like <strong class="text-slate-700">B004GVZUTU</strong> and <strong class="text-slate-700">B003O5MNSK</strong> to ensure they accurately reflect the user experience.</li>
+<li> <strong class="text-slate-700">Target the "Neutral" Middle:</strong> With 41.5% of reviewers sitting on the fence, small improvements in user interface (for software) or narrative pacing (for books and movies) could yield significant gains. Neutrality often stems from a "beginning was a bit confusing" experience; simplifying the onboarding or the "first act" of content could convert these users to the positive column.</li>
+<li> <strong class="text-slate-700">Embrace "High-Risk, High-Reward" Content Wisely:</strong> The success of <strong class="text-slate-700">Product 031008962X</strong> (5.0 rating) and the polarizing nature of <strong class="text-slate-700 font-mono-data">Product B00IX1I3G6</strong> show that "different" can work. However, innovation must be balanced with clarity. If a product is going to be "crazy" or "different," the marketing must prepare the consumer for that specific journey to avoid the 89.6% negative backlash seen elsewhere.</li>
+<li> <strong class="text-slate-700">Prioritize Quality Control in Software/Kindle Integrations:</strong> Given the category mix (Software and Kindle Store), technical friction is a likely contributor to the 2.89 average rating. Ensure that digital delivery and compatibility are not the silent killers of otherwise good content.</li>
+</ol>`
+                    },
+                    {
+                        cluster: 3,
+                        title: "The Expectation Gap: Navigating Performance and Precision in Cluster 3",
+                        reviews: "~145K",
+                        rating: "3.91",
+                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">The Expectation Gap: Navigating Performance and Precision in Cluster 3</h2>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Executive Summary</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Cluster 3 represents a significant cross-section of the market, accounting for 7.7% of the total dataset with 145,267 reviews and an average rating of 3.91 / 5. While the majority of customers are satisfied, the high volume of neutral sentiment (34.5%) suggests a market where products often meet the bare minimum of expectations but struggle to provide a "wow" factor. For executives, the data reveals a sharp divide between high-performing outliers and products failing fundamentally on sizing and durability.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Love</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">In a marketplace often defined by hyperbole, the most successful products in Cluster 3 share a common trait: they do exactly what they claim to do. This "precision of promise" is reflected in the key terms "described" and "expected." When a product aligns perfectly with its digital footprint, customer loyalty follows.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The data highlights several standout performers that have achieved near-perfection. Product B077N4CNVJ leads the pack with 3,653 reviews and a staggering 99.9% positive sentiment, maintaining a perfect 5.0 / 5 average rating. Similarly, Product B00ADR2LV6 boasts 1,219 reviews with an identical 99.9% positive rate. These are not small sample sizes; they represent thousands of customers experiencing zero friction.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Another notable success is Product B00005C97M, which earned a perfect 5.0 / 5 rating across 201 reviews. The positive sentiment in this cluster is often summed up by the phrase "as expected." For items spanning categories like Automotive, Industrial & Scientific, and Home & Kitchen, reliability is the ultimate luxury. Customers are rewarding brands that provide accurate descriptions and consistent quality, allowing them to complete their tasks without incident.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Complain About</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">While the overall average rating is a respectable 3.91, the "floor" of this cluster is remarkably low for specific products. The most significant concern for executives should be the high variance in quality control and sizing accuracy.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The negative sentiment (7.8%) is concentrated heavily in products that fail to meet physical expectations. Product B071X4ZX3X is a cautionary tale, holding a dismal 1.6 / 5 average rating across 1,206 reviews. An overwhelming 83.7% of its reviews are negative, making it a major detractor for the cluster’s overall health. Furthermore, Product B000XEX8AW holds the title of the worst-rated product with a 1.0 / 5 average rating.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The recurring key terms "small," "fit," and "size" point to a systemic issue with dimensional accuracy. In categories like Arts, Crafts & Sewing or Automotive, a discrepancy of even a few millimeters can render a product useless. This frustration is compounded by durability concerns; one representative review noted that a product developed holes after only one month of use. When a product fails to "fit" or falls apart shortly after purchase, the sentiment shift from neutral to negative is swift and devastating to the brand's long-term viability.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Sentiment at a Glance</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution of Cluster 3 tells a story of "competent utility" rather than "emotional delight."</p>
+<ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
+<li><strong class="text-slate-700">Positive (57.7%):</strong> More than half of the customers are pleased, primarily because the product matched the description. This is a solid foundation, but it suggests the cluster is dominated by functional, rather than aspirational, purchases.</li>
+<li><strong class="text-slate-700">Neutral (34.5%):</strong> This is the most telling statistic for a market analyst. Over a third of all reviews (nearly 50,000 instances) are neutral. This indicates a "commodity" mindset. Customers are not unhappy, but they are not advocates either. They characterize their experience as "as expected," which leaves the door wide open for a competitor to disrupt the space with a superior brand experience.</li>
+<li><strong class="text-slate-700">Negative (7.8%):</strong> While the percentage is low, the intensity is high. Negative reviews are driven by functional failure (holes, poor fit) rather than subjective taste. In this cluster, a negative review is almost always an indictment of the product's basic utility.</li>
+</ul>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Key Takeaways</h3>
+<h4 class="text-xs font-bold text-slate-700 mt-4 mb-2">1. Close the "Dimensional Gap"</h4>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The prevalence of terms like "size" and "fit" in negative reviews suggests that better visualization tools or more precise technical specifications are needed. Executives should audit product listings to ensure that "small" is never a surprise. For the Automotive and Industrial sectors, providing CAD drawings or high-resolution scale photos can reduce the 7.8% negative friction significantly.</p>
+<h4 class="text-xs font-bold text-slate-700 mt-4 mb-2">2. Move the Middle: From "As Expected" to "Exceeded"</h4>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">With 34.5% of customers sitting in the neutral zone, there is a massive opportunity to capture market share through incremental value. If "as expected" is the current standard for a 3/5 or 4/5 rating, adding a small "surprise and delight" element—such as improved packaging, clearer instructions, or a longer warranty—could convert these passive buyers into the high-loyalty advocates seen in the B077N4CNVJ (5.0 rating) category.</p>
+<h4 class="text-xs font-bold text-slate-700 mt-4 mb-2">3. Address the Durability Threshold</h4>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The report of "holes after 1 month" indicates a failure in the quality-to-price ratio. In a cluster that includes Industrial and Scientific goods, "fit for purpose" includes longevity. Brands within this cluster should investigate their "failure to survive" rate within the first 90 days. Reducing early-stage product failure is the fastest way to eliminate the 1.0 and 1.6-rated outliers that currently drag down the cluster average.</p>
+<h4 class="text-xs font-bold text-slate-700 mt-4 mb-2">4. Benchmark Against the "Perfect" Performers</h4>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Product B077N4CNVJ and B00ADR2LV6 have cracked the code for scaling to thousands of reviews while maintaining a 5.0 rating. A deep-dive competitive analysis of these specific products’ supply chains and customer service models would likely reveal the "gold standard" for operations within these Amazon categories.</p>`
+                    },
+                    {
+                        cluster: 4,
+                        title: "The Reliability Gap: Why Cluster 4 is Failing the Modern Consumer",
+                        reviews: "~75K",
+                        rating: "1.95",
+                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">The Reliability Gap: Why Cluster 4 is Failing the Modern Consumer</h2>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Executive Summary</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Cluster 4 represents a critical failure in the customer experience, evidenced by a staggering 63.5% negative sentiment and a dismal average rating of 1.95 / 5 across more than 74,000 reviews. For executives, this data signals a category where basic functional expectations are consistently unmet, leaving a massive opening for any competitor capable of delivering fundamental product reliability and "value for money."</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Love</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Finding "the good" in a cluster with only 3.0% positive sentiment requires looking at the outliers. When customers do offer praise, it is centered almost entirely on functional restoration and utility.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The standout performer in this category is <strong class="text-slate-700 font-mono-data">Product B00067BC4U</strong>, maintaining a perfect 5.0 / 5 average rating. While the sample size is small (8 reviews), it represents the "gold standard" of what is possible within this cluster. Positive feedback, such as the 5-star review regarding a phone battery replacement, highlights a core theme: solving a specific pain point. In that instance, the customer noted they "had to charge my phone 3 times day" until the product allowed them to "have my phone back."</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">This reveals that the 3.0% of satisfied customers aren't looking for luxury or "delight" features. They are looking for products that "work great" and fulfill their basic promise. When a product in this category—whether it’s in Software, Electronics, or Patio & Garden—actually performs its primary function, customers are remarkably relieved and grateful.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Complain About</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The overwhelming narrative in Cluster 4 is one of frustration and perceived waste. With 63.5% of the 74,722 reviews trending negative, the "average" experience in this cluster is one of failure.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The negative sentiment is best personified by <strong class="text-slate-700">Product 1603113703</strong>, which holds a bottom-tier 1.0 / 5 rating. Even the most reviewed products in the cluster struggle significantly:</p>
+<ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
+<li><strong class="text-slate-700 font-mono-data">Product B07DNLTBG7</strong>: 299 reviews with a 1.8 / 5 average rating and an alarming 73.2% negative sentiment.</li>
+<li><strong class="text-slate-700 font-mono-data">Product B07N1572VL</strong>: 246 reviews with a 1.9 / 5 average rating and 65.4% negative sentiment.</li>
+<li><strong class="text-slate-700 font-mono-data">Product B00IX1I3G6</strong>: 302 reviews with a 2.4 / 5 average rating and 57.0% negative sentiment.</li>
+</ul>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The recurring themes in these complaints are captured by the key terms: "work," "money," and "did." The review excerpt "poor quality" summarizes the sentiment concisely. Customers feel that these products simply do not "work" as intended, leading to the frequent use of the word "money"—almost always in the context of feeling like they have wasted it. Unlike other categories where complaints might focus on aesthetics or delivery times, the grievances here are foundational. If 73.2% of your customers for a top-reviewed product are reporting a negative experience, you are not just facing a PR issue; you are facing a product integrity crisis.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Sentiment at a Glance</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution for Cluster 4 is one of the most lopsided we have analyzed, painting a picture of a "broken" category:</p>
+<ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
+<li><strong class="text-slate-700">Positive (3.0%)</strong>: A negligible minority. This suggests that exceeding expectations is almost non-existent in this cluster.</li>
+<li><strong class="text-slate-700">Neutral (33.4%)</strong>: A significant portion of the market is in "purgatory." As seen in the 3-star review for a device where the "speaker could be a little better," these customers are not happy; they are simply tolerant. They feel the product "did the job" but provide no brand loyalty. Note that <strong class="text-slate-700 font-mono-data">Product B00S0X4DEI</strong> and <strong class="text-slate-700 font-mono-data">Product B00FKK2VKM</strong> both have 3.0 / 5 ratings with 0.0% positive and nearly 0.0% negative ratings, indicating they are viewed as purely mediocre, "middle-of-the-road" utilities.</li>
+<li><strong class="text-slate-700">Negative (63.5%)</strong>: The dominant voice. When nearly two-thirds of your customer base is actively dissatisfied, the market is primed for disruption.</li>
+</ul>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">This distribution tells us that the "floor" for this category has dropped. Customers have moved past disappointment into a state of expected failure.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Key Takeaways</h3>
+<ol class="list-decimal list-inside space-y-2 text-sm text-slate-600 mb-3">
+<li> <strong class="text-slate-700">Reliability is the Only Competitive Advantage:</strong> In a cluster where the average rating is 1.95 / 5, you do not need to innovate with complex features to win market share. You simply need to ensure the product "works." The key terms "work" and "did" suggest that functional consistency is the primary driver of the few positive reviews that exist.</li>
+<li> <strong class="text-slate-700">The "Neutral" Trap:</strong> 33.4% of your market is currently settled in a neutral state. These are not "safe" customers; they are "at-risk" customers who will defect the moment a reliable alternative appears. Products like <strong class="text-slate-700">B00S0X4DEI</strong>, which sits at a 3.0 rating with 0% positive sentiment, are placeholders that offer no long-term brand equity.</li>
+<li> <strong class="text-slate-700">Address the Quality-Price Gap:</strong> The prominence of the word "money" in negative reviews indicates a disconnect between cost and value. Customers in the Electronics, Software, and Cell Phone categories are particularly sensitive to products that fail shortly after purchase. Quality control isn't just a manufacturing metric here; it is the core of the brand's survival.</li>
+<li> <strong class="text-slate-700">Listen to the "Work" Narrative:</strong> The data shows that users are focused on utility ("use," "work," "did"). To turn the tide of negative sentiment, marketing and product development must align on a "Back to Basics" approach. Fix the speaker, fix the battery life, and ensure the software runs. In Cluster 4, the winner will be the brand that stops overpromising and starts consistently delivering.</li>
+</ol>`
+                    },
+                    {
+                        cluster: 5,
+                        title: "Beyond the Transaction: Decoding High-Stakes Satisfaction in Cluster 5",
+                        reviews: "~83K",
+                        rating: "4.71",
+                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">Beyond the Transaction: Decoding High-Stakes Satisfaction in Cluster 5</h2>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Executive Summary</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Cluster 5 represents a high-performing segment of the market characterized by exceptional customer loyalty and a staggering 90.0% positive sentiment rate across 82,639 reviews. With an average rating of 4.71/5, this category—spanning Gift Cards, Toys, and Office Products—thrives on "ease of use" and gifting utility, though it remains vulnerable to specific functional failures where product performance meets critical expectations.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Love</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">In a marketplace often defined by friction, Cluster 5 is an anomaly of streamlined satisfaction. The data reveals a consumer base that prioritizes simplicity and emotional resonance. The top-performing products in this cluster don't just meet expectations; they virtually eliminate dissatisfaction.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">For instance, <strong class="text-slate-700">Product 0415289556</strong> stands as the gold standard within this data set, maintaining a perfect 5.0/5 rating across 63 reviews. This level of consensus is mirrored in high-volume leaders such as <strong class="text-slate-700 font-mono-data">Product B018F4M89S</strong> and <strong class="text-slate-700 font-mono-data">Product B0719C5P56</strong>, which boast positive sentiment scores of 99.0% and 98.7% respectively.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The "story" behind these numbers is found in the recurring key terms: <em>great, love, easy,</em> and <em>gift</em>. For these customers, the product is often a means to an end—a successful birthday, a seamless office task, or a creative project. A representative positive review captures this succinctly: "easy to use." When the barrier to entry is low and the reliability is high, customers reward brands with near-unanimous praise. This is particularly evident in <strong class="text-slate-700 font-mono-data">Product B00ADR2LV6</strong>, which achieved a 4.9/5 rating from 846 reviews, indicating that even at scale, high-touch satisfaction is achievable.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Complain About</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">While the negative sentiment is remarkably low at just 1.5%, the "floor" for this cluster is unforgiving. When a product fails to deliver on its core promise, the fallout is absolute. <strong class="text-slate-700 font-mono-data">Product B000GDI4O0</strong>, for example, holds a 1.0/5 rating, representing the extreme end of consumer rejection.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">A critical outlier in the high-volume category is <strong class="text-slate-700 font-mono-data">Product B077N4CNVJ</strong>. Despite being the second most-reviewed product (873 reviews), it carries a 4.0/5 rating and a significant 34.2% negative sentiment rate. This is nearly 23 times higher than the cluster average for negative feedback.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The qualitative data suggests that "performance gaps" are the primary driver of these low scores. One consumer provided a detailed 2/5 rating when comparing a purchase to a previous version of a blackout curtain, noting, "you could see the morning light through these... [compared to] 100 blackout curtains." In this cluster, "good enough" is not an option when a product is sold on a specific functional promise (like light insulation). If a product is marketed for its utility and fails that single test, the "ease of use" that usually drives the cluster becomes irrelevant, and the rating collapses.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Sentiment at a Glance</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution for Cluster 5 is heavily skewed toward excellence, providing a "high-trust" environment for brands:</p>
+<ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
+<li><strong class="text-slate-700">Positive (90.0%):</strong> The vast majority of interactions are frictionless. This indicates that for the categories of Toys, Gift Cards, and Office Products, the baseline market expectation is being met or exceeded.</li>
+<li><strong class="text-slate-700">Neutral (8.5%):</strong> This segment represents a "wait and see" demographic. As seen in the review for a Spiderman-themed product, the customer was pleased with the "vibrant" color but remained cautious about the "thick" material, stating they "will update once he tries it on." Neutrality here isn't a lack of interest; it’s a pending judgment on durability and fit.</li>
+<li><strong class="text-slate-700">Negative (1.5%):</strong> This is a negligible fraction of the total 82,639 reviews, but as noted with Product B077N4CNVJ, it is often concentrated in specific underperforming SKUs rather than spread across the category.</li>
+</ul>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">This 90/8.5/1.5 split suggests a market where customers are predisposed to be happy, provided the product does exactly what it says on the box.</p>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Key Takeaways</h3>
+<ol class="list-decimal list-inside space-y-2 text-sm text-slate-600 mb-3">
+<li> <strong class="text-slate-700">Prioritize Frictionless Design:</strong> The dominant keywords "easy" and "nice" suggest that for Cluster 5, the user experience is the product. Any complexity in assembly or usage—particularly in the Arts, Crafts, and Office categories—will likely result in a migration from the 90% positive bracket into the neutral or negative zones.</li>
+<li> <strong class="text-slate-700">Monitor Functional Benchmarks Rigorously:</strong> The sharp decline in sentiment for products like the "blackout curtains" (referenced in negative reviews) shows that customers in this segment perform side-by-side comparisons. If your product underperforms against a competitor or even a previous version of itself, the customer base is savvy enough to document that failure in detail.</li>
+<li> <strong class="text-slate-700">Address the "Neutral" Gap:</strong> With 8.5% of reviews being neutral, there is a significant opportunity to convert "cautious" buyers into advocates. Providing more detailed specs on material thickness or "fit" (as requested in the Spiderman toy review) could resolve concerns before the product even arrives, pushing neutral sentiment into the positive column.</li>
+<li> <strong class="text-slate-700">Leverage the "Gifting" Narrative:</strong> Since "gift" is a top-5 keyword and categories include Gift Cards and Toys, marketing efforts should focus on reliability and "gift-ability." Products like <strong class="text-slate-700 font-mono-data">Product B018F4M89S</strong> (99.0% positive) should be positioned as the "safe bet" for consumers who are shopping for others and cannot afford a product failure.</li>
+</ol>`
+                    }
+                ],
+                missingArticle: '<div class="text-center py-12 text-slate-400"><i class="ph ph-file-text text-3xl mb-3 block"></i><p class="text-sm">Article not yet generated</p></div>'
             },
 
             codeSnippets: {
@@ -1213,21 +1964,28 @@ training_args = TrainingArguments(
     fp16=<span class="syn-pink">True</span>,
 )
 <span class="syn-grey"># Tokenizer max_length=256 (BPE)</span>`,
-                llm: `<span class="syn-grey"># API Endpoint & Model</span>
-API_MODEL    = <span class="syn-cyan">"mistralai/mistral-medium-3.5-128b"</span>
-ENDPOINT     = <span class="syn-cyan">"https://integrate.api.nvidia.com/v1"</span>
+                llm: `<span class="syn-pink">from</span> google <span class="syn-pink">import</span> genai
+<span class="syn-pink">import</span> os
 
-<span class="syn-grey"># Hyperparameters</span>
-TEMPERATURE  = <span class="syn-orange">0.70</span>
-TOP_P        = <span class="syn-orange">1.00</span>
-MAX_TOKENS   = <span class="syn-orange">16384</span>
-REASONING    = <span class="syn-cyan">"high"</span>`
+<span class="syn-grey"># The client gets the API key from environment</span>
+client = genai.Client(api_key=os.getenv(<span class="syn-cyan">"GEMINI_API_KEY"</span>))
+
+<span class="syn-grey"># Abstractive Synthesis (Gemini 3.1 Flash-Lite)</span>
+response = client.models.generate_content(
+    model=<span class="syn-cyan">"gemini-3.1-flash-lite"</span>, 
+    contents=<span class="syn-cyan">"Explain how AI works in a few words"</span>
+)
+
+<span class="syn-pink">print</span>(response.text)`
             },
 
             switchTab: function (id) {
                 const tab = document.getElementById(id);
                 const nav = document.getElementById(id.replace('tab-', 'nav-'));
-                if (!tab || !nav) return;
+                if (!tab || !nav) {
+                    console.error('Tab or Nav element not found:', id);
+                    return;
+                }
 
                 document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
                 document.querySelectorAll('.nav-item').forEach(el => {
@@ -1245,6 +2003,15 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                 } else if (id === 'tab-benchmark') {
                     if (this.currentMode === 'metrics') this.initMetricsChart();
                     if (this.currentMode === 'evolution') this.initEvolutionChart();
+                }
+
+                // Blog tab handling
+                const footer = document.getElementById('blog-footer');
+                if (id === 'tab-blog') {
+                    if (!this.blogState.initialized) this.initBlog();
+                    if (footer) footer.classList.remove('hidden');
+                } else {
+                    if (footer) footer.classList.add('hidden');
                 }
 
                 document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
@@ -1266,6 +2033,8 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                 const evolutionCards = document.getElementById('evolution-cards');
                 const btnD = document.getElementById('btn-code-distil');
                 const btnR = document.getElementById('btn-code-roberta');
+
+                if (!btnCode || !btnMetrics || !btnEvolution || !codeDisplay || !metricsDisplay || !evolutionDisplay) return;
 
                 const inactiveBtn = "text-[10px] font-bold px-3 py-1 rounded text-slate-400 hover:text-white transition-all";
                 const activeBtn = "text-[10px] font-bold px-3 py-1 rounded bg-slate-700 text-white transition-all";
@@ -1382,7 +2151,7 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                     if (this.metricsVisibility.roberta) { cardRoberta.classList.remove('hidden'); cardRoberta.classList.add('flex'); }
                     else { cardRoberta.classList.add('hidden'); cardRoberta.classList.remove('flex'); }
                 }
-                
+
                 if (evoDistil) {
                     if (this.metricsVisibility.distil) { evoDistil.classList.remove('hidden'); evoDistil.classList.add('flex'); }
                     else { evoDistil.classList.add('hidden'); evoDistil.classList.remove('flex'); }
@@ -1449,10 +2218,7 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        animation: {
-                            duration: 1500,
-                            easing: 'easeOutElastic',
-                        },
+                        animation: false,
                         plugins: {
                             legend: {
                                 display: false
@@ -1546,7 +2312,7 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                                 padding: 10,
                                 cornerRadius: 4,
                                 callbacks: {
-                                    title: function(context) {
+                                    title: function (context) {
                                         const step = context[0].parsed.x;
                                         let epInfo = '';
                                         if (context[0].dataset.label === 'DistilBERT') {
@@ -1556,7 +2322,7 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                                         }
                                         return `Step: ${step.toLocaleString()} ${epInfo}`;
                                     },
-                                    label: function(context) {
+                                    label: function (context) {
                                         return context.dataset.label + ' Loss: ' + context.parsed.y.toFixed(4);
                                     }
                                 }
@@ -1566,10 +2332,10 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                             x: {
                                 type: 'linear',
                                 grid: { color: 'rgba(255,255,255,0.05)' },
-                                ticks: { 
+                                ticks: {
                                     color: '#94A3B8',
                                     maxTicksLimit: 8,
-                                    callback: function(value) { return value.toLocaleString(); }
+                                    callback: function (value) { return value.toLocaleString(); }
                                 }
                             },
                             y: {
@@ -1647,6 +2413,7 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                             },
                             x: { grid: { display: false } }
                         },
+                        animation: false,
                         plugins: {
                             legend: { display: false },
                             tooltip: {
@@ -1702,6 +2469,7 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                             x: { grid: { color: this.colors.gridAlpha, borderDash: [4, 4] }, ticks: { display: false } },
                             y: { grid: { color: this.colors.gridAlpha, borderDash: [4, 4] }, ticks: { display: false } }
                         },
+                        animation: false,
                         plugins: {
                             legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 10 } } },
                             tooltip: {
@@ -1725,70 +2493,235 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                 });
             },
 
-            runInference: function () {
+            runInference: async function () {
                 const input = document.getElementById('play-input');
                 const btn = document.getElementById('play-btn');
                 const spinner = document.getElementById('play-spinner');
                 const btnTxt = document.getElementById('play-btn-txt');
+                const results = document.getElementById('play-results');
+                const empty = document.getElementById('play-empty');
 
-                if (!input.value.trim()) return;
+                const statusTxt = document.getElementById('pipeline-status-text');
+                const statusDot = document.getElementById('pipeline-status-dot');
+                const step1Dot = document.getElementById('step-1-dot');
+                const step2Dot = document.getElementById('step-2-dot');
+                const step2Icon = document.getElementById('step-2-icon');
+                const playLlm = document.getElementById('play-llm');
+                const trace = document.getElementById('play-trace');
 
+                const text = input.value.trim();
+                if (!text) {
+                    input.classList.add('ring-2', 'ring-red-500', 'border-red-500');
+                    input.placeholder = "Please enter a review to analyze...";
+                    setTimeout(() => input.classList.remove('ring-2', 'ring-red-500', 'border-red-500'), 2000);
+                    return;
+                }
+
+                // Check for keys
+                if (this.playground.hfToken === 'HF_TOKEN_PLACEHOLDER' || this.playground.geminiToken === 'GEMINI_API_KEY_PLACEHOLDER') {
+                    this.toggleSettings(true);
+                    return;
+                }
+
+                // 1. Loading State
                 spinner.classList.remove('hidden');
                 btn.disabled = true;
-                btnTxt.textContent = "Processing";
-                document.getElementById('play-empty').classList.add('hidden');
-                document.getElementById('play-results').classList.add('hidden');
+                btnTxt.textContent = "Pipeline Active...";
+                empty.classList.add('hidden');
+                results.classList.remove('hidden');
+                results.classList.add('flex');
 
-                setTimeout(() => {
-                    spinner.classList.add('hidden');
-                    btn.disabled = false;
-                    btnTxt.textContent = "Evaluate";
+                // Reset states
+                document.getElementById('play-badge').innerHTML = '';
+                document.getElementById('play-conf').textContent = '';
+                playLlm.textContent = "Awaiting classification payload...";
+                playLlm.className = "text-sm text-slate-400 leading-relaxed font-mono-data mt-1 animate-pulse";
+                trace.textContent = `[${new Date().toLocaleTimeString()}] Pipeline initialized.\n`;
 
-                    const text = input.value.toLowerCase();
+                statusTxt.textContent = "EXTRACTING";
+                statusTxt.className = "text-cyan-500";
+                statusDot.className = "w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse";
+
+                step1Dot.className = "absolute -left-[5px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-white border-2 border-cyan-500 hidden md:block animate-pulse";
+                step2Dot.className = "absolute -left-[5px] top-8 w-2.5 h-2.5 rounded-full bg-white border-2 border-slate-200 hidden md:block";
+                if (step2Icon) step2Icon.className = "ph-fill ph-circle text-slate-300 text-lg";
+
+                try {
+                    const modelKey = document.getElementById('play-model').value;
+                    const hfEndpoint = this.playground.endpoints[modelKey];
+
+                    this.logTrace("HuggingFace Request", { model: modelKey, endpoint: hfEndpoint, input_length: text.length });
+
+                    // 2. Query Hugging Face (Sentiment)
+                    const hfResponse = await fetch(hfEndpoint, {
+                        headers: { Authorization: `Bearer ${this.playground.hfToken}` },
+                        method: "POST",
+                        body: JSON.stringify({ inputs: text }),
+                    });
+
+                    let hfResult = await hfResponse.json();
+                    this.logTrace("HuggingFace Response", hfResult);
+
+                    // Handle model loading
+                    if (hfResult.error && hfResult.error.includes("loading")) {
+                        btnTxt.textContent = "Warming up VRAM...";
+                        statusTxt.textContent = "WARMING UP";
+                        await new Promise(r => setTimeout(r, 3000));
+                        return this.runInference(); // Recursive retry
+                    }
+
+                    if (!hfResponse.ok) throw new Error(hfResult.error || "HF API Error");
+
+                    const prediction = Array.isArray(hfResult[0]) ? hfResult[0][0] : hfResult[0];
+                    const rawLabel = prediction.label;
+                    const confidence = prediction.score;
+
                     let label = 'Neutral';
                     let color = this.colors.slateLight;
-                    let icon = 'ph-minus';
-                    let llm = "Flat semantics. Lacks strong polar identifiers. Classified as a functional comment without requiring immediate action.";
+                    let icon = 'ph-scales';
 
-                    const negWords = /(waste|broke|return|refund|junk|trash|terrible|horrible|disappoint|useless|defective|damaged)/;
-                    const posWords = /(perfect|excellent|amazing|love|worth|favorite|impressed|recommend|best|glad|pleased)/;
-
-                    const hasNeg = negWords.test(text);
-                    const hasPos = posWords.test(text);
-                    const isLong = text.length > 200;
-
-                    if (hasNeg && hasPos) {
-                        label = 'Neutral';
-                        color = this.colors.slateLight;
-                        icon = 'ph-scales';
-                        llm = "Mixed sentiment detected. Model successfully resolves the 'Neutral Paradox' by weighting conflicting polar identifiers (e.g., praise mixed with complaints).";
-                    } else if (hasPos) {
-                        label = 'Positive';
-                        color = this.colors.neoSuccess;
-                        icon = 'ph-trend-up';
-                        llm = "High semantic positivity with specific product praise. The customer shows strong retention. Suggestion: Automatic trigger to request a public review.";
-                    } else if (hasNeg) {
+                    if (rawLabel === 'LABEL_0' || rawLabel.toLowerCase() === 'negative') {
                         label = 'Negative';
                         color = this.colors.red;
                         icon = 'ph-warning';
-                        llm = "Critical risk. Lexical fingerprint aligns with strict negative clusters (defects/returns). Preventive escalation to Level 2 support is recommended.";
-                    } else if (isLong) {
-                        label = 'Neutral';
-                        color = this.colors.slateLight;
-                        icon = 'ph-text-align-justify';
-                        llm = "No strong polar keywords, but extended length matches the 'Neutral Paradox' profile (users detailing ambivalence).";
+                    } else if (rawLabel === 'LABEL_2' || rawLabel.toLowerCase() === 'positive') {
+                        label = 'Positive';
+                        color = this.colors.neoSuccess;
+                        icon = 'ph-trend-up';
                     }
 
                     const badge = document.getElementById('play-badge');
                     badge.style.backgroundColor = color;
                     badge.innerHTML = `<i class="ph ${icon}"></i> ${label}`;
+                    document.getElementById('play-conf').textContent = `${(confidence * 100).toFixed(1)}%`;
 
-                    document.getElementById('play-conf').textContent = `Confidence: ${(Math.random() * 0.1 + 0.89).toFixed(3)}`;
-                    document.getElementById('play-llm').textContent = llm;
+                    step1Dot.className = "absolute -left-[5px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-cyan-500 border-2 border-cyan-500 hidden md:block";
+                    step2Dot.className = "absolute -left-[5px] top-8 w-2.5 h-2.5 rounded-full bg-white border-2 border-orange-500 hidden md:block animate-pulse";
+                    if (step2Icon) step2Icon.className = "ph-fill ph-circle-notch text-orange-500 text-lg animate-spin";
 
-                    document.getElementById('play-results').classList.remove('hidden');
-                    document.getElementById('play-results').classList.add('flex');
-                }, 800);
+                    statusTxt.textContent = "SYNTHESIZING";
+                    statusTxt.className = "text-orange-500";
+                    statusDot.className = "w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse";
+
+                    playLlm.textContent = "Generating contextual insight...";
+
+                    // 5. Query LLM Synthesis
+                    btnTxt.textContent = "Synthesizing...";
+
+                    const personas = {
+                        "Positive": "Eres un Customer Success Manager entusiasta. Celebra la felicidad del cliente, menciona el producto específico que compró y hazle una pregunta divertida o práctica sobre su uso diario.",
+                        "Neutral": "Eres un Especialista de Producto curioso. Agradece el feedback, identifica qué producto es y pregunta por un detalle técnico o de uso que podría inclinar la balanza a positivo.",
+                        "Negative": "Eres un Support Lead empático y directo. Lamenta la mala experiencia con el producto, identifica el problema principal y haz una pregunta para entender cómo podemos compensar o qué falló exactamente."
+                    };
+
+                    const payload = {
+                        contents: [{
+                            parts: [{
+                                text: `${personas[label] || personas["Neutral"]} 
+                                Contexto: El modelo detectó un sentimiento ${label}. 
+                                Reseña original: "${text}". 
+                                Instrucción: Genera una respuesta breve (máximo 2 frases) que conecte con el sentimiento y el producto específico mencionado en la reseña.`
+                            }]
+                        }]
+                    };
+
+                    this.logTrace("Gemini Request", { model: "gemini-1.5-flash", persona: label, text_preview: text.substring(0, 50) + "..." });
+
+                    const llmEndpoint = this.playground.endpoints.llm(this.playground.geminiToken);
+                    const llmResponse = await fetch(llmEndpoint, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    });
+
+                    let synthesis = "Synthesis unavailable (check API configuration).";
+                    if (llmResponse.ok) {
+                        const llmData = await llmResponse.json();
+                        this.logTrace("Gemini Response", llmData);
+                        synthesis = llmData.candidates[0].content.parts[0].text;
+                    } else {
+                        const errorData = await llmResponse.json();
+                        this.logTrace("Gemini Error", errorData);
+                        throw new Error(errorData.error?.message || "LLM API Error");
+                    }
+
+                    playLlm.textContent = synthesis;
+                    playLlm.className = "text-sm text-slate-600 leading-relaxed font-medium mt-1";
+
+                    step2Dot.className = "absolute -left-[5px] top-8 w-2.5 h-2.5 rounded-full bg-orange-500 border-2 border-orange-500 hidden md:block";
+                    if (step2Icon) step2Icon.className = "ph-fill ph-check-circle text-orange-500 text-lg";
+
+                    statusTxt.textContent = "COMPLETE";
+                    statusTxt.className = "text-emerald-500";
+                    statusDot.className = "w-1.5 h-1.5 rounded-full bg-emerald-500";
+
+                } catch (err) {
+                    console.error("Inference Error:", err);
+                    this.logTrace("Critical Failure", { error: err.message });
+                    alert(`Inference failed: ${err.message}`);
+                    empty.classList.remove('hidden');
+                    results.classList.add('hidden');
+
+                    statusTxt.textContent = "ERROR";
+                    statusTxt.className = "text-red-500";
+                    statusDot.className = "w-1.5 h-1.5 rounded-full bg-red-500";
+                } finally {
+                    spinner.classList.add('hidden');
+                    btn.disabled = false;
+                    btnTxt.textContent = "Run Inference Pipeline";
+                }
+            },
+
+            // Settings Logic
+            toggleSettings: function (show) {
+                const modal = document.getElementById('settings-modal');
+                if (show) {
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                    this.loadKeysToUI();
+                } else {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                }
+            },
+            maskKey: function (key) {
+                if (!key || key.length <= 5) return key;
+                return key.substring(0, 5) + "*".repeat(15);
+            },
+            loadKeysToUI: function () {
+                const hfInput = document.getElementById('setting-hf-token');
+                const geminiInput = document.getElementById('setting-gemini-key');
+
+                // For editing, we show raw or masked? User said "solo se vean los primeros 5 digitos".
+                // We'll show the raw key in the input while editing for copy/paste convenience, 
+                // but we can add a toggle to hide/show.
+                const hfKey = localStorage.getItem('nlp_hf_token') || '';
+                const geminiKey = localStorage.getItem('nlp_gemini_key') || '';
+
+                hfInput.value = hfKey;
+                geminiInput.value = geminiKey;
+            },
+            saveKeys: function () {
+                const hfKey = document.getElementById('setting-hf-token').value.trim();
+                const geminiKey = document.getElementById('setting-gemini-key').value.trim();
+
+                if (hfKey) localStorage.setItem('nlp_hf_token', hfKey);
+                if (geminiKey) localStorage.setItem('nlp_gemini_key', geminiKey);
+
+                this.playground.hfToken = hfKey;
+                this.playground.geminiToken = geminiKey;
+
+                this.toggleSettings(false);
+            },
+            toggleTrace: function () {
+                const container = document.getElementById('play-trace-container');
+                container.classList.toggle('hidden');
+            },
+            logTrace: function (label, data) {
+                const trace = document.getElementById('play-trace');
+                const timestamp = new Date().toLocaleTimeString();
+                trace.textContent += `[${timestamp}] ${label}:\n${JSON.stringify(data, null, 2)}\n\n`;
+                trace.parentElement.scrollTop = trace.parentElement.scrollHeight;
             },
 
             slideIndices: { 'eda-insights': 0 },
@@ -1914,11 +2847,68 @@ REASONING    = <span class="syn-cyan">"high"</span>`
                     }
                 }
                 chart.update();
+            },
+
+            initBlog: function () {
+                this.blogState.elements = {
+                    strip: document.getElementById('blog-card-strip'),
+                    content: document.getElementById('blog-article-content')
+                };
+
+                const { strip, content } = this.blogState.elements;
+                if (!strip || !content) return;
+
+                strip.innerHTML = this.blogState.articles.map((art, i) => {
+                    const ratingNum = parseFloat(art.rating);
+                    const ratingColor = ratingNum < 3.0 ? '#DC2626' : (ratingNum < 4.0 ? '#D97706' : '#10B981');
+
+                    return `
+                    <button class="blog-card card-standard w-full text-left flex flex-col gap-3 group transition-[border-color,background-color,transform] duration-300" data-index="${i}" onclick="app.selectBlogArticle(${i})">
+                        <div class="flex justify-between items-start">
+                            <div class="flex flex-col">
+                                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Cluster 0${i + 1}</span>
+                                <span class="text-[9px] font-bold text-slate-500 uppercase tracking-tight">${art.category}</span>
+                            </div>
+                            <span class="text-[10px] font-mono-data font-bold" style="color:${ratingColor}">★ ${art.rating}</span>
+                        </div>
+                        <p class="blog-card-title text-[11px] font-bold text-slate-700 leading-tight line-clamp-2">
+                            ${art.title}
+                        </p>
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-100 mt-1">
+                            <span class="text-[9px] font-mono-data text-slate-400">${art.reviews} reviews</span>
+                            <i class="ph ph-arrow-right text-slate-300 opacity-0 group-hover:opacity-100 transition-[opacity,transform] transform translate-x-[-10px] group-hover:translate-x-0"></i>
+                        </div>
+                    </button>`;
+                }).join('');
+
+                this.blogState.elements.cards = document.querySelectorAll('#blog-card-strip .blog-card');
+                this.selectBlogArticle(0);
+                this.blogState.initialized = true;
+            },
+
+            selectBlogArticle: function (index) {
+                const { articles, elements } = this.blogState;
+                if (!elements.cards || !elements.content) return;
+
+                elements.cards.forEach((card, i) => {
+                    if (i === index) {
+                        card.classList.add('ring-1', 'ring-cyan-500/50', 'bg-slate-50', 'border-cyan-500/50');
+                    } else {
+                        card.classList.remove('ring-1', 'ring-cyan-500/50', 'bg-slate-50', 'border-cyan-500/50');
+                    }
+                });
+
+                const art = articles[index];
+                elements.content.innerHTML = art ? art.html : this.blogState.missingArticle;
+                this.blogState.activeArticle = index;
             }
         };
 
         document.addEventListener('DOMContentLoaded', () => {
             app.initCharts();
+            // Load keys into state initially
+            app.playground.hfToken = localStorage.getItem('nlp_hf_token') || 'HF_TOKEN_PLACEHOLDER';
+            app.playground.geminiToken = localStorage.getItem('nlp_gemini_key') || 'GEMINI_API_KEY_PLACEHOLDER';
         });
     </script>
 </body>
