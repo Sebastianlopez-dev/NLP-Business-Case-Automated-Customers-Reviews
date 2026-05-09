@@ -1,16 +1,17 @@
 # Analysis — Notebook 02: DistilBERT Sentiment Classification
 
-> **Generated**: 2026-05-09  
+> **Generated**: 2026-05-09 | **Audited**: 2026-05-09  
 > **Notebook**: `notebook_02_distilbert_sentiment.ipynb`  
-> **Status**: ✅ Complete with detailed output cells
+> **Status**: ✅ Complete — 56 cells (10 markdown, 46 code)
 
 ---
 
 ## Executive Summary
 
-Notebook 02 implements **3-class sentiment classification** using DistilBERT fine-tuning on the preprocessed Amazon Reviews dataset from Notebook 01. The model achieves **77.26% accuracy** on the held-out test set with balanced performance across all sentiment classes.
-
-**Key achievement**: Full pipeline from raw data → predictions CSV, ready for Notebook 05 (summarisation).
+Notebook 02 fine-tunes `distilbert-base-uncased` for 3-class sentiment classification
+on the preprocessed Amazon Reviews dataset (N01). The model achieves **77.26% test accuracy**
+with a weighted F1 of 0.7718 [Cell 40/41 output]. The dataset is **perfectly balanced** across
+all three classes (~33.3% each in every split) [Cell 13 output].
 
 ---
 
@@ -18,17 +19,15 @@ Notebook 02 implements **3-class sentiment classification** using DistilBERT fin
 
 | Section | Cells | Purpose |
 |---------|-------|---------|
-| **Setup (0.x)** | 0-8 | Environment detection, package installation, imports, seeds, paths, GPU check |
-| **Input Validation** | 5 | Verify N01 artifacts exist before computation |
-| **Section 1 — Load Dataset** | 9-16 | Load Arrow files, verify splits, class distribution analysis |
-| **Section 2 — Tokenization** | 17-20 | DistilBertTokenizerFast, batch processing, tensor conversion |
-| **Section 3 — Model Setup** | 23-24 | Load DistilBertForSequenceClassification, architecture overview |
-| **Section 4 — Training** | 28-31 | WeightedTrainer, class-weighted loss, 5 epochs, checkpointing |
-| **Section 5 — Evaluation** | 37-41 | Test set metrics, confusion matrix, classification report |
-| **Section 6 — Inference** | 44-46 | Full test set predictions, CSV export, model save |
-| **Section 7 — Results** | 50-55 | Summary tables, correct/incorrect examples, loss curve |
-
-**Total**: 56 cells (10 markdown, 46 code)
+| Setup (0.x) | 0-8 | Env detection, imports, seeds, paths, GPU check |
+| Input Validation | 6-7 | Verify N01 Arrow artifacts exist |
+| §1 — Load Dataset | 9-16 | Load splits, class distribution (balanced at ~33.3%), class weights (all 1.0) |
+| §2 — Tokenization | 17-22 | DistilBertTokenizerFast, max_length=256, batch map, tensor format |
+| §3 — Model Setup | 23-27 | DistilBertForSequenceClassification, dropout=0.3, 67.0M params |
+| §4 — Training | 28-36 | WeightedTrainer, 5 epochs, batch=32, lr=2e-5, warmup=10% |
+| §5 — Evaluation | 37-43 | Test metrics, confusion matrix, classification report |
+| §6 — Inference | 44-49 | Predictions CSV (text, true_label, predicted_label, confidence), model save |
+| §7 — Results | 50-55 | Summary table, 5 correct/incorrect examples, loss curve, file checklist |
 
 ---
 
@@ -36,202 +35,139 @@ Notebook 02 implements **3-class sentiment classification** using DistilBERT fin
 
 ### 1. Model Selection: DistilBERT
 
-| Aspect | Choice | Rationale |
-|--------|--------|-----------|
-| **Base model** | `distilbert-base-uncased` | 40% smaller than BERT, 60% faster, retains 97% performance |
-| **Parameters** | 66.9M | Fits within Colab T4 GPU memory (15.1 GB used) |
-| **Max length** | 256 tokens | Balances coverage vs. memory; most reviews fit |
-| **Dropout** | 0.5 (classifier) | Increased from default 0.1 to combat overfitting |
+| Aspect | Choice | Reason |
+|--------|--------|--------|
+| Base model | `distilbert-base-uncased` | 40% smaller than BERT, 60% faster, retains ~97% performance |
+| Parameters | 66,955,779 | Fits T4 GPU (15.6 GB total) [Cell 26 output] |
+| Max length | 256 tokens | Covers ~95%+ of reviews; balances coverage vs. memory |
+| Dropout | 0.3 (attention, hidden, classifier) | Increased from default 0.1 to reduce overfitting [Cell 25 output] |
 
-### 2. Handling Class Imbalance
+### 2. Dataset: Perfectly Balanced
 
-**Problem**: Positive class dominates (typical for e-commerce reviews)
+The N01 preprocessing produced a **fully balanced** dataset — every split has ~33.3% per class [Cell 13]:
 
-**Solution**: Custom `WeightedTrainer` subclass with class-weighted cross-entropy:
+| Split | Negative | Neutral | Positive | Total |
+|-------|----------|---------|----------|-------|
+| Train | 49,920 (33.3%) | 49,921 (33.3%) | 49,920 (33.3%) | 149,761 |
+| Validation | 10,698 (33.3%) | 10,697 (33.3%) | 10,697 (33.3%) | 32,092 |
+| Test | 10,697 (33.3%) | 10,697 (33.3%) | 10,698 (33.3%) | 32,092 |
 
-```python
-class WeightedTrainer(Trainer):
-    def compute_loss(self, model, inputs, return_outputs=False):
-        weights = torch.tensor(self.class_weights).to(model.device)
-        loss_fct = CrossEntropyLoss(weight=weights)
-        # ... apply weighted loss
-```
-
-**Class weights computed**:
-- Negative (0): 1.0
-- Neutral (1): 1.0  
-- Positive (2): 1.0
-
-*(Note: Dataset appears balanced after N01 preprocessing)*
+Computed class weights are all 1.0000 (no imbalance to correct) [Cell 15 output].
+The `WeightedTrainer` is implemented in the code but produces identical behavior
+to the standard `Trainer` on this balanced dataset.
 
 ### 3. Training Configuration
 
-| Hyperparameter | Value | Standard Practice |
-|---------------|-------|-------------------|
-| Batch size | 32 | Standard for Transformer fine-tuning |
-| Epochs | 5 | Sufficient for convergence without overfitting |
-| Learning rate | 2e-5 | AdamW default for BERT-family models |
+| Parameter | Value | Notes |
+|-----------|-------|-------|
+| Batch size | 32 | Standard for T4 fine-tuning |
+| Epochs | 5 | 23,400 total steps (4,680/epoch) [Cell 31 output] |
+| Learning rate | 2e-5 | AdamW default for BERT-family |
 | Weight decay | 0.01 | L2 regularization |
-| Warmup ratio | 0.1 | Linear LR increase for first 10% of steps |
-| Evaluation | Per epoch | Early stopping via checkpoint selection |
-
-### 4. Reproducibility Measures
-
-✅ **Random seed**: 42 (Python, NumPy, PyTorch)  
-✅ **Deterministic mode**: `torch.backends.cudnn.deterministic = True`  
-✅ **Warning suppression**: TF/transformers warnings filtered  
-✅ **Checkpoint resumption**: Auto-resume on Colab disconnect
+| Warmup steps | 2,340 (10%) | Linear LR increase for first 10% of steps |
+| Eval strategy | Per epoch | Saves checkpoint each epoch; no early stopping callback |
 
 ---
 
 ## Results
 
-### Overall Performance
+### Overall Performance [Cell 38/40 output]
 
 | Metric | Value |
 |--------|-------|
 | **Test Accuracy** | **77.26%** |
+| Test Loss | 0.5478 |
+| Weighted F1 | 0.7718 |
 | Test samples | 32,092 |
-| Training samples | 149,761 |
-| Validation samples | 32,092 |
 
-### Per-Class Metrics
+### Per-Class Metrics (sklearn) [Cell 40/41 output]
 
 | Class | Precision | Recall | F1-Score | Support |
 |-------|-----------|--------|----------|---------|
-| **Negative (0)** | 0.80 | 0.72 | 0.76 | 4,560 |
-| **Neutral (1)** | 0.69 | 0.65 | 0.67 | 4,503 |
-| **Positive (2)** | 0.79 | 0.89 | 0.84 | 23,029 |
-| **Weighted Avg** | **0.78** | **0.77** | **0.77** | **32,092** |
+| Negative (0) | 0.7542 | 0.7807 | 0.7672 | 10,697 |
+| Neutral (1) | 0.6852 | 0.6573 | 0.6710 | 10,697 |
+| Positive (2) | 0.8749 | 0.8798 | 0.8773 | 10,698 |
+| **Weighted Avg** | **0.7714** | **0.7726** | **0.7718** | **32,092** |
 
-**Key insight**: Model performs best on Positive reviews (highest recall: 89%), weakest on Neutral class (F1: 0.67) — typical for 3-class sentiment where Neutral is ambiguous.
+**Key insight**: Positive class is easiest (F1=0.8773), Neutral is hardest (F1=0.6710).
+This is expected — 3-class sentiment where the middle ground is inherently ambiguous.
 
-### Confusion Matrix
+### Epoch-Level Training Progress [Cell 36 output]
 
-Saved to: `data/plots/nb02_confusion_matrix.png`
+| Epoch | Eval Loss | Accuracy | F1 |
+|-------|-----------|----------|-----|
+| 1 | 0.6009 | 0.7504 | 0.7466 |
+| 2 | 0.5510 | 0.7674 | 0.7668 |
+| 3 | 0.5464 | 0.7710 | 0.7705 |
+| 4 | 0.5514 | 0.7732 | 0.7714 |
+| 5 | 0.5497 | 0.7751 | 0.7748 |
 
-Expected pattern (based on metrics):
-- Strong diagonal (correct predictions)
-- Confusion primarily between Negative↔Neutral and Neutral↔Positive
-- Positive class shows highest true positive rate
-
----
-
-## Output Artifacts
-
-| File | Location | Purpose |
-|------|----------|---------|
-| **Predictions CSV** | `data/predictions_distilbert.csv` | Input for N05 summarisation |
-| **Metrics JSON** | `data/metrics_distilbert.json` | Full classification report |
-| **Model checkpoint** | `data/models/distilbert_sentiment/` | Reusable without re-training |
-| **Class distribution plot** | `data/plots/nb02_class_distribution.png` | Visual balance check |
-| **Confusion matrix** | `data/plots/nb02_confusion_matrix.png` | Error analysis |
-| **Training loss curve** | `data/plots/nb02_training_loss.png` | Convergence visualization |
-
-### Predictions CSV Schema
-
-```
-Columns: text, true_label, predicted_label, predicted_sentiment
-Rows: 32,092 (full test set)
-```
+Training plateaued after epoch 3 — minimal gains in epochs 4-5 (F1: 0.7705→0.7714→0.7748).
+Final training loss: 0.5366. Total runtime: 4,786.3 sec (**~80 min**) on T4 [Cell 35 output].
 
 ---
 
-## Code Quality Observations
+## Output Artifacts [Cell 54 verified]
+
+| File | Contents |
+|------|----------|
+| `data/predictions_distilbert.csv` | 32,092 rows, columns: text, true_label, predicted_label, confidence (11.39 MB) |
+| `data/metrics_distilbert.json` | Full classification report + hyperparameters + training history |
+| `data/models/distilbert_sentiment/` | model.safetensors (267.84 MB) + config.json + tokenizer |
+| `data/plots/nb02_class_distribution.png` | Bar chart confirming balanced splits |
+| `data/plots/nb02_confusion_matrix.png` | Row-normalized confusion matrix (3×3) |
+| `data/plots/nb02_training_loss_curve.png` | Train loss curve + eval loss points |
+
+---
+
+## Code Quality
 
 ### ✅ Strengths
 
-1. **Defensive programming**: Input validation cell (Cell 5) catches missing N01 artifacts early
-2. **Comprehensive logging**: Every major step prints status + saves artifacts
-3. **Memory efficiency**: Uses Arrow format, batched tokenization, dataset.map()
-4. **Error handling**: Colab disconnect protection with checkpoint resumption
-5. **Clear documentation**: Each section has explanatory markdown before code
-6. **Reproducibility**: Seeds fixed, warnings suppressed, deterministic mode enabled
+1. **Input validation**: Catches missing N01 artifacts before computation [Cell 7]
+2. **Reproducibility**: RANDOM_SEED=42, deterministic cuDNN, warning filters [Cells 3-4]
+3. **Checkpoint infrastructure**: Per-epoch saves to Google Drive (resilience against Colab disconnects) [Cell 35]
+4. **Balanced dataset produced by N01**: No class rebalancing needed — all weights are 1.0 [Cell 15]
+5. **Comprehensive outputs**: Metrics JSON, labeled CSV, loss plots, classification report [Cell 54]
 
-### ⚠️ Potential Improvements
+### ⚠️ Observations
 
-1. **Hardcoded paths**: `/content/drive/MyDrive/nlp-project/business-case-01/` — Colab-specific
-2. **No early stopping**: Trains full 5 epochs even if convergence happens earlier
-3. **No learning rate scheduling**: Could benefit from ReduceLROnPlateau
-4. **Limited error analysis**: Only 5 correct/incorrect examples shown
-5. **No threshold tuning**: Uses argmax (default 0.5) without optimization
-
----
-
-## Performance Benchmarks
-
-### Execution Time (Colab T4 GPU)
-
-| Phase | Estimated Duration |
-|-------|-------------------|
-| Package installation | ~2-3 min |
-| Dataset loading | ~30 sec |
-| Tokenization (214K examples) | ~2-3 min |
-| Model loading | ~30 sec |
-| Training (5 epochs) | ~20-30 min |
-| Evaluation + inference | ~2-3 min |
-| **Total** | **~30-40 min** |
-
-### Memory Usage
-
-- **GPU VRAM**: 15.1 GB / 15.6 GB (T4 limit)
-- **Peak usage**: During training with batch size 32
-- **Safe margin**: 0.5 GB headroom
-
----
-
-## Integration with Project Pipeline
-
-```
-Notebook 01 (Preprocessing)
-         ↓
-    [Arrow dataset]
-         ↓
-Notebook 02 (Sentiment) ← THIS NOTEBOOK
-         ↓
-  [predictions.csv]
-         ↓
-Notebook 05 (Summarisation)
-         ↓
-    [Final reports]
-```
-
-**Dependency**: Requires `data/dataset/` from N01  
-**Deliverable**: `data/predictions_distilbert.csv` for N05
+1. **No early stopping**: Trains full 5 epochs (gains minimal after epoch 3)
+2. **No LR scheduling**: Flat 2e-5 with only warmup; ReduceLROnPlateau could help
+3. **Hardcoded Colab paths**: `/content/drive/MyDrive/nlp-project/business-case-01/`
+4. **Model file: 267.84 MB** — large for deployment; consider ONNX export or quantization
+5. **WeightedTrainer has no effect**: Data is balanced; weights=1.0 produces identical loss
 
 ---
 
 ## Key Learnings
 
-1. **DistilBERT is viable for production**: 77% accuracy with 40% size reduction vs. BERT
-2. **Class weighting matters**: WeightedTrainer prevents model from ignoring minority classes
-3. **Checkpoint resumption saves time**: Colab disconnects don't mean starting from scratch
-4. **Arrow format is essential**: Memory-mapped access enables 214K examples without OOM
-5. **Neutral class is inherently hard**: 3-class sentiment always struggles with ambiguous middle ground
+1. **Balanced data simplifies training**: N01's stratified split eliminates the need for class weights or oversampling
+2. **Neutral class is inherently hard**: F1=0.6710 — 3-class sentiment always struggles with ambiguous middle ground
+3. **DistilBERT converges fast**: Most learning happens in epochs 1-2 (accuracy: 75.04%→76.74%); epochs 3-5 add only ~1%
+4. **Inference pipeline works**: Model reload + smoke test produces sensible predictions (confidence 0.9945-0.9970) [Cell 49]
 
 ---
 
-## Recommendations for Future Iterations
+## Recommendations
 
-1. **Experiment with BERT base**: If GPU memory allows, compare `bert-base-uncased`
-2. **Add early stopping**: `EarlyStoppingCallback` with patience=2
-3. **Threshold optimization**: Find optimal decision thresholds per class
-4. **Ensemble approach**: Combine DistilBERT with RoBERTa for robustness
-5. **Error analysis dashboard**: Interactive confusion matrix with sample inspection
-
----
-
-## Conclusion
-
-Notebook 02 successfully delivers a **production-ready sentiment classifier** with:
-
-- ✅ Clear documentation and reproducible setup
-- ✅ Strong baseline performance (77.26% accuracy)
-- ✅ Complete artifact trail for downstream notebooks
-- ✅ Efficient resource utilization on Colab infrastructure
-
-**Next step**: Feed `predictions_distilbert.csv` into Notebook 05 for review summarisation.
+1. **Add early stopping**: `EarlyStoppingCallback(early_stopping_patience=2)` — saves ~32 min (2 epochs × ~16 min/epoch)
+2. **Reduce epochs to 3**: Epoch metrics plateau after epoch 3; training beyond adds minimal gain
+3. **Compare with RoBERTa**: If GPU allows — notebook 03 should benchmark against this baseline
+4. **Threshold tuning**: Explore per-class decision thresholds (especially for Neutral class)
+5. **ONNX export**: Reduce 267.84 MB model to a deployable size
 
 ---
 
-*Analysis generated from notebook output cells — 2026-05-09*
+## Pipeline Integration
+
+```
+N01 (Preprocessing) → [Arrow dataset] → N02 (Sentiment) → [predictions.csv] → N05 (Summarisation)
+```
+
+**Dependency**: `data/dataset/` from N01  
+**Deliverable**: `data/predictions_distilbert.csv` for N05
+
+---
+
+*Analysis audited against notebook output cells — 2026-05-09*

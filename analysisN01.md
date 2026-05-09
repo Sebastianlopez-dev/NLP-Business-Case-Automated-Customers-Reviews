@@ -1,7 +1,7 @@
 # Análisis — Notebook 01: Data Preparation & EDA
 
 **Dataset**: Amazon Reviews 2023 (UCSD / McAuley Lab)
-**Notebook**: `notebook_01_data_prep_eda.ipynb` (49 celdas, 5 secciones)
+**Notebook**: `notebook_01_data_prep_eda.ipynb` (49 celdas, 6 secciones)
 **Output final**: `213,945` reseñas balanceadas en formato HuggingFace Arrow, splits 70/15/15
 
 ---
@@ -10,12 +10,12 @@
 
 **Decisión clave**: bajar TODAS las 33 categorías del dataset, no una sola.
 
-- `30,000` reseñas por categoría → ~990,000 objetivo, **976,216 reales** (Subscription_Boxes solo tiene 16K totales)
+- `30,000` reseñas por categoría → ~990,000 objetivo, **976,216 reales** (Subscription_Boxes solo tiene 16,216)
 - Streaming directo desde `mcauleylab.ucsd.edu` con `gzip.GzipFile` sobre `requests.raw`
 - Se evita el cache de HuggingFace (ahorra ~2× disco) y la API inestable de `datasets>=2.19`
-- `parent_asin`: 633,101 productos únicos · `user_id`: 189,161 usuarios únicos
+- `parent_asin`: 633,101 productos únicos · `user_id`: 189,161 usuarios únicos  [Cell 9, 10, 18]
 
-**Por qué importa**: maximizar diversidad léxica entre dominios (Books vs Automotive vs Beauty) reduce overfitting y prepara el modelo para reseñas “in-the-wild” en N02/N03.
+**Por qué importa**: maximizar diversidad léxica entre dominios reduce overfitting para los transformadores en N02/N03.
 
 ---
 
@@ -28,6 +28,8 @@
 | Duplicados exactos | **77,707 (7.96%)** |
 | Casi-duplicados (lower + strip) | **81,901 (8.39%)** |
 | Mismo `user_id` + mismo `text` | 34,682 |
+
+- Fuentes generales EDA: [Cell 16, 29, 32]
 
 **Hallazgo crítico**: los duplicados son reseñas-comodín (`"Great"` ×1960, `"Good"` ×1682, `"Love it"` ×1176). Son 5★ vacíos sin valor semántico y van a ser eliminados aguas abajo por el filtro de longitud mínima (`< 10 chars`).
 
@@ -45,7 +47,7 @@
 
 - Media: **4.32** · Mediana: **5.0**
 - Confirma el sesgo positivo reportado para Amazon: **2/3 del corpus es 5★**
-- Tras mapear a etiquetas (1-2★→Neg, 3★→Neu, 4-5★→Pos): **81.6% Positivo / 7.6% Neutro / 10.8% Negativo** → desbalance brutal que justifica el undersampling de la Sección 4
+- Tras mapear a etiquetas (1-2★→Neg, 3★→Neu, 4-5★→Pos): **81.6% Positivo / 7.6% Neutro / 10.8% Negativo** → desbalance brutal que justifica el undersampling de la Sección 4  [Cell 13, 36]
 
 ---
 
@@ -65,7 +67,7 @@
 | **Neutro (3★)** | **405** | **204** |
 | Positivo (4-5★) | 307 | 137 |
 
-**Hallazgo no obvio**: las reseñas neutras son las MÁS LARGAS. Tiene sentido — para justificar un 3★ hay que matizar pros y contras; los extremos son más concisos (`"Love it"`, `"Trash"`). Esto importa para el modelo: la longitud puede actuar como feature implícita para la clase neutra.
+**Hallazgo no obvio**: las reseñas neutras son las MÁS LARGAS — para justificar 3★ hay que matizar pros y contras; los extremos son más concisos.  [Cell 14, 20, 21]
 
 ---
 
@@ -83,7 +85,7 @@
 
 ### Helpful votes
 - Solo 29.4% reciben ≥1 voto útil
-- **Negatividad = utilidad**: 1★ promedia 3.3 votos útiles vs 1.3 en 5★. Los compradores valoran más las quejas detalladas que los elogios.
+- **Negatividad = utilidad**: 1★ promedia 3.3 votos útiles vs 1.3 en 5★. Los compradores valoran más las quejas detalladas que los elogios.  [Cell 23, 24]
 
 ---
 
@@ -94,7 +96,7 @@ Top categorías más negativas (% Negativo):
 - **Software**: 21% / 11% / 68%
 - Amazon_Fashion, All_Beauty, Health_and_Personal_Care: ~14-16% Neg
 
-La mayoría de categorías están en torno al 80% positivo. **Subscription_Boxes** es outlier — probable insatisfacción recurrente con renovaciones automáticas.
+La mayoría de categorías están en torno al 80% positivo. **Subscription_Boxes** es outlier — probable insatisfacción con renovaciones automáticas.  [Cell 25]
 
 ---
 
@@ -104,14 +106,14 @@ Comparación por ratio de frecuencia (≥2× entre clases):
 - **31 palabras distintivas de 1★** (vocabulario pobre y repetitivo: queja directa)
 - **14,735 palabras distintivas de 5★** (vocabulario amplio y específico al producto)
 
-**Implicación para el modelo**: las reseñas negativas tienen un “sello léxico” compacto y reconocible. Las positivas son léxicamente más diversas — lo que paradójicamente puede dificultar la clasificación de Neutro vs Positivo (más solapamiento de vocabulario).
+**Implicación para el modelo**: las reseñas negativas tienen un "sello léxico" compacto y reconocible. Las positivas son léxicamente más diversas.  [Cell 28]
 
 ---
 
 ## 8. Otros chequeos
 
 - **Title vs body**: el cuerpo es 14.4× más largo que el título (media). Title medio: 24 chars · Body medio: 313 chars → conviene entrenar sobre el `text`, el `title` es ruido para sentiment.
-- **Rango temporal**: Sep 1997 → Ago 2023 (26 años, 310 meses únicos). Útil si después se quiere ver drift temporal.
+- **Rango temporal**: Sep 1997 → Ago 2023 (26 años, 310 meses únicos).  [Cell 27, 29]
 
 ---
 
@@ -135,7 +137,7 @@ Comparación por ratio de frecuencia (≥2× entre clases):
 | Filtro `len(text) < 10` | **942,346** | 33,667 (3.4%) |
 | Balanceado por undersampling | **213,945** | 728,401 descartados |
 
-**Filtro de 10 chars**: deja pasar `"Not great."` (10) pero elimina `"Bad."` (4) y los duplicados `"Ok"`. Conservador pero limpia ruido.
+**Filtro de 10 chars**: deja pasar `"Not great."` (10) pero elimina `"Bad."` (4).  [Cell 32, 33, 34, 36]
 
 ---
 
@@ -143,7 +145,7 @@ Comparación por ratio de frecuencia (≥2× entre clases):
 
 ### Balanceo
 - Estrategia: **undersampling** a la clase minoritaria (Neutro: 71,315)
-- Se descartan: **30,520 negativas** y **697,881 positivas** (sí, 87% del corpus positivo)
+- Se descartan: **30,520 negativas** y **697,881 positivas** (~91% del corpus positivo post-filtro)
 - Justificación: simplicidad y transparencia. No se generan datos sintéticos. La pérdida es asumida.
 
 ### Splits estratificados (70/15/15)
@@ -154,7 +156,7 @@ Comparación por ratio de frecuencia (≥2× entre clases):
 | Test | 32,092 | 33.3 / 33.3 / 33.3 |
 
 ### Verificación de leakage
-Se compara los **sets de índices originales** entre splits (`train_ids & val_ids`, etc.). Las tres intersecciones dan **0**. Es el chequeo correcto: detecta leakage sin falsos positivos por reseñas duplicadas y sin O(n) memoria de strings.
+Las tres intersecciones dan **0**. Es el chequeo correcto.  [Cell 39, 40, 41]
 
 ---
 
@@ -164,7 +166,7 @@ Se compara los **sets de índices originales** entre splits (`train_ids & val_id
 OUTPUT_DIR/
 ├── dataset/                  # HuggingFace Arrow (DatasetDict: train/val/test)
 ├── dataset_summary.csv       # Metadata por split y label
-└── plots/                    # 14+ PNGs (rating dist, text length, top words, etc.)
+└── plots/                    # 16 PNGs (rating dist, text length, top words, etc.) [Cell 45]
 ```
 
 `dataset/` es el contrato hacia N02 (DistilBERT) y N03 (RoBERTa) — ambos hacen `load_from_disk(DATASET_DIR)` y consumen `train` / `validation` / `test`.
@@ -173,8 +175,8 @@ OUTPUT_DIR/
 
 ## 12. Lecturas para los notebooks siguientes
 
-1. **DistilBERT/RoBERTa van a ver clases perfectamente balanceadas** — F1 macro y accuracy serán comparables. Sin balanceo el accuracy estaría inflado por la clase mayoritaria.
-2. **El 99% de las reseñas cabe en 512 tokens** → no es necesario truncar agresivamente; `max_length=512` con `truncation=True` cubre todo el corpus útil.
+1. **DistilBERT/RoBERTa van a ver clases perfectamente balanceadas** — F1 macro y accuracy serán comparables. Sin balanceo el accuracy estaría inflado por la clase mayoritaria. [Cell 39–40]
+2. **El 98.5% de las reseñas cabe en 512 tokens** → no es necesario truncar agresivamente; `max_length=512` con `truncation=True` cubre el 98.5% del corpus. Solo 14,186 reseñas (1.5%) serán truncadas. [Cell 20]
 3. **La clase Neutro es la “difícil”**: textos más largos, vocabulario solapado con Positivo, menor separabilidad léxica. Esperar el F1 más bajo en Neutro en N02/N03.
 4. **Verified purchase y helpful_vote no se usan como features** — solo como señales de EDA. Pero el dataset Arrow conserva las columnas, así que están disponibles si N04 (clustering) o N05 (summarization) las quiere.
 5. **Hay duplicados pre-cleaning**: aunque el filtro `<10 chars` elimina los `"Great"` masivos, conviene recordar que el corpus original tiene 8% de duplicación — relevante si se cambia el threshold a futuro.
