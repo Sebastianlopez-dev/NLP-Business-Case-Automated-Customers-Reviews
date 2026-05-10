@@ -282,11 +282,11 @@
             <button onclick="app.switchTab('tab-play')" id="nav-play"
                 class="nav-item active w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-current="page"
                 aria-label="Inference Playground section">
-                <i class="ph ph-lightning text-lg" aria-hidden="true"></i><span>1. Playground</span>
+                <i class="ph ph-lightning text-lg" aria-hidden="true"></i><span>Playground</span>
             </button>
             <button onclick="app.switchTab('tab-blog')" id="nav-blog"
                 class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-label="Blog — AI-generated summaries">
-                <i class="ph ph-newspaper text-lg" aria-hidden="true"></i><span>2. Blog</span>
+                <i class="ph ph-newspaper text-lg" aria-hidden="true"></i><span>Blog</span>
             </button>
 
             <div class="pt-6">
@@ -294,24 +294,24 @@
                 </p>
                 <button onclick="app.switchTab('tab-eda')" id="nav-eda"
                     class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-label="Data and EDA section">
-                    <i class="ph ph-chart-bar text-lg" aria-hidden="true"></i><span>3. Data & EDA</span>
+                    <i class="ph ph-chart-bar text-lg" aria-hidden="true"></i><span>Data & EDA</span>
                 </button>
                 <button onclick="app.switchTab('tab-benchmark')" id="nav-benchmark"
                     class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-label="Emotion Engine section">
-                    <i class="ph ph-cpu text-lg" aria-hidden="true"></i><span>4. Emotion Engine</span>
+                    <i class="ph ph-cpu text-lg" aria-hidden="true"></i><span>Emotion Engine</span>
                 </button>
                 <button onclick="app.switchTab('tab-clusters')" id="nav-clusters"
                     class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-label="Clustering section">
-                    <i class="ph ph-circles-three-plus text-lg" aria-hidden="true"></i><span>5. Clustering</span>
+                    <i class="ph ph-circles-three-plus text-lg" aria-hidden="true"></i><span>Clustering</span>
                 </button>
                 <button onclick="app.switchTab('tab-summarization')" id="nav-summarization"
                     class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-label="Summarization section">
-                    <i class="ph ph-text-align-justify text-lg" aria-hidden="true"></i><span>6. Summarization</span>
+                    <i class="ph ph-text-align-justify text-lg" aria-hidden="true"></i><span>Summarization</span>
                 </button>
                 <button onclick="app.switchTab('tab-web')" id="nav-web"
                     class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm"
                     aria-label="Web and Hugging Face section">
-                    <i class="ph ph-browsers text-lg" aria-hidden="true"></i><span>7. Web & HF</span>
+                    <i class="ph ph-browsers text-lg" aria-hidden="true"></i><span>Web & HF</span>
                 </button>
             </div>
 
@@ -320,7 +320,7 @@
                 <button onclick="app.switchTab('tab-docs')" id="nav-docs"
                     class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm"
                     aria-label="Documentation Concepts section">
-                    <i class="ph ph-book-open-text text-lg" aria-hidden="true"></i><span>8. Documentation</span>
+                    <i class="ph ph-book-open-text text-lg" aria-hidden="true"></i><span>Documentation</span>
                 </button>
             </div>
         </nav>
@@ -406,26 +406,17 @@
                                 <span class="ide-container shadow-lg block">
                                     <span class="flex bg-[#1E293B] border-b border-white/5 px-3 py-1.5">
                                         <span
-                                            class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Streaming
-                                            Pattern — N01</span>
+                                            class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Pipeline Architecture Spec</span>
                                     </span>
                                     <span class="block p-3 text-[10px] leading-relaxed font-mono-data bg-[#0F172A]">
-                                        <span class="block whitespace-pre"><span class="syn-pink">import</span>
-                                            requests, gzip, json</span>
+                                        <span class="block whitespace-pre"><span class="syn-pink">import</span> requests, gzip, json</span>
                                         <span class="block h-2"></span>
-                                        <span class="block whitespace-pre syn-grey"># Stream .jsonl.gz from UCSD — zero
-                                            disk</span>
-                                        <span class="block whitespace-pre">response = requests.get(url, stream=<span
-                                                class="syn-pink">True</span>, timeout=<span
-                                                class="syn-orange">600</span>)</span>
+                                        <span class="block whitespace-pre syn-grey"># Stream .jsonl.gz from UCSD — zero disk</span>
+                                        <span class="block whitespace-pre">response = requests.get(url, stream=<span class="syn-pink">True</span>, timeout=<span class="syn-orange">600</span>)</span>
                                         <span class="block h-2"></span>
-                                        <span class="block whitespace-pre"><span class="syn-pink">with</span>
-                                            gzip.GzipFile(fileobj=response.raw) <span class="syn-pink">as</span>
-                                            gz:</span>
-                                        <span class="block whitespace-pre"> <span class="syn-pink">for</span> line <span
-                                                class="syn-pink">in</span> gz:</span>
-                                        <span class="block whitespace-pre"> record = json.loads(line.decode(<span
-                                                class="syn-cyan">'utf-8'</span>))</span>
+                                        <span class="block whitespace-pre"><span class="syn-pink">with</span> gzip.GzipFile(fileobj=response.raw) <span class="syn-pink">as</span> gz:</span>
+                                        <span class="block whitespace-pre">    <span class="syn-pink">for</span> line <span class="syn-pink">in</span> gz:</span>
+                                        <span class="block whitespace-pre">        record = json.loads(line.decode(<span class="syn-cyan">'utf-8'</span>))</span>
                                     </span>
                                     <span class="block px-4 py-3 bg-[#0F172A] border-t border-white/5">
                                         <span class="flex flex-col space-y-2 text-[10px] font-mono-data text-slate-400">
@@ -465,7 +456,30 @@
                     <div class="col-span-12 lg:col-span-8 card-standard flex flex-col">
                         <div class="flex justify-between items-center mb-6">
                             <h3 class="text-sm font-semibold text-slate-800 flex items-center gap-2">
-                                <i class="ph ph-chart-bar text-slate-400"></i> Original Class Distribution
+                                <i class="ph ph-chart-bar text-slate-400"></i> 
+                                <span class="group relative cursor-help border-b border-dotted border-[#0891B2]">
+                                    Original Class Distribution
+                                    <span class="hidden group-hover:block absolute left-0 z-50 normal-case" style="width: 420px; transform: translateY(8px); top: 100%;">
+                                        <span class="ide-container shadow-lg block">
+                                            <span class="flex bg-[#1E293B] border-b border-white/5 px-3 py-1.5">
+                                                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Preprocessing Logic — N01</span>
+                                            </span>
+                                            <span class="block p-3 text-[10px] leading-relaxed font-mono-data bg-[#0F172A]">
+                                                <span class="block whitespace-pre syn-grey"># 1. Clean & Unescape HTML Entities</span>
+                                                <span class="block whitespace-pre"><span class="syn-pink">def</span> <span class="syn-cyan">clean</span>(text):</span>
+                                                <span class="block whitespace-pre">    text = html.unescape(text)</span>
+                                                <span class="block whitespace-pre">    <span class="syn-pink">return</span> re.sub(<span class="syn-cyan">r'&lt;[^&gt;]+&gt;'</span>, <span class="syn-cyan">''</span>, text)</span>
+                                                <span class="block h-2 border-b border-white/5 my-2"></span>
+                                                <span class="block whitespace-pre syn-grey"># 2. Stratified Balancing (Target: 213K)</span>
+                                                <span class="block whitespace-pre">df = df.filter(<span class="syn-pink">lambda</span> x: len(x[<span class="syn-cyan">'text'</span>]) &gt; <span class="syn-orange">10</span>)</span>
+                                                <span class="block whitespace-pre">df = df.shuffle(seed=<span class="syn-orange">42</span>).select(range(min_size))</span>
+                                            </span>
+                                            <span class="block px-3 py-2 bg-[#1E293B] text-[9px] text-slate-500 italic">
+                                                Note: html.unescape is critical to prevent &amp;amp; artifacts.
+                                            </span>
+                                        </span>
+                                    </span>
+                                </span>
                             </h3>
                             <div class="flex gap-4">
                                 <button onclick="app.switchEDATab('star')" id="eda-tab-star"
@@ -856,30 +870,27 @@
                             </div>
 
                             <div class="bg-white border border-slate-200/60 rounded-xl p-3 shadow-sm flex flex-col"
-                                id="card-evolution-roberta">
+                                id="card-evolution-bertopic">
                                 <h4 class="text-xs font-bold text-slate-800 mb-2 flex items-center gap-2">
-                                    <i class="ph-fill ph-circle text-[10px] text-orange-500"></i> RoBERTa
+                                    <i class="ph-fill ph-circle text-[10px] text-cyan-500"></i> BERTopic Integration
                                 </h4>
                                 <div class="grid grid-cols-4 gap-2 pt-2 border-t border-slate-100 mb-2">
                                     <div class="flex flex-col"><span
-                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Init
-                                            Loss</span><span
-                                            class="font-mono-data font-bold text-slate-400 text-sm line-through">1.10</span>
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">UMAP</span><span
+                                            class="font-mono-data font-bold text-slate-700 text-sm">Low Dim</span>
                                     </div>
                                     <div class="flex flex-col"><span
-                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Final
-                                            Loss</span><span
-                                            class="font-mono-data font-bold text-orange-600 text-sm">0.65</span></div>
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">HDBSCAN</span><span
+                                            class="font-mono-data font-bold text-cyan-600 text-sm">Density</span></div>
                                     <div class="flex flex-col"><span
-                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Batch</span><span
-                                            class="font-mono-data font-bold text-slate-700 text-sm">16</span></div>
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">c-TF-IDF</span><span
+                                            class="font-mono-data font-bold text-slate-700 text-sm">Label</span></div>
                                     <div class="flex flex-col"><span
-                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Steps</span><span
-                                            class="font-mono-data font-bold text-slate-700 text-sm">46.8k</span></div>
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Topics</span><span
+                                            class="font-mono-data font-bold text-slate-700 text-sm">Dynamic</span></div>
                                 </div>
                                 <p class="text-[10px] text-slate-500 leading-relaxed">
-                                    <strong class="text-slate-700 font-bold">Insight:</strong> Stagnated convergence
-                                    (-40% loss). The smaller batch (16) doubled the required steps, introducing noise.
+                                    <strong class="text-slate-700 font-bold">Strategy:</strong> Shift from static K-Means to density-based clusters. c-TF-IDF automatically extracts keywords for each sentiment cluster.
                                 </p>
                             </div>
                         </div>
@@ -894,7 +905,7 @@
                                 <p class="text-[10px] uppercase font-medium tracking-widest mt-1">
                                     <a href="https://arxiv.org/pdf/1910.01108" target="_blank" title="Ver PDF Original"
                                         class="flex items-center gap-1.5 w-fit text-cyan-600 border-b border-dotted border-cyan-600/50 hover:border-cyan-500 hover:text-cyan-500 transition-all pb-[1px]">
-                                        PAPER: Sanh et al., 2019 <i
+                                        PAPER: Sanh et al, 2019 <i
                                             class="ph-duotone ph-file-pdf text-[14px] ml-0.5"></i><i
                                             class="ph ph-arrow-square-out text-[10px] ml-0.5"></i>
                                     </a>
@@ -937,41 +948,38 @@
                     <div class="card-standard">
                         <div class="flex justify-between items-start mb-4">
                             <div>
-                                <h3 class="font-bold text-slate-800">RoBERTa</h3>
+                                <h3 class="font-bold text-slate-800">BERTopic</h3>
                                 <p class="text-[10px] uppercase font-medium tracking-widest mt-1">
-                                    <a href="https://arxiv.org/pdf/1907.11692" target="_blank" title="Ver PDF Original"
+                                    <a href="https://arxiv.org/pdf/2203.05794" target="_blank" title="View Original Paper"
                                         class="flex items-center gap-1.5 w-fit text-cyan-600 border-b border-dotted border-cyan-600/50 hover:border-cyan-500 hover:text-cyan-500 transition-all pb-[1px]">
-                                        PAPER: Liu et al., 2019 <i
+                                        PAPER: Grootendorst, 2022 <i
                                             class="ph-duotone ph-file-pdf text-[14px] ml-0.5"></i><i
                                             class="ph ph-arrow-square-out text-[10px] ml-0.5"></i>
                                     </a>
                                 </p>
                             </div>
-                            <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-1 rounded">RUNNER
-                                UP</span>
+                            <span class="bg-cyan-100 text-cyan-700 text-[10px] font-bold px-2 py-1 rounded">CLUSTER CHAMPION</span>
                         </div>
                         <ul class="space-y-4">
                             <li class="flex gap-3">
-                                <i class="ph ph-warning-circle text-lg text-slate-400 mt-0.5"></i>
+                                <i class="ph ph-intersect text-lg text-cyan-500 mt-0.5"></i>
                                 <div class="w-full">
-                                    <p class="text-xs font-bold text-slate-700">Suboptimal Generalization (69.1%)</p>
-                                    <p class="text-xs text-slate-500 mb-3">Stagnated 8 points below DistilBERT. The
-                                        learning rate bottleneck prevented it from resolving nuances.</p>
+                                    <p class="text-xs font-bold text-slate-700">Dynamic Topic Modeling</p>
+                                    <p class="text-xs text-slate-500 mb-3">Replaced static K-Means. Leverages DistilBERT embeddings with density-based clustering to discover latent topologies.</p>
                                     <div class="pt-3 border-t border-slate-100 mt-3">
                                         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
-                                            Differential Parameters</p>
+                                            Engine Components</p>
                                         <div
                                             class="grid grid-cols-2 gap-y-2 gap-x-4 text-[10px] font-mono-data text-slate-600">
                                             <div class="flex justify-between border-b border-slate-100 pb-1">
-                                                <span>Parameters:</span><span
-                                                    class="font-bold text-slate-800">125M</span>
+                                                <span>Embeddings:</span><span
+                                                    class="font-bold text-slate-800">DistilBERT</span>
                                             </div>
-                                            <div class="flex justify-between border-b border-slate-100 pb-1"><span>Learn
-                                                    Rate:</span><span class="font-bold text-red-600">1e-5</span></div>
-                                            <div class="flex justify-between border-b border-slate-100 pb-1"><span>Batch
-                                                    Size:</span><span class="font-bold text-orange-600">16</span></div>
+                                            <div class="flex justify-between border-b border-slate-100 pb-1"><span>Reduction:</span><span class="font-bold text-slate-800">UMAP</span></div>
+                                            <div class="flex justify-between border-b border-slate-100 pb-1"><span>Clustering:</span><span class="font-bold text-slate-800">HDBSCAN</span></div>
                                             <div class="flex justify-between border-b border-slate-100 pb-1">
-                                                <span>Tokenizer:</span><span class="font-bold text-slate-800">BPE</span>
+                                                <span>Weighting:</span><span
+                                                    class="font-bold text-slate-800">c-TF-IDF</span>
                                             </div>
                                         </div>
                                     </div>
@@ -1003,10 +1011,9 @@
                         <div class="card-standard">
                             <h4 class="text-sm font-bold text-slate-800 mb-3">Clustering Strategy</h4>
                             <div class="space-y-4">
-                                <div class="border-l-2 border-slate-200 pl-4 py-1">
-                                    <p class="text-xs font-bold text-slate-700 mb-1">MiniBatchKMeans</p>
-                                    <p class="text-xs text-slate-500">Iterates over stochastic batches, avoiding OOM
-                                        while empirically maintaining 99% of the Silhouette Score vs standard K-Means.
+                                <div class="border-l-2 border-cyan-500 pl-4 py-1">
+                                    <p class="text-xs font-bold text-slate-700 mb-1">BERTopic Pipeline</p>
+                                    <p class="text-xs text-slate-500">A modular framework combining UMAP and HDBSCAN to create dense clusters, using c-TF-IDF to extract the most descriptive words for each topic.
                                     </p>
                                 </div>
                                 <div class="border-l-2 border-slate-200 pl-4 py-1">
@@ -1022,6 +1029,33 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- N04.2 BGE Hybrid Clusters -->
+                <div class="col-span-12 mt-8 card-standard">
+                    <h3 class="text-sm font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                        <span class="bg-cyan-600 text-white text-xs px-2 py-0.5 rounded">N04.2</span>
+                        BGE Hybrid Clusters
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="clusterChartN042"></canvas>
+                    </div>
+                </div>
+
+                <!-- N04.2 Sanity Check -->
+                <div class="card-standard col-span-12 mt-6">
+                    <h3 class="text-sm font-semibold text-slate-800 flex items-center gap-2 mb-4">
+                        <span class="bg-amber-100 text-amber-700 text-[9px] font-bold px-2 py-1 rounded">Sanity Check</span>
+                        Metadata vs BGE — Purity per Cluster
+                    </h3>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="sanityCheckChart"></canvas>
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-3">
+                        <span class="text-amber-600 font-bold">⬤ Metadata</span> clusters by Amazon category alone.
+                        <span class="text-cyan-600 font-bold">⬤ BGE</span> clusters by review semantics.
+                        The gap shows how much the model actually learns from reading reviews.
+                    </p>
                 </div>
             </section>
 
@@ -1226,8 +1260,7 @@
                                 <span class="ide-container shadow-lg block normal-case">
                                     <span class="flex bg-[#1E293B] border-b border-white/5 px-3 py-1.5">
                                         <span
-                                            class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Dataset
-                                            Access — HF</span>
+                                            class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Dataset Technical Profile</span>
                                     </span>
                                     <span
                                         class="block p-4 text-[10px] leading-relaxed font-mono-data bg-[#0F172A] text-slate-300">
@@ -1285,8 +1318,7 @@
                                 <span class="ide-container shadow-lg block text-left normal-case">
                                     <span class="flex bg-[#1E293B] border-b border-white/5 px-3 py-1.5">
                                         <span
-                                            class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Model
-                                            Specs — N01</span>
+                                            class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Model Architecture Spec</span>
                                     </span>
                                     <span
                                         class="block p-4 text-[10px] leading-relaxed font-mono-data bg-[#0F172A] text-slate-300">
@@ -1314,7 +1346,36 @@
                         </div>
                     </div>
                     <div class="border-l-[3px] border-slate-200 pl-4 py-1">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Synthesis Core
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 group relative cursor-help border-b border-dotted border-[#0891B2] inline-block">
+                            Synthesis Core
+                            <span class="hidden group-hover:block absolute left-0 z-50" style="width: 380px; transform: translateY(4px); top: 100%;">
+                                <span class="ide-container shadow-lg block text-left normal-case">
+                                    <span class="flex bg-[#1E293B] border-b border-white/5 px-3 py-1.5">
+                                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Model Architecture Spec</span>
+                                    </span>
+                                    <span class="block p-4 text-[10px] leading-relaxed font-mono-data bg-[#0F172A] text-slate-300">
+                                        <span class="block mb-3">
+                                            <span class="syn-pink font-bold uppercase block mb-1">Google Gemini 3.1 Flash-Lite</span>
+                                            <span class="block text-slate-500 text-[9px]">Optimized for low-latency abstractive synthesis.</span>
+                                        </span>
+
+                                        <span class="block py-2 border-t border-b border-white/5 my-3">
+                                            <span class="grid grid-cols-4 gap-y-3 gap-x-2">
+                                                <span class="flex flex-col"><span class="font-bold text-slate-500 uppercase text-[8px]">Context</span><span>1M Tkn</span></span>
+                                                <span class="flex flex-col"><span class="font-bold text-slate-500 uppercase text-[8px]">Speed</span><span>~450ms</span></span>
+                                                <span class="flex flex-col"><span class="font-bold text-slate-500 uppercase text-[8px]">Safety</span><span>High</span></span>
+                                                <span class="flex flex-col"><span class="font-bold text-slate-500 uppercase text-[8px]">Cost</span><span>Lite</span></span>
+                                            </span>
+                                        </span>
+                                        <span class="block space-y-1.5 text-slate-400">
+                                            <span class="text-pink-400 font-bold uppercase block mb-1">Role:</span>
+                                            <span class="block">• Narrative Synthesis from Cluster Centroids</span>
+                                            <span class="block">• Personalization of customer responses</span>
+                                            <span class="block">• Multi-modal grounding (text-to-insight)</span>
+                                        </span>
+                                    </span>
+                                </span>
+                            </span>
                         </p>
                         <div class="flex items-baseline gap-2">
                             <span class="text-3xl font-bold text-slate-800 font-mono-data tracking-tight">1M</span>
@@ -1341,8 +1402,8 @@
                                     Transformer Selector</label>
                                 <select id="play-model"
                                     class="w-full text-sm border border-slate-200 rounded-md p-2.5 text-slate-700 bg-white outline-none cursor-pointer hover:border-slate-300 transition-colors shadow-sm">
-                                    <option value="distilbert">DistilBERT (Champion) — Primary</option>
-                                    <option value="roberta">RoBERTa (Runner Up) — Fallback</option>
+                                    <option value="distilbert">DistilBERT (Sentiment) + BERTopic (Clustering)</option>
+                                    <option value="distilbert_baseline">DistilBERT — Baseline Only</option>
                                 </select>
                             </div>
 
@@ -1454,6 +1515,47 @@
                                             <p id="play-llm"
                                                 class="text-sm text-slate-600 leading-relaxed font-medium mt-1"></p>
 
+                                            <!-- Cluster Match Card (N04.2) -->
+                                            <div id="play-cluster-card" class="hidden bg-white border border-slate-200 rounded-lg p-5 mt-4">
+                                                <div class="flex items-start gap-3 mb-3">
+                                                    <i class="ph ph-package text-xl text-cyan-500 mt-0.5"></i>
+                                                    <div class="flex-1">
+                                                        <h4 id="play-cluster-name" class="text-sm font-bold text-slate-800">Cluster: —</h4>
+                                                        <p id="play-cluster-subcats" class="text-xs text-slate-500">Subcategories: —</p>
+                                                    </div>
+                                                    <span class="text-[9px] font-bold px-2 py-1 rounded bg-cyan-100 text-cyan-700">N04.2</span>
+                                                </div>
+                                                <div class="border-l-2 border-cyan-200 pl-4 mb-4">
+                                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Your Review</p>
+                                                    <p id="play-cluster-review" class="text-sm text-slate-600 italic">—</p>
+                                                </div>
+                                                <div class="grid grid-cols-3 gap-4 pt-3 border-t border-slate-100">
+                                                    <div>
+                                                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Sentiment</p>
+                                                        <p id="play-cluster-sentiment" class="font-mono-data text-sm font-bold text-red-600">—</p>
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Avg Rating</p>
+                                                        <p id="play-cluster-avg-rating" class="font-mono-data text-sm font-bold text-slate-700">—</p>
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Confidence</p>
+                                                        <p id="play-cluster-confidence" class="font-mono-data text-sm font-bold text-slate-700">—</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Not Found Card -->
+                                            <div id="play-notfound-card" class="hidden bg-white border-l-4 border-amber-400 rounded-lg p-5 mt-4">
+                                                <div class="flex items-start gap-3">
+                                                    <i class="ph ph-warning-circle text-xl text-amber-500 mt-0.5"></i>
+                                                    <div class="flex-1">
+                                                        <h4 class="text-sm font-bold text-amber-700">Item not found</h4>
+                                                        <p class="text-xs text-slate-500">Your review doesn't match any known product category.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <!-- Trace Toggle -->
                                             <div class="mt-6 pt-4 border-t border-slate-100">
                                                 <button onclick="app.toggleTrace()"
@@ -1484,7 +1586,6 @@
             </section>
 
 
-            <!-- BLOG -->
             <!-- BLOG -->
             <section id="tab-blog" class="tab-content">
                 <!-- Top: Horizontal Technical Banner -->
@@ -2000,6 +2101,8 @@ response = client.models.generate_content(
                 // Lazy-init charts when their tab becomes visible
                 if (id === 'tab-clusters') {
                     this.initClusterChart();
+                    this.initClusterChartN042();
+                    this.initSanityCheckChart();
                 } else if (id === 'tab-benchmark') {
                     if (this.currentMode === 'metrics') this.initMetricsChart();
                     if (this.currentMode === 'evolution') this.initEvolutionChart();
@@ -2493,6 +2596,191 @@ response = client.models.generate_content(
                 });
             },
 
+            // Lazy-init: N04.2 BGE Hybrid Clusters from JSON
+            initClusterChartN042: function () {
+                const canvas = document.getElementById('clusterChartN042');
+                if (!canvas || this.charts.clusterN042) return;
+
+                fetch('data/n042_outputs/n042_cluster_assignments_bge.json')
+                    .then(r => r.json())
+                    .then(data => {
+                        this.charts.clusterN042 = new Chart(canvas.getContext('2d'), {
+                            type: 'bubble',
+                            data: { datasets: data.datasets },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    x: { grid: { color: this.colors.gridAlpha, borderDash: [4, 4] }, ticks: { display: false } },
+                                    y: { grid: { color: this.colors.gridAlpha, borderDash: [4, 4] }, ticks: { display: false } }
+                                },
+                                animation: { duration: 800 },
+                                plugins: {
+                                    legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 10 } } },
+                                    tooltip: {
+                                        backgroundColor: '#FFFFFF',
+                                        titleColor: '#1E293B',
+                                        bodyColor: '#334155',
+                                        borderColor: '#E2E8F0',
+                                        borderWidth: 1,
+                                        padding: 10,
+                                        cornerRadius: 8,
+                                        displayColors: true,
+                                    }
+                                }
+                            }
+                        });
+                    })
+                    .catch(() => {
+                        console.log('N04.2 JSON not available');
+                        canvas.parentElement.innerHTML = '<p class="text-sm text-slate-400 text-center py-8">N04.2 cluster data not available. Run Notebook 04.2 to generate.</p>';
+                    });
+            },
+
+            // Lazy-init: N04.2 Sanity Check — Metadata vs BGE purity comparison
+            initSanityCheckChart: function () {
+                const canvas = document.getElementById('sanityCheckChart');
+                if (!canvas || this.charts.sanityCheck) return;
+
+                fetch('data/n042_outputs/n042_sanity_check.json')
+                    .then(r => r.json())
+                    .then(data => {
+                        const clusters = data.clusters || [];
+                        const labels = clusters.map(c => {
+                            if (c.label) return `C${c.id}: ${c.label}`;
+                            return `C${c.id}: ${c.top_metadata_category || 'Cluster'}`;
+                        });
+                        const metaData = clusters.map(c => c.metadata_purity_pct ?? 0);
+                        const bgeData = clusters.map(c => c.bge_purity_pct ?? 0);
+
+                        this.charts.sanityCheck = new Chart(canvas.getContext('2d'), {
+                            type: 'bar',
+                            data: {
+                                labels: labels,
+                                datasets: [
+                                    {
+                                        label: 'Metadata',
+                                        data: metaData,
+                                        backgroundColor: '#F59E0B',
+                                        borderRadius: 4,
+                                        barPercentage: 0.6,
+                                        categoryPercentage: 0.8
+                                    },
+                                    {
+                                        label: 'BGE',
+                                        data: bgeData,
+                                        backgroundColor: '#0891B2',
+                                        borderRadius: 4,
+                                        barPercentage: 0.6,
+                                        categoryPercentage: 0.8
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    x: {
+                                        grid: { display: false },
+                                        ticks: { font: { size: 10 }, maxRotation: 45, minRotation: 30 }
+                                    },
+                                    y: {
+                                        beginAtZero: true,
+                                        max: 100,
+                                        grid: { color: this.colors.gridAlpha, borderDash: [4, 4] },
+                                        ticks: { callback: v => v + '%', font: { size: 10 } },
+                                        title: { display: true, text: 'Purity %', font: { size: 10 } }
+                                    }
+                                },
+                                animation: { duration: 800 },
+                                plugins: {
+                                    legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 10 } } },
+                                    tooltip: {
+                                        backgroundColor: '#FFFFFF',
+                                        titleColor: '#1E293B',
+                                        bodyColor: '#334155',
+                                        borderColor: '#E2E8F0',
+                                        borderWidth: 1,
+                                        padding: 10,
+                                        cornerRadius: 8,
+                                        displayColors: true,
+                                        callbacks: {
+                                            afterBody: ctx => {
+                                                const idx = ctx[0].dataIndex;
+                                                const delta = clusters[idx].delta_pct;
+                                                const sign = delta > 0 ? '+' : '';
+                                                return `Delta: ${sign}${delta}%`;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    })
+                    .catch(() => {
+                        console.log('Sanity check JSON not available');
+                        canvas.parentElement.innerHTML = '<p class="text-sm text-slate-400 text-center py-8">Sanity check data not available. Run Notebook 04.2.</p>';
+                    });
+            },
+
+            // N04.2 Cluster Match: lightweight keyword heuristic for Playground
+            showClusterMatch: async function (reviewText) {
+                const clusterCard = document.getElementById('play-cluster-card');
+                const notFoundCard = document.getElementById('play-notfound-card');
+                const clusterName = document.getElementById('play-cluster-name');
+                const clusterSubcats = document.getElementById('play-cluster-subcats');
+                const clusterReview = document.getElementById('play-cluster-review');
+                const clusterSentiment = document.getElementById('play-cluster-sentiment');
+                const clusterAvgRating = document.getElementById('play-cluster-avg-rating');
+                const clusterConfidence = document.getElementById('play-cluster-confidence');
+
+                clusterCard.classList.add('hidden');
+                notFoundCard.classList.add('hidden');
+
+                try {
+                    const res = await fetch('data/n042_outputs/n042_cluster_profiles_bge.json');
+                    if (!res.ok) throw new Error('Cluster profiles not available');
+                    const data = await res.json();
+                    const profiles = data.clusters || [];
+
+                    // Lightweight keyword overlap heuristic
+                    const textLower = reviewText.toLowerCase();
+                    const words = new Set(textLower.split(/\W+/));
+                    let bestMatch = null;
+                    let bestScore = 0;
+
+                    for (const profile of profiles) {
+                        const terms = profile.top_terms || [];
+                        const score = terms.reduce((acc, term) => {
+                            return acc + (textLower.includes(term.toLowerCase()) ? 1 : 0);
+                        }, 0);
+                        if (score > bestScore) {
+                            bestScore = score;
+                            bestMatch = profile;
+                        }
+                    }
+
+                    if (bestMatch && bestScore >= 1) {
+                        clusterName.textContent = `Cluster: ${bestMatch.label || 'Cluster ' + bestMatch.cluster_id}`;
+                        const cats = Object.entries(bestMatch.top_categories || {})
+                            .sort((a, b) => b[1] - a[1])
+                            .slice(0, 3)
+                            .map(([k]) => k);
+                        clusterSubcats.textContent = `Subcategories: ${cats.join(', ') || '—'}`;
+                        clusterReview.textContent = `"${reviewText.substring(0, 120)}${reviewText.length > 120 ? '...' : ''}"`;
+                        clusterSentiment.textContent = `${bestMatch.sentiment_entropy?.toFixed(2) || '—'} entropy`;
+                        clusterAvgRating.textContent = `${bestMatch.avg_rating || '—'} / 5`;
+                        clusterConfidence.textContent = `${(bestScore / Math.max(bestMatch.top_terms.length, 1)).toFixed(2)}`;
+                        clusterCard.classList.remove('hidden');
+                    } else {
+                        notFoundCard.classList.remove('hidden');
+                    }
+                } catch (e) {
+                    console.log('Cluster match skipped:', e.message);
+                    notFoundCard.classList.remove('hidden');
+                }
+            },
+
             runInference: async function () {
                 const input = document.getElementById('play-input');
                 const btn = document.getElementById('play-btn');
@@ -2599,6 +2887,9 @@ response = client.models.generate_content(
                     step2Dot.className = "absolute -left-[5px] top-8 w-2.5 h-2.5 rounded-full bg-white border-2 border-orange-500 hidden md:block animate-pulse";
                     if (step2Icon) step2Icon.className = "ph-fill ph-circle-notch text-orange-500 text-lg animate-spin";
 
+                    // N04.2 Cluster match (async, non-blocking)
+                    this.showClusterMatch(text);
+
                     statusTxt.textContent = "SYNTHESIZING";
                     statusTxt.className = "text-orange-500";
                     statusDot.className = "w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse";
@@ -2609,9 +2900,9 @@ response = client.models.generate_content(
                     btnTxt.textContent = "Synthesizing...";
 
                     const personas = {
-                        "Positive": "Eres un Customer Success Manager entusiasta. Celebra la felicidad del cliente, menciona el producto específico que compró y hazle una pregunta divertida o práctica sobre su uso diario.",
-                        "Neutral": "Eres un Especialista de Producto curioso. Agradece el feedback, identifica qué producto es y pregunta por un detalle técnico o de uso que podría inclinar la balanza a positivo.",
-                        "Negative": "Eres un Support Lead empático y directo. Lamenta la mala experiencia con el producto, identifica el problema principal y haz una pregunta para entender cómo podemos compensar o qué falló exactamente."
+                        "Positive": "You are an enthusiastic Customer Success Manager. Celebrate the customer's happiness, mention the specific product they bought, and ask a fun or practical question about its daily use.",
+                        "Neutral": "You are a curious Product Specialist. Thank them for the feedback, identify the product, and ask for a technical or usage detail that could tip the scale to positive.",
+                        "Negative": "You are an empathetic and direct Support Lead. Apologize for the poor experience with the product, identify the main issue, and ask a question to understand how we can compensate or what exactly went wrong."
                     };
 
                     const payload = {
