@@ -1213,22 +1213,15 @@
                                 <i class="ph ph-cloud-arrow-up text-lg text-slate-400"></i> Hugging Face Deployment
                             </h3>
                             <span
-                                class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-1 rounded">PENDING</span>
+                                class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-1 rounded">DEPLOYED</span>
                         </div>
                         <p class="text-sm text-slate-600 mb-4 leading-relaxed">
-                            The final phase requires orchestrating live inference by packaging the fine-tuned models
-                            (DistilBERT/RoBERTa) into a <strong>Hugging Face Space</strong>.
+                            Both models are deployed on Hugging Face Hub and integrated into the Playground tab for live browser inference.
                         </p>
                         <ul class="text-xs text-slate-500 space-y-3 mt-4 border-t border-slate-100 pt-4">
-                            <li class="flex items-start gap-2"><i
-                                    class="ph ph-circle text-slate-300 text-base"></i><span>Containerization of the
-                                    DistilBERT (Champion) model.</span></li>
-                            <li class="flex items-start gap-2"><i
-                                    class="ph ph-circle text-slate-300 text-base"></i><span>API endpoints creation
-                                    (Gradio or FastAPI backend).</span></li>
-                            <li class="flex items-start gap-2"><i
-                                    class="ph ph-circle text-slate-300 text-base"></i><span>Connecting this UI's
-                                    Playground to the live Space.</span></li>
+                            <li class="flex items-start gap-2"><i class="ph ph-check-circle text-emerald-500 text-base"></i><span>DistilBERT sentiment classifier deployed (<code class="bg-slate-100 px-1 rounded text-[10px]">SebasLopez-ai/distilbert-amazon-reviews-sentiment</code>)</span></li>
+                            <li class="flex items-start gap-2"><i class="ph ph-check-circle text-emerald-500 text-base"></i><span>HybridKMeans clustering model deployed (<code class="bg-slate-100 px-1 rounded text-[10px]">SebasLopez-ai/hybridKMeans-category-clustering</code>)</span></li>
+                            <li class="flex items-start gap-2"><i class="ph ph-check-circle text-emerald-500 text-base"></i><span>Playground tab connected to both models via HF Inference API + cluster profiles</span></li>
                         </ul>
                     </div>
                 </div>
@@ -1330,7 +1323,7 @@
                                             <span class="block text-slate-400">• Performance: 77.3% Accuracy</span>
                                         </span>
                                         <span class="block pt-3 border-t border-white/5">
-                                            <span class="text-orange-400 font-bold uppercase block mb-1">MiniBatchKMeans
+                                            <span class="text-orange-400 font-bold uppercase block mb-1">HybridKMeans
                                                 (Clusters)</span>
                                             <span class="block text-slate-400">• Online Learning / Low RAM</span>
                                             <span class="block text-slate-400">• Centroids: K=3 to K=10</span>
@@ -1395,16 +1388,37 @@
                                 placeholder="Paste a customer review here... e.g. 'The product broke after two days, completely useless.'"></textarea>
                         </div>
 
+                        <!-- Demo Suggestions -->
+                        <div class="bg-white border border-slate-200 rounded-lg p-3 shadow-sm">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                                <i class="ph ph-lightbulb text-xs"></i> Demo Suggestions — click to fill
+                            </p>
+                            <div class="flex flex-col gap-1.5">
+                                <button onclick="app.useSuggestion(0)" class="suggestion-btn text-left text-xs text-slate-600 hover:text-cyan-600 hover:bg-cyan-50 rounded-md px-3 py-2 transition-all flex items-start gap-2 group border border-transparent">
+                                    <span class="text-[10px] font-bold text-white bg-emerald-500 rounded-full w-5 h-5 flex items-center justify-center flex-shrink-0 mt-px shadow-sm">1</span>
+                                    <span class="line-clamp-2 leading-relaxed">Bought this as a birthday gift for my daughter and she absolutely loves it! Easy to assemble, great quality...</span>
+                                </button>
+                                <button onclick="app.useSuggestion(1)" class="suggestion-btn text-left text-xs text-slate-600 hover:text-cyan-600 hover:bg-cyan-50 rounded-md px-3 py-2 transition-all flex items-start gap-2 group border border-transparent">
+                                    <span class="text-[10px] font-bold text-white bg-red-500 rounded-full w-5 h-5 flex items-center justify-center flex-shrink-0 mt-px shadow-sm">2</span>
+                                    <span class="line-clamp-2 leading-relaxed">This charger stopped working after two weeks. Complete waste of money. I tried different outlets, different cables...</span>
+                                </button>
+                                <button onclick="app.useSuggestion(2)" class="suggestion-btn text-left text-xs text-slate-600 hover:text-cyan-600 hover:bg-cyan-50 rounded-md px-3 py-2 transition-all flex items-start gap-2 group border border-transparent">
+                                    <span class="text-[10px] font-bold text-white bg-amber-500 rounded-full w-5 h-5 flex items-center justify-center flex-shrink-0 mt-px shadow-sm">3</span>
+                                    <span class="line-clamp-2 leading-relaxed">The story was interesting at first but the middle chapters dragged on forever. The ending was okay I guess...</span>
+                                </button>
+                            </div>
+                        </div>
+
                         <div class="flex flex-col gap-4 bg-slate-50 p-5 rounded-lg border border-slate-100">
                             <div>
-                                <label
-                                    class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">1.
-                                    Transformer Selector</label>
-                                <select id="play-model"
-                                    class="w-full text-sm border border-slate-200 rounded-md p-2.5 text-slate-700 bg-white outline-none cursor-pointer hover:border-slate-300 transition-colors shadow-sm">
-                                    <option value="distilbert">DistilBERT (Sentiment) + BERTopic (Clustering)</option>
-                                    <option value="distilbert_baseline">DistilBERT — Baseline Only</option>
-                                </select>
+                            <label
+                                class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">1.
+                                Pipeline Selector</label>
+                            <select id="play-model"
+                                class="w-full text-sm border border-slate-200 rounded-md p-2.5 text-slate-700 bg-white outline-none cursor-pointer hover:border-slate-300 transition-colors shadow-sm">
+                                <option value="full">Full Pipeline: Sentiment + Clustering</option>
+                                <option value="sentiment">Sentiment Only</option>
+                            </select>
                             </div>
 
                             <button onclick="app.runInference()" id="play-btn"
@@ -1752,6 +1766,26 @@
 
     <script src="train_history.js"></script>
 
+    <!-- Transformers.js — browser-side ML inference (replaces HF API fetch) -->
+    <script type="module">
+        import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.2.0';
+
+        // Use browser cache for model weights (survives page reloads)
+        env.useBrowserCache = true;
+
+        let _classifier = null;
+
+        window.loadClassifier = async function (progressCallback) {
+            if (_classifier) return _classifier;
+            _classifier = await pipeline(
+                'text-classification',
+                'SebasLopez-ai/distilbert-amazon-reviews-sentiment',
+                { progress_callback: progressCallback }
+            );
+            return _classifier;
+        };
+    </script>
+
     <!-- Settings Modal -->
     <div id="settings-modal"
         class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
@@ -1814,11 +1848,9 @@
 
             // Playground API Config
             playground: {
-                hfToken: localStorage.getItem('nlp_hf_token') || 'HF_TOKEN_PLACEHOLDER',
                 geminiToken: localStorage.getItem('nlp_gemini_key') || 'GEMINI_API_KEY_PLACEHOLDER',
                 endpoints: {
-                    distilbert: 'https://api-inference.huggingface.co/models/basstianlopez/distilbert-amazon-reviews',
-                    roberta: 'https://api-inference.huggingface.co/models/basstianlopez/roberta-amazon-reviews',
+                    clusterProfiles: 'https://huggingface.co/SebasLopez-ai/hybridKMeans-category-clustering/resolve/main/cluster_profiles.json',
                     llm: (key) => `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`
                 }
             },
@@ -2738,19 +2770,19 @@ response = client.models.generate_content(
                 notFoundCard.classList.add('hidden');
 
                 try {
-                    const res = await fetch('data/n042_outputs/n042_cluster_profiles_bge.json');
+                    const res = await fetch(this.playground.endpoints.clusterProfiles);
                     if (!res.ok) throw new Error('Cluster profiles not available');
                     const data = await res.json();
                     const profiles = data.clusters || [];
 
                     // Lightweight keyword overlap heuristic
                     const textLower = reviewText.toLowerCase();
-                    const words = new Set(textLower.split(/\W+/));
                     let bestMatch = null;
                     let bestScore = 0;
 
                     for (const profile of profiles) {
                         const terms = profile.top_terms || [];
+                        // Handle multi-word terms like "good product"
                         const score = terms.reduce((acc, term) => {
                             return acc + (textLower.includes(term.toLowerCase()) ? 1 : 0);
                         }, 0);
@@ -2761,16 +2793,27 @@ response = client.models.generate_content(
                     }
 
                     if (bestMatch && bestScore >= 1) {
-                        clusterName.textContent = `Cluster: ${bestMatch.label || 'Cluster ' + bestMatch.cluster_id}`;
-                        const cats = Object.entries(bestMatch.top_categories || {})
+                        // Build cluster label from top categories
+                        const topCats = Object.entries(bestMatch.top_categories || {})
                             .sort((a, b) => b[1] - a[1])
-                            .slice(0, 3)
-                            .map(([k]) => k);
-                        clusterSubcats.textContent = `Subcategories: ${cats.join(', ') || '—'}`;
+                            .slice(0, 2);
+                        const catLabel = topCats.map(([k]) => k.replace(/_/g, ' ')).join(' · ');
+
+                        clusterName.textContent = `Cluster ${bestMatch.cluster_id}: ${catLabel || 'Mixed'}`;
+                        clusterSubcats.textContent = `Terms: ${(bestMatch.top_terms || []).slice(0, 4).join(', ')}`;
                         clusterReview.textContent = `"${reviewText.substring(0, 120)}${reviewText.length > 120 ? '...' : ''}"`;
-                        clusterSentiment.textContent = `${bestMatch.sentiment_entropy?.toFixed(2) || '—'} entropy`;
-                        clusterAvgRating.textContent = `${bestMatch.avg_rating || '—'} / 5`;
-                        clusterConfidence.textContent = `${(bestScore / Math.max(bestMatch.top_terms.length, 1)).toFixed(2)}`;
+
+                        // Show dominant sentiment
+                        const s = bestMatch.sentiment_distribution_pct || {};
+                        const dominantSentiment = Object.entries(s).sort((a, b) => b[1] - a[1])[0];
+                        const sentimentColor = dominantSentiment[0] === 'Positive' ? '#10B981' :
+                                                dominantSentiment[0] === 'Negative' ? '#DC2626' : '#EA580C';
+                        clusterSentiment.innerHTML = `<span style="color:${sentimentColor};font-weight:700;">${dominantSentiment[0]}</span> ${dominantSentiment[1].toFixed(0)}%`;
+                        clusterAvgRating.textContent = `${bestMatch.avg_rating ? bestMatch.avg_rating.toFixed(1) : '—'} / 5`;
+
+                        // Confidence = match score / max possible
+                        const maxPossible = Math.max(bestMatch.top_terms.length, 1);
+                        clusterConfidence.textContent = `${((bestScore / maxPossible) * 100).toFixed(0)}%`;
                         clusterCard.classList.remove('hidden');
                     } else {
                         notFoundCard.classList.remove('hidden');
@@ -2779,6 +2822,22 @@ response = client.models.generate_content(
                     console.log('Cluster match skipped:', e.message);
                     notFoundCard.classList.remove('hidden');
                 }
+            },
+
+            // Demo suggestions — 3 reviews covering all sentiments & clusters
+            suggestions: [
+                "Bought this as a birthday gift for my daughter and she absolutely loves it! Easy to assemble, great quality, and the colors are beautiful. Highly recommend for any parent looking for a nice present.",
+                "This charger stopped working after two weeks. Complete waste of money. I tried different outlets, different cables, nothing. Don't buy this garbage.",
+                "The story was interesting at first but the middle chapters dragged on forever. The ending was okay I guess. Not the best book I've read this year, not the worst either."
+            ],
+
+            useSuggestion: function (idx) {
+                document.getElementById('play-input').value = this.suggestions[idx];
+                // Highlight selected
+                document.querySelectorAll('.suggestion-btn').forEach((btn, i) => {
+                    btn.classList.toggle('bg-cyan-50', i === idx);
+                    btn.classList.toggle('border-cyan-200', i === idx);
+                });
             },
 
             runInference: async function () {
@@ -2805,8 +2864,8 @@ response = client.models.generate_content(
                     return;
                 }
 
-                // Check for keys
-                if (this.playground.hfToken === 'HF_TOKEN_PLACEHOLDER' || this.playground.geminiToken === 'GEMINI_API_KEY_PLACEHOLDER') {
+                // Check for Gemini key (LLM synthesis still needs it)
+                if (this.playground.geminiToken === 'GEMINI_API_KEY_PLACEHOLDER') {
                     this.toggleSettings(true);
                     return;
                 }
@@ -2836,31 +2895,27 @@ response = client.models.generate_content(
 
                 try {
                     const modelKey = document.getElementById('play-model').value;
-                    const hfEndpoint = this.playground.endpoints[modelKey];
 
-                    this.logTrace("HuggingFace Request", { model: modelKey, endpoint: hfEndpoint, input_length: text.length });
+                    this.logTrace("Transformers.js Request", { model: 'SebasLopez-ai/distilbert-amazon-reviews-sentiment', input_length: text.length });
 
-                    // 2. Query Hugging Face (Sentiment)
-                    const hfResponse = await fetch(hfEndpoint, {
-                        headers: { Authorization: `Bearer ${this.playground.hfToken}` },
-                        method: "POST",
-                        body: JSON.stringify({ inputs: text }),
+                    // 2. Browser-side inference via Transformers.js (no server, no API key)
+                    const classifier = await window.loadClassifier((progress) => {
+                        if (progress.status === 'progress' && progress.total) {
+                            const pct = Math.round((progress.loaded / progress.total) * 100);
+                            statusTxt.textContent = `LOADING ${pct}%`;
+                            statusTxt.className = "text-cyan-500";
+                            btnTxt.textContent = `Downloading model... ${pct}%`;
+                        }
                     });
 
-                    let hfResult = await hfResponse.json();
-                    this.logTrace("HuggingFace Response", hfResult);
+                    // Model loaded — run inference
+                    statusTxt.textContent = "CLASSIFYING";
+                    btnTxt.textContent = "Classifying...";
 
-                    // Handle model loading
-                    if (hfResult.error && hfResult.error.includes("loading")) {
-                        btnTxt.textContent = "Warming up VRAM...";
-                        statusTxt.textContent = "WARMING UP";
-                        await new Promise(r => setTimeout(r, 3000));
-                        return this.runInference(); // Recursive retry
-                    }
+                    const hfResult = await classifier(text, { top_k: 3 });
+                    this.logTrace("Transformers.js Response", hfResult);
 
-                    if (!hfResponse.ok) throw new Error(hfResult.error || "HF API Error");
-
-                    const prediction = Array.isArray(hfResult[0]) ? hfResult[0][0] : hfResult[0];
+                    const prediction = hfResult[0];
                     const rawLabel = prediction.label;
                     const confidence = prediction.score;
 
@@ -2888,7 +2943,9 @@ response = client.models.generate_content(
                     if (step2Icon) step2Icon.className = "ph-fill ph-circle-notch text-orange-500 text-lg animate-spin";
 
                     // N04.2 Cluster match (async, non-blocking)
-                    this.showClusterMatch(text);
+                    if (modelKey === 'full') {
+                        this.showClusterMatch(text);
+                    }
 
                     statusTxt.textContent = "SYNTHESIZING";
                     statusTxt.className = "text-orange-500";
@@ -3200,6 +3257,11 @@ response = client.models.generate_content(
             // Load keys into state initially
             app.playground.hfToken = localStorage.getItem('nlp_hf_token') || 'HF_TOKEN_PLACEHOLDER';
             app.playground.geminiToken = localStorage.getItem('nlp_gemini_key') || 'GEMINI_API_KEY_PLACEHOLDER';
+
+            // Pre-warm Transformers.js model (silent background download, cached after first load)
+            if (typeof window.loadClassifier === 'function') {
+                window.loadClassifier().catch(() => {});
+            }
         });
     </script>
 </body>
