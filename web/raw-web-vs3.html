@@ -1220,7 +1220,7 @@
                         </p>
                         <ul class="text-xs text-slate-500 space-y-3 mt-4 border-t border-slate-100 pt-4">
                             <li class="flex items-start gap-2"><i class="ph ph-check-circle text-emerald-500 text-base"></i><span>DistilBERT sentiment classifier deployed (<code class="bg-slate-100 px-1 rounded text-[10px]">SebasLopez-ai/distilbert-amazon-reviews-sentiment</code>)</span></li>
-                            <li class="flex items-start gap-2"><i class="ph ph-check-circle text-emerald-500 text-base"></i><span>HybridKMeans clustering model deployed (<code class="bg-slate-100 px-1 rounded text-[10px]">SebasLopez-ai/hybridKMeans-category-clustering</code>)</span></li>
+                            <li class="flex items-start gap-2"><i class="ph ph-check-circle text-emerald-500 text-base"></i><span>HybridKMeans clustering deployed (N04 — <code class="bg-slate-100 px-1 rounded text-[10px]">SebasLopez-ai/hybridKMeans-category-clustering</code>)</span></li>
                             <li class="flex items-start gap-2"><i class="ph ph-check-circle text-emerald-500 text-base"></i><span>Playground tab connected to both models via HF Inference API + cluster profiles</span></li>
                         </ul>
                     </div>
@@ -1324,7 +1324,7 @@
                                         </span>
                                         <span class="block pt-3 border-t border-white/5">
                                             <span class="text-orange-400 font-bold uppercase block mb-1">HybridKMeans
-                                                (Clusters)</span>
+                                                (N04)</span>
                                             <span class="block text-slate-400">• Online Learning / Low RAM</span>
                                             <span class="block text-slate-400">• Centroids: K=3 to K=10</span>
                                             <span class="block text-slate-400">• Task: Unsupervised Topics</span>
@@ -1510,8 +1510,8 @@
                                         </div>
                                     </div>
 
-                                    <!-- Step 2 -->
-                                    <div class="bg-white border border-slate-200 shadow-sm rounded-lg p-5 flex gap-5 flex-1 relative group"
+                                    <!-- Step 2: Cluster Identification -->
+                                    <div class="bg-white border border-slate-200 shadow-sm rounded-lg p-5 flex gap-5 relative group"
                                         id="step-2-container">
                                         <div class="absolute -left-[5px] top-8 w-2.5 h-2.5 rounded-full bg-white border-2 border-slate-200 hidden md:block"
                                             id="step-2-dot"></div>
@@ -1522,22 +1522,20 @@
                                             <div class="flex justify-between items-start mb-3">
                                                 <p
                                                     class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-                                                    2. Contextual Synthesis</p>
+                                                    2. CLUSTER IDENTIFICATION</p>
                                                 <span
-                                                    class="text-[9px] font-mono-data text-slate-400 border border-slate-200 px-1.5 py-0.5 rounded bg-slate-50">~450ms</span>
+                                                    class="text-[9px] font-mono-data text-slate-400 border border-slate-200 px-1.5 py-0.5 rounded bg-slate-50">~50ms</span>
                                             </div>
-                                            <p id="play-llm"
-                                                class="text-sm text-slate-600 leading-relaxed font-medium mt-1"></p>
 
-                                            <!-- Cluster Match Card (N04.2) -->
-                                            <div id="play-cluster-card" class="hidden bg-white border border-slate-200 rounded-lg p-5 mt-4">
+                                            <!-- Cluster Match Card (N04) -->
+                                            <div id="play-cluster-card" class="hidden bg-white border border-slate-200 rounded-lg p-5">
                                                 <div class="flex items-start gap-3 mb-3">
                                                     <i class="ph ph-package text-xl text-cyan-500 mt-0.5"></i>
                                                     <div class="flex-1">
                                                         <h4 id="play-cluster-name" class="text-sm font-bold text-slate-800">Cluster: —</h4>
                                                         <p id="play-cluster-subcats" class="text-xs text-slate-500">Subcategories: —</p>
                                                     </div>
-                                                    <span class="text-[9px] font-bold px-2 py-1 rounded bg-cyan-100 text-cyan-700">N04.2</span>
+                                                    <span class="text-[9px] font-bold px-2 py-1 rounded bg-cyan-100 text-cyan-700">N04</span>
                                                 </div>
                                                 <div class="border-l-2 border-cyan-200 pl-4 mb-4">
                                                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Your Review</p>
@@ -1560,7 +1558,7 @@
                                             </div>
 
                                             <!-- Not Found Card -->
-                                            <div id="play-notfound-card" class="hidden bg-white border-l-4 border-amber-400 rounded-lg p-5 mt-4">
+                                            <div id="play-notfound-card" class="hidden bg-white border-l-4 border-amber-400 rounded-lg p-5">
                                                 <div class="flex items-start gap-3">
                                                     <i class="ph ph-warning-circle text-xl text-amber-500 mt-0.5"></i>
                                                     <div class="flex-1">
@@ -1569,28 +1567,57 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
 
-                                            <!-- Trace Toggle -->
-                                            <div class="mt-6 pt-4 border-t border-slate-100">
-                                                <button onclick="app.toggleTrace()"
-                                                    class="text-[9px] font-bold text-slate-400 hover:text-slate-600 uppercase tracking-widest flex items-center gap-1.5 transition-colors">
-                                                    <i class="ph ph-terminal-window"></i> View Technical Trace
-                                                </button>
-                                                <div id="play-trace-container"
-                                                    class="hidden mt-3 bg-[#0F172A] rounded-lg p-4 overflow-x-auto border border-slate-800 shadow-inner">
-                                                    <div
-                                                        class="flex justify-between items-center mb-2 border-b border-slate-800 pb-2">
-                                                        <span
-                                                            class="text-[9px] font-bold text-slate-600 uppercase">System
-                                                            Log</span>
-                                                        <button
-                                                            onclick="document.getElementById('play-trace').textContent = ''"
-                                                            class="text-[9px] text-slate-600 hover:text-slate-400">Clear</button>
-                                                    </div>
-                                                    <pre id="play-trace"
-                                                        class="text-[10px] text-cyan-400/80 font-mono-data leading-relaxed"></pre>
+                                    <!-- Step 3: Assistant Answer -->
+                                    <div class="bg-white border border-slate-200 shadow-sm rounded-lg p-5 flex gap-5 relative group"
+                                        id="step-3-container">
+                                        <div class="absolute -left-[5px] top-8 w-2.5 h-2.5 rounded-full bg-white border-2 border-slate-200 hidden md:block"
+                                            id="step-3-dot"></div>
+                                        <div class="flex-shrink-0 mt-0.5 md:hidden">
+                                            <i class="ph-fill ph-circle text-slate-300 text-lg" id="step-3-icon"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="flex justify-between items-start mb-3">
+                                                <p
+                                                    class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                                                    3. ASSISTANT ANSWER</p>
+                                                <span
+                                                    class="text-[9px] font-mono-data text-slate-400 border border-slate-200 px-1.5 py-0.5 rounded bg-slate-50">~450ms</span>
+                                            </div>
+                                            <div class="flex gap-3">
+                                                <div class="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center flex-shrink-0">
+                                                    <i class="ph ph-robot text-cyan-600"></i>
+                                                </div>
+                                                <div class="flex-1">
+                                                    <p class="text-[10px] font-bold text-slate-500 mb-1">Research Pipeline v1.0</p>
+                                                    <p id="play-llm"
+                                                        class="text-sm text-slate-600 leading-relaxed"></p>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Trace Toggle -->
+                                    <div class="text-center">
+                                        <button onclick="app.toggleTrace()"
+                                            class="text-[10px] font-bold text-cyan-500 hover:text-cyan-600 uppercase tracking-widest flex items-center justify-center gap-1.5 transition-colors">
+                                            <i class="ph ph-terminal-window"></i> [>_] VIEW TECHNICAL TRACE
+                                        </button>
+                                        <div id="play-trace-container"
+                                            class="hidden mt-3 bg-[#0F172A] rounded-lg p-4 overflow-x-auto border border-slate-800 shadow-inner text-left">
+                                            <div
+                                                class="flex justify-between items-center mb-2 border-b border-slate-800 pb-2">
+                                                <span
+                                                    class="text-[9px] font-bold text-slate-600 uppercase">System
+                                                    Log</span>
+                                                <button
+                                                    onclick="document.getElementById('play-trace').textContent = ''"
+                                                    class="text-[9px] text-slate-600 hover:text-slate-400">Clear</button>
+                                            </div>
+                                            <pre id="play-trace"
+                                                class="text-[10px] text-cyan-400/80 font-mono-data leading-relaxed"></pre>
                                         </div>
                                     </div>
                                 </div>
@@ -1784,6 +1811,10 @@
             );
             return _classifier;
         };
+
+        window.clearClassifier = function () {
+            _classifier = null;
+        };
     </script>
 
     <!-- Settings Modal -->
@@ -1804,8 +1835,9 @@
                     <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">Hugging
                         Face Read Token</label>
                     <input type="text" id="setting-hf-token"
-                        onfocus="this.value = localStorage.getItem('nlp_hf_token') || ''"
-                        onblur="this.value = app.maskKey(this.value)"
+                        onfocus="this.dataset.raw = localStorage.getItem('nlp_hf_token') || ''; this.value = this.dataset.raw;"
+                        oninput="this.dataset.raw = this.value"
+                        onblur="this.value = app.maskKey(this.dataset.raw || '')"
                         class="w-full text-sm border border-slate-200 rounded-lg p-3 text-slate-700 bg-slate-50 focus:bg-white focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all font-mono-data"
                         placeholder="hf_xxxxxxxxxxxxxxxxxxxx">
                 </div>
@@ -1813,8 +1845,9 @@
                     <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">Gemini API
                         Key</label>
                     <input type="text" id="setting-gemini-key"
-                        onfocus="this.value = localStorage.getItem('nlp_gemini_key') || ''"
-                        onblur="this.value = app.maskKey(this.value)"
+                        onfocus="this.dataset.raw = localStorage.getItem('nlp_gemini_key') || ''; this.value = this.dataset.raw;"
+                        oninput="this.dataset.raw = this.value"
+                        onblur="this.value = app.maskKey(this.dataset.raw || '')"
                         class="w-full text-sm border border-slate-200 rounded-lg p-3 text-slate-700 bg-slate-50 focus:bg-white focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all font-mono-data"
                         placeholder="AIzaSyXXXXXXXXXXXXXXXXXXXX">
                 </div>
@@ -1830,6 +1863,20 @@
                 <button onclick="app.saveKeys()" class="btn-cta w-full py-3 rounded-lg text-sm font-bold shadow-md">
                     Save Configuration
                 </button>
+
+                <!-- Clear Model Cache -->
+                <div class="border-t border-slate-100 pt-4 mt-2">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                        <i class="ph ph-database text-xs"></i> Model Cache
+                    </p>
+                    <p class="text-[10px] text-slate-500 mb-3 leading-relaxed">
+                        Transformers.js caches model weights (~256 MB) in your browser. Clear if you update the model on HF or experience loading issues.
+                    </p>
+                    <button onclick="app.clearModelCache()" id="btn-clear-cache"
+                        class="w-full py-2.5 rounded-lg text-xs font-bold border border-red-200 text-red-600 hover:bg-red-50 transition-all flex items-center justify-center gap-2">
+                        <i class="ph ph-trash"></i> Clear Model Cache
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1851,7 +1898,7 @@
                 geminiToken: localStorage.getItem('nlp_gemini_key') || 'GEMINI_API_KEY_PLACEHOLDER',
                 endpoints: {
                     clusterProfiles: 'https://huggingface.co/SebasLopez-ai/hybridKMeans-category-clustering/resolve/main/cluster_profiles.json',
-                    llm: (key) => `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`
+                    llm: (key) => `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${key}`
                 }
             },
 
@@ -2755,7 +2802,7 @@ response = client.models.generate_content(
                     });
             },
 
-            // N04.2 Cluster Match: lightweight keyword heuristic for Playground
+            // N04 Cluster Match: lightweight keyword heuristic for Playground
             showClusterMatch: async function (reviewText) {
                 const clusterCard = document.getElementById('play-cluster-card');
                 const notFoundCard = document.getElementById('play-notfound-card');
@@ -2770,10 +2817,12 @@ response = client.models.generate_content(
                 notFoundCard.classList.add('hidden');
 
                 try {
+                    this.logTrace("HF Cluster Profiles Request", { repo: 'SebasLopez-ai/hybridKMeans-category-clustering' });
                     const res = await fetch(this.playground.endpoints.clusterProfiles);
                     if (!res.ok) throw new Error('Cluster profiles not available');
                     const data = await res.json();
                     const profiles = data.clusters || [];
+                    this.logTrace("HF Cluster Profiles Response", { clusters_loaded: profiles.length });
 
                     // Lightweight keyword overlap heuristic
                     const textLower = reviewText.toLowerCase();
@@ -2793,6 +2842,12 @@ response = client.models.generate_content(
                     }
 
                     if (bestMatch && bestScore >= 1) {
+                        this.logTrace("Cluster Match Result", {
+                            cluster_id: bestMatch.cluster_id,
+                            score: bestScore,
+                            max_possible: Math.max(bestMatch.top_terms.length, 1),
+                            matched_terms: (bestMatch.top_terms || []).filter(t => reviewText.toLowerCase().includes(t.toLowerCase()))
+                        });
                         // Build cluster label from top categories
                         const topCats = Object.entries(bestMatch.top_categories || {})
                             .sort((a, b) => b[1] - a[1])
@@ -2816,10 +2871,12 @@ response = client.models.generate_content(
                         clusterConfidence.textContent = `${((bestScore / maxPossible) * 100).toFixed(0)}%`;
                         clusterCard.classList.remove('hidden');
                     } else {
+                        this.logTrace("Cluster Match Result", { match: "none", reason: "No terms matched" });
                         notFoundCard.classList.remove('hidden');
                     }
                 } catch (e) {
                     console.log('Cluster match skipped:', e.message);
+                    this.logTrace("Cluster Match Error", { error: e.message });
                     notFoundCard.classList.remove('hidden');
                 }
             },
@@ -2853,6 +2910,8 @@ response = client.models.generate_content(
                 const step1Dot = document.getElementById('step-1-dot');
                 const step2Dot = document.getElementById('step-2-dot');
                 const step2Icon = document.getElementById('step-2-icon');
+                const step3Dot = document.getElementById('step-3-dot');
+                const step3Icon = document.getElementById('step-3-icon');
                 const playLlm = document.getElementById('play-llm');
                 const trace = document.getElementById('play-trace');
 
@@ -2892,6 +2951,8 @@ response = client.models.generate_content(
                 step1Dot.className = "absolute -left-[5px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-white border-2 border-cyan-500 hidden md:block animate-pulse";
                 step2Dot.className = "absolute -left-[5px] top-8 w-2.5 h-2.5 rounded-full bg-white border-2 border-slate-200 hidden md:block";
                 if (step2Icon) step2Icon.className = "ph-fill ph-circle text-slate-300 text-lg";
+                step3Dot.className = "absolute -left-[5px] top-8 w-2.5 h-2.5 rounded-full bg-white border-2 border-slate-200 hidden md:block";
+                if (step3Icon) step3Icon.className = "ph-fill ph-circle text-slate-300 text-lg";
 
                 try {
                     const modelKey = document.getElementById('play-model').value;
@@ -2939,13 +3000,19 @@ response = client.models.generate_content(
                     document.getElementById('play-conf').textContent = `${(confidence * 100).toFixed(1)}%`;
 
                     step1Dot.className = "absolute -left-[5px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-cyan-500 border-2 border-cyan-500 hidden md:block";
-                    step2Dot.className = "absolute -left-[5px] top-8 w-2.5 h-2.5 rounded-full bg-white border-2 border-orange-500 hidden md:block animate-pulse";
-                    if (step2Icon) step2Icon.className = "ph-fill ph-circle-notch text-orange-500 text-lg animate-spin";
+                    step2Dot.className = "absolute -left-[5px] top-8 w-2.5 h-2.5 rounded-full bg-white border-2 border-cyan-500 hidden md:block animate-pulse";
+                    if (step2Icon) step2Icon.className = "ph-fill ph-circle-notch text-cyan-500 text-lg animate-spin";
 
-                    // N04.2 Cluster match (async, non-blocking)
+                    // N04 Cluster match (async, non-blocking)
                     if (modelKey === 'full') {
                         this.showClusterMatch(text);
                     }
+
+                    // Step 2 complete, Step 3 active
+                    step2Dot.className = "absolute -left-[5px] top-8 w-2.5 h-2.5 rounded-full bg-cyan-500 border-2 border-cyan-500 hidden md:block";
+                    if (step2Icon) step2Icon.className = "ph-fill ph-check-circle text-cyan-500 text-lg";
+                    step3Dot.className = "absolute -left-[5px] top-8 w-2.5 h-2.5 rounded-full bg-white border-2 border-orange-500 hidden md:block animate-pulse";
+                    if (step3Icon) step3Icon.className = "ph-fill ph-circle-notch text-orange-500 text-lg animate-spin";
 
                     statusTxt.textContent = "SYNTHESIZING";
                     statusTxt.className = "text-orange-500";
@@ -2966,14 +3033,14 @@ response = client.models.generate_content(
                         contents: [{
                             parts: [{
                                 text: `${personas[label] || personas["Neutral"]} 
-                                Contexto: El modelo detectó un sentimiento ${label}. 
-                                Reseña original: "${text}". 
-                                Instrucción: Genera una respuesta breve (máximo 2 frases) que conecte con el sentimiento y el producto específico mencionado en la reseña.`
+                                Context: The model detected a ${label} sentiment. 
+                                Original review: "${text}". 
+                                Instruction: Write a short response (max 2 sentences) in the SAME LANGUAGE as the review above.`
                             }]
                         }]
                     };
 
-                    this.logTrace("Gemini Request", { model: "gemini-1.5-flash", persona: label, text_preview: text.substring(0, 50) + "..." });
+                    this.logTrace("Gemini Request", { model: "gemini-3-flash-preview", persona: label, text_preview: text.substring(0, 50) + "..." });
 
                     const llmEndpoint = this.playground.endpoints.llm(this.playground.geminiToken);
                     const llmResponse = await fetch(llmEndpoint, {
@@ -2996,8 +3063,8 @@ response = client.models.generate_content(
                     playLlm.textContent = synthesis;
                     playLlm.className = "text-sm text-slate-600 leading-relaxed font-medium mt-1";
 
-                    step2Dot.className = "absolute -left-[5px] top-8 w-2.5 h-2.5 rounded-full bg-orange-500 border-2 border-orange-500 hidden md:block";
-                    if (step2Icon) step2Icon.className = "ph-fill ph-check-circle text-orange-500 text-lg";
+                    step3Dot.className = "absolute -left-[5px] top-8 w-2.5 h-2.5 rounded-full bg-orange-500 border-2 border-orange-500 hidden md:block";
+                    if (step3Icon) step3Icon.className = "ph-fill ph-check-circle text-orange-500 text-lg";
 
                     statusTxt.textContent = "COMPLETE";
                     statusTxt.className = "text-emerald-500";
@@ -3050,8 +3117,11 @@ response = client.models.generate_content(
                 geminiInput.value = geminiKey;
             },
             saveKeys: function () {
-                const hfKey = document.getElementById('setting-hf-token').value.trim();
-                const geminiKey = document.getElementById('setting-gemini-key').value.trim();
+                const hfInput = document.getElementById('setting-hf-token');
+                const geminiInput = document.getElementById('setting-gemini-key');
+
+                const hfKey = (hfInput.dataset.raw || hfInput.value).trim();
+                const geminiKey = (geminiInput.dataset.raw || geminiInput.value).trim();
 
                 if (hfKey) localStorage.setItem('nlp_hf_token', hfKey);
                 if (geminiKey) localStorage.setItem('nlp_gemini_key', geminiKey);
@@ -3060,6 +3130,74 @@ response = client.models.generate_content(
                 this.playground.geminiToken = geminiKey;
 
                 this.toggleSettings(false);
+            },
+            clearModelCache: async function () {
+                const btn = document.getElementById('btn-clear-cache');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="ph ph-spinner animate-spin"></i> Clearing...';
+                btn.disabled = true;
+
+                try {
+                    // 1. Clear Transformers.js in-memory classifier
+                    if (typeof window.clearClassifier === 'function') {
+                        window.clearClassifier();
+                    }
+
+                    // 2. Clear browser Cache API (where TF.js stores model weights)
+                    const cacheNames = await caches.keys();
+                    let cleared = 0;
+                    for (const name of cacheNames) {
+                        if (name.includes('transformers') || name.includes('hf') || name.includes('onnx')) {
+                            await caches.delete(name);
+                            cleared++;
+                        }
+                    }
+
+                    // 3. Clear IndexedDB (fallback cache mechanism)
+                    if (window.indexedDB) {
+                        const dbs = await window.indexedDB.databases();
+                        for (const db of dbs) {
+                            if (db.name && (db.name.includes('transformers') || db.name.includes('onnx'))) {
+                                window.indexedDB.deleteDatabase(db.name);
+                                cleared++;
+                            }
+                        }
+                    }
+
+                    // 4. Clear localStorage (API keys, app state)
+                    const keysToRemove = [];
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        if (key && key.startsWith('nlp_')) {
+                            keysToRemove.push(key);
+                        }
+                    }
+                    keysToRemove.forEach(k => localStorage.removeItem(k));
+                    if (keysToRemove.length > 0) cleared++;
+
+                    btn.innerHTML = '<i class="ph ph-check-circle text-emerald-500"></i> Cache & Keys Cleared';
+                    btn.className = 'w-full py-2.5 rounded-lg text-xs font-bold border border-emerald-200 text-emerald-600 bg-emerald-50 transition-all flex items-center justify-center gap-2';
+
+                    if (cleared === 0) {
+                        btn.innerHTML = '<i class="ph ph-info"></i> Nothing to clear (already clean)';
+                        btn.className = 'w-full py-2.5 rounded-lg text-xs font-bold border border-slate-200 text-slate-500 transition-all flex items-center justify-center gap-2';
+                    }
+
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                        btn.className = 'w-full py-2.5 rounded-lg text-xs font-bold border border-red-200 text-red-600 hover:bg-red-50 transition-all flex items-center justify-center gap-2';
+                        btn.disabled = false;
+                    }, 3000);
+                } catch (err) {
+                    console.error('Cache clear error:', err);
+                    btn.innerHTML = '<i class="ph ph-warning"></i> Error — try a hard refresh (Cmd+Shift+R)';
+                    btn.className = 'w-full py-2.5 rounded-lg text-xs font-bold border border-amber-200 text-amber-600 bg-amber-50 transition-all flex items-center justify-center gap-2';
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                        btn.className = 'w-full py-2.5 rounded-lg text-xs font-bold border border-red-200 text-red-600 hover:bg-red-50 transition-all flex items-center justify-center gap-2';
+                        btn.disabled = false;
+                    }, 4000);
+                }
             },
             toggleTrace: function () {
                 const container = document.getElementById('play-trace-container');
