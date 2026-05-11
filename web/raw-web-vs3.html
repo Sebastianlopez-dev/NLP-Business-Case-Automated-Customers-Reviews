@@ -200,6 +200,11 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
+        .doc-card {
+            cursor: pointer;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
         .line-clamp-2 {
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -207,14 +212,16 @@
             overflow: hidden;
         }
 
-        #blog-article-content h2 {
+        #blog-article-content h2,
+        #docs-article-content h2 {
             font-size: 1.25rem;
             font-weight: 700;
             color: #1E293B;
             margin-bottom: 1rem;
         }
 
-        #blog-article-content h3 {
+        #blog-article-content h3,
+        #docs-article-content h3 {
             font-size: 0.875rem;
             font-weight: 700;
             color: #334155;
@@ -222,7 +229,8 @@
             margin-bottom: 0.75rem;
         }
 
-        #blog-article-content h4 {
+        #blog-article-content h4,
+        #docs-article-content h4 {
             font-size: 0.75rem;
             font-weight: 700;
             color: #334155;
@@ -230,7 +238,8 @@
             margin-bottom: 0.5rem;
         }
 
-        #blog-article-content p {
+        #blog-article-content p,
+        #docs-article-content p {
             font-size: 0.875rem;
             color: #475569;
             line-height: 1.625;
@@ -238,18 +247,44 @@
         }
 
         #blog-article-content ul,
-        #blog-article-content ol {
+        #blog-article-content ol,
+        #docs-article-content ul,
+        #docs-article-content ol {
             font-size: 0.875rem;
             color: #475569;
             margin-bottom: 0.75rem;
         }
 
-        #blog-article-content li {
+        #blog-article-content li,
+        #docs-article-content li {
             margin-bottom: 0.5rem;
         }
 
-        #blog-article-content strong {
+        #blog-article-content strong,
+        #docs-article-content strong {
             color: #334155;
+        }
+
+        #docs-article-content table {
+            font-size: 0.75rem;
+            color: #475569;
+            margin-bottom: 0.75rem;
+        }
+
+        #docs-article-content table th {
+            font-size: 0.625rem;
+            font-weight: 700;
+        }
+
+        #docs-article-content table td {
+            font-size: 0.75rem;
+        }
+
+        #docs-article-content .code-viewport-auto {
+            height: auto;
+            min-height: 0;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
         }
 
         .chart-container {
@@ -1709,80 +1744,75 @@
 
             <!-- 8. DOCUMENTATION -->
             <section id="tab-docs" class="tab-content">
-                <div class="mb-10">
-                    <h2 class="text-2xl font-bold text-slate-800 tracking-tight mb-1">Documentation Concepts</h2>
-                    <p class="text-sm text-slate-500">Research behind every pipeline decision. The structural backbone
-                        mapped across four core areas.</p>
-                </div>
-
-                <div class="card-standard">
-                    <div class="flex items-center gap-3 mb-6">
-                        <i class="ph ph-scales text-2xl text-cyan-600"></i>
-                        <h3 class="text-lg font-bold text-slate-800 tracking-tight">Architectural Trade-offs Matrix</h3>
+                <!-- Top: Horizontal Technical Banner -->
+                <div
+                    class="card-standard bg-white border-slate-200/60 shadow-sm p-4 mb-8 flex items-center justify-between overflow-hidden relative">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
+                            <i class="ph ph-book-open-text text-amber-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xs font-bold text-slate-800 tracking-tight">Research Documentation</h3>
+                            <p class="text-[9px] text-slate-400 uppercase tracking-widest">Decisions, Methodology &
+                                Architecture</p>
+                        </div>
                     </div>
 
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="border-b border-slate-200">
-                                    <th class="py-3 px-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
-                                        Decision</th>
-                                    <th class="py-3 px-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
-                                        Discarded Alternative</th>
-                                    <th class="py-3 px-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
-                                        Rationale (N01 EDA)</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-sm">
-                                <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                                    <td class="py-3 px-4 font-semibold text-slate-800">Stream gzip from UCSD</td>
-                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">HF datasets
-                                        streaming</td>
-                                    <td class="py-3 px-4 text-slate-600">Avoided unstable Hugging Face API errors and
-                                        duplicate caching on local disk.</td>
-                                </tr>
-                                <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                                    <td class="py-3 px-4 font-semibold text-slate-800">Merge all 33 categories</td>
-                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">1-2 specific
-                                        categories</td>
-                                    <td class="py-3 px-4 text-slate-600">Maximizes lexical diversity to prevent the
-                                        model from merely memorizing category-specific nouns.</td>
-                                </tr>
-                                <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                                    <td class="py-3 px-4 font-semibold text-slate-800">Uncapped Undersampling</td>
-                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">SMOTE / Class
-                                        weights</td>
-                                    <td class="py-3 px-4 text-slate-600">Maintains data transparency with 100% real
-                                        human text. No synthetic artifacts introduced.</td>
-                                </tr>
-                                <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                                    <td class="py-3 px-4 font-semibold text-slate-800">Noise Filter
-                                        <code>len &lt; 10</code>
-                                    </td>
-                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">No filter / len
-                                        &lt; 20</td>
-                                    <td class="py-3 px-4 text-slate-600">Optimal tradeoff to remove 8.4% of duplicate
-                                        wildcards (e.g. "Great") without losing valid short complaints.</td>
-                                </tr>
-                                <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                                    <td class="py-3 px-4 font-semibold text-slate-800">Apache Arrow format</td>
-                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">CSV / Parquet
-                                    </td>
-                                    <td class="py-3 px-4 text-slate-600">Provides zero-copy memory mapping, enabling
-                                        native ultra-fast streaming in HF Trainer.</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50 transition-colors">
-                                    <td class="py-3 px-4 font-semibold text-slate-800">Tokenizer
-                                        <code>max_length=256</code>
-                                    </td>
-                                    <td class="py-3 px-4 text-slate-500 line-through decoration-red-300">max_length=512
-                                    </td>
-                                    <td class="py-3 px-4 text-slate-600">Truncating to 256 tokens captures ~98%+ of
-                                        reviews while reducing quadratic attention time, yielding a massive training
-                                        speedup.</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="flex items-center gap-12 mr-4">
+                        <div class="flex flex-col">
+                            <span
+                                class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Articles</span>
+                            <span class="text-xs font-mono-data text-slate-800 font-bold">05 Chapters</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span
+                                class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Tone</span>
+                            <span class="text-xs font-mono-data text-slate-700">Researcher, not oracle</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span
+                                class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Source</span>
+                            <span class="text-xs font-mono-data text-slate-700">Notebooks + Model Cards</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section Title -->
+                <div class="mb-10">
+                    <h2 class="text-2xl font-bold text-slate-800 tracking-tight mb-1">Pipeline Decisions, Step by Step</h2>
+                    <p class="text-sm text-slate-500 leading-relaxed max-w-3xl">
+                        Five articles that walk through every decision in this project — from the data that shaped our
+                        model choices, to the architecture behind the web interface. Written with the curiosity of a
+                        researcher who knows other paths exist.
+                    </p>
+                </div>
+
+                <!-- Main Content Grid -->
+                <div class="grid grid-cols-12 gap-8">
+                    <!-- Left: Selected Article -->
+                    <div class="col-span-12 lg:col-span-8">
+                        <div id="docs-article-content" class="card-standard min-h-[600px] mb-6">
+                            <!-- Injected by JS -->
+                        </div>
+
+                        <div id="docs-dev-note"
+                            class="mb-6 p-4 bg-amber-50 border border-amber-100 rounded-lg flex items-start gap-2">
+                            <i class="ph ph-info text-amber-500 text-xs mt-0.5 flex-shrink-0"></i>
+                            <p class="text-[10px] text-amber-700 leading-relaxed italic">
+                                <strong>Researcher's Note:</strong> These articles reflect decisions made under specific
+                                constraints (Colab T4 GPU, 15 GB VRAM, zero disk budget). Different hardware or data would
+                                lead to different choices — and that's fine.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Right: Article Navigator -->
+                    <div class="col-span-12 lg:col-span-4">
+                        <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Article
+                            Navigation</h4>
+                        <div id="docs-card-strip" class="flex flex-col gap-3">
+                            <!-- Injected by JS -->
+                        </div>
                     </div>
                 </div>
             </section>
@@ -2115,6 +2145,338 @@
                 missingArticle: '<div class="text-center py-12 text-slate-400"><i class="ph ph-file-text text-3xl mb-3 block"></i><p class="text-sm">Article not yet generated</p></div>'
             },
 
+            docsState: {
+                activeArticle: 0,
+                initialized: false,
+                articles: [
+                    {
+                        id: 1,
+                        title: "The Data Behind Our Choices",
+                        tag: "EDA & Pipeline",
+                        icon: "ph-chart-bar",
+                        color: "#0891B2",
+                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">The Data Behind Our Choices</h2>
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Starting Point: A Colossal Dataset</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">We began with the <strong class="text-slate-700">Amazon Reviews 2023 dataset</strong> — 571.54 million reviews across 33 product categories. That's not a dataset you can load into RAM on a Colab T4. Every decision from here was shaped by this constraint: <strong class="text-slate-700">how do you build a production-quality NLP pipeline when you can't afford disk space?</strong></p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The answer was HTTP streaming. We pulled compressed JSONL from UCSD servers, decompressed it in-flight with gzip, and accumulated only what we needed in RAM (~90 MB per category). The total pipeline cost on disk? <strong class="text-slate-700 font-mono-data">Zero bytes.</strong> This wasn't just elegant — it was <em>necessary</em> on a Colab environment with ~70 GB of free space that would have been devoured by uncompressed data.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Would I do it the same way on a dedicated server with 4 TB of NVMe? Probably not — I'd use Parquet and pre-shard by category. But the streaming approach taught me something valuable: <strong class="text-slate-700">you don't need to own data to process it.</strong></p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">The Imbalance That Defined Everything</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Amazon reviews are overwhelmingly positive. Of the 976K reviews we sampled, <strong class="text-slate-700">81.6% were 4–5 stars</strong>. Only 10.6% were negative (1–2 stars), and a mere 7.5% were neutral (3 stars). This isn't a bug — it's consumer behaviour. People buy things they think they'll like, and when they do, they leave quick 5-star ratings.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">This imbalance forced a hard choice: <strong class="text-slate-700">let the model learn the natural distribution, or force it to learn rare classes?</strong> We chose the latter — stratified undersampling to 213.9K reviews (71,315 per class). We discarded ~728K positive reviews. Some might call that wasteful; I'd call it <em>necessary</em> for a model that actually learns to detect complaints.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">A perfectly reasonable counter-argument: use class weights instead of undersampling, keeping all the positive signal. We tested this in early experiments. The problem? Our minority class (Neutral, at 7.5%) was so small that even with aggressive class weights, the model learned to ignore it. Undersampling was the pragmatic choice given the extreme skew.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">The Neutral Paradox</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Here's something the numbers don't tell you directly: <strong class="text-slate-700">neutral reviews are 37% longer</strong> than negative or positive ones. A negative review averages 295 characters ("Broke after two days. Waste of money."). A positive review averages 307. But neutral reviews? <strong class="text-slate-700 font-mono-data" style="color: #EA580C;">405 characters.</strong></p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">This makes sense when you think about it. Strong opinions need few words. Ambivalence needs justification: "The fabric is nice and the colour is beautiful, but the sizing runs small and the zipper feels cheap." This linguistic complexity is exactly why <strong class="text-slate-700">every model in our pipeline struggles most with the Neutral class</strong> — DistilBERT achieves 67.1% F1 on Neutral vs. 87.7% on Positive. It's not a model failure; it's a data property.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Multilingual: The Elephant We Acknowledged</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Both DistilBERT and Nomic Embed are <strong class="text-slate-700">English-only models</strong>. The Amazon dataset contains reviews in dozens of languages — Spanish, German, Japanese, French. Our tokenizer will produce garbage on non-English text. We didn't filter by language. This is a known limitation, not an oversight.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Why not use a multilingual model like XLM-RoBERTa? Two reasons: (1) training time would quadruple on a T4 GPU, and (2) the vast majority of reviews in our sampled categories are in English. A multilingual model would have been <em>more correct</em> but <em>less practical</em> given our constraints. Different constraints, different choice.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Word Count: Why 128 Tokens Was Enough</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">We truncated reviews at <strong class="text-slate-700 font-mono-data">max_length=128</strong> (later increased to 256 for final training). The median review is 27 words. <strong class="text-slate-700">98.5% of reviews fit within 128 tokens</strong>. Truncating at 512 would have meant a 4× training slowdown from quadratic attention — for signal that affects less than 1.5% of reviews.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">This is the kind of decision that feels aggressive on paper but pays off in practice. Could those 1.5% of long reviews contain critical signal? Absolutely. But the model's job is to learn generalisable patterns, not to memorise outliers.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Data Quality: The 8.4% Duplicate Trap</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">We filtered out <strong class="text-slate-700">81,901 duplicate wildcards</strong> — reviews that are just "Great" or "Good" or "Nice." At first glance this seems harsh. But these aren't real opinions; they're the textual equivalent of clicking a star rating. Keeping them would mean the model sees the word "Great" 81,901 times labelled as Positive — effectively teaching it that any occurrence of "Great" is positive, regardless of context. That's the fast track to overfitting.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The threshold was <strong class="text-slate-700 font-mono-data">len < 10 characters</strong>. At 10, "Not great." (10 chars) survives while "Bad." (4 chars) is dropped. Is 10 the perfect number? Probably not. But it was the point where the distribution of removed reviews shifted from "meaningless noise" to "short but potentially valid complaints." Tradeoffs, always tradeoffs.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">How All This Shaped Model Selection</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Every model choice traces back to these data characteristics:</p>
+<ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
+<li><strong class="text-slate-700">DistilBERT over RoBERTa</strong> — 66M vs. 125M parameters. On a T4 with 15 GB VRAM, RoBERTa couldn't fit batch_size=32. DistilBERT gave us 77.3% accuracy at half the memory. RoBERTa's 69.1% wasn't worth the VRAM tax.</li>
+<li><strong class="text-slate-700">MiniBatchKMeans over standard K-Means</strong> — we needed an algorithm that scales to 571M reviews. MiniBatch processes in chunks of 1,024, needing only O(batch·k·d) memory. Standard K-Means needs the full dataset in RAM. The quality gap? Silhouette 0.0311 vs 0.0304 — within noise.</li>
+<li><strong class="text-slate-700">nomic-embed-text-v1.5 over MiniLM</strong> — a 10-point MTEB leap for embeddings. Better embeddings → better clusters. Sometimes the upgrade is obvious.</li>
+<li><strong class="text-slate-700">Gemini Flash-Lite for summarisation</strong> — the 1M token context window lets us fit full cluster statistics without truncation. The "Lite" variant is fast enough for sub-second responses, cheap enough for high-volume use.</li>
+</ul>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">None of these were "the right choice" in an absolute sense. They were the right choices <em>under these constraints</em>. Different hardware, different data, different answers.</p>`
+                    },
+                    {
+                        id: 2,
+                        title: "DistilBERT — Sentiment Classification",
+                        tag: "Model Card",
+                        icon: "ph-cpu",
+                        color: "#DC2626",  // Using red to distinguish from blog
+                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">DistilBERT — Sentiment Classification</h2>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Architecture at a Glance</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-700">distilbert-base-uncased</strong> fine-tuned with a classification head for 3 classes: Negative (1–2★), Neutral (3★), Positive (4–5★). We're working with 66M parameters across 6 transformer layers, 768 hidden dimensions, and 12 attention heads. The tokenizer is BERT WordPiece uncased with a 30,522-token vocabulary.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The dataset split was 149,761 train / 32,092 test, stratified 70/15/15. Weights are stored as <code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">model.safetensors</code> at 255 MB. Every review goes straight into the tokenizer — no HTML cleaning, no special preprocessing. DistilBERT handles artifacts gracefully, which is something we learned to appreciate after fighting with regex-based cleaners in earlier experiments.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">How This Model Was Trained</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">This is supervised fine-tuning, not training from scratch. DistilBERT came pre-trained on BooksCorpus and English Wikipedia, and we added a sequence classification head with dropout=0.3. Training ran for 5 epochs with lr=2e-5, batch_size=32, weight_decay=0.01, and 2,340 warmup steps using the AdamW optimizer.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Training Stability</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The loss curve was reassuringly smooth. Starting at 1.097 (step 50), it decreased steadily to ~0.50 by epoch 5. Evaluation metrics improved consistently without overfitting:</p>
+<div class="overflow-x-auto mb-3">
+<table class="w-full text-left border-collapse text-xs">
+<thead><tr class="border-b border-slate-200"><th class="py-2 px-3 font-bold text-slate-400 uppercase tracking-widest">Epoch</th><th class="py-2 px-3 font-bold text-slate-400 uppercase tracking-widest">Eval Loss</th><th class="py-2 px-3 font-bold text-slate-400 uppercase tracking-widest">Accuracy</th><th class="py-2 px-3 font-bold text-slate-400 uppercase tracking-widest">F1</th></tr></thead>
+<tbody>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3 font-mono-data">1</td><td class="py-1.5 px-3 font-mono-data">0.601</td><td class="py-1.5 px-3 font-mono-data">75.04%</td><td class="py-1.5 px-3 font-mono-data">74.66%</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3 font-mono-data">2</td><td class="py-1.5 px-3 font-mono-data">0.551</td><td class="py-1.5 px-3 font-mono-data">76.74%</td><td class="py-1.5 px-3 font-mono-data">76.68%</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3 font-mono-data">3</td><td class="py-1.5 px-3 font-mono-data">0.546</td><td class="py-1.5 px-3 font-mono-data">77.10%</td><td class="py-1.5 px-3 font-mono-data">77.05%</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3 font-mono-data">4</td><td class="py-1.5 px-3 font-mono-data">0.551</td><td class="py-1.5 px-3 font-mono-data">77.32%</td><td class="py-1.5 px-3 font-mono-data">77.14%</td></tr>
+<tr><td class="py-1.5 px-3 font-mono-data font-bold text-cyan-600">5</td><td class="py-1.5 px-3 font-mono-data font-bold text-cyan-600">0.550</td><td class="py-1.5 px-3 font-mono-data font-bold text-cyan-600">77.51%</td><td class="py-1.5 px-3 font-mono-data font-bold text-cyan-600">77.48%</td></tr>
+</tbody></table></div>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The eval loss plateauing after epoch 3 while F1 kept inching up suggests the model reached a stable optimum at epoch 5. We could have stopped at epoch 3 and saved 40% of training time with minimal accuracy loss. Knowing when to stop training is as important as knowing how to train.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What the Predictions Mean</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The test set is perfectly balanced by design (stratified split):</p>
+<div class="overflow-x-auto mb-3">
+<table class="w-full text-left border-collapse text-xs">
+<thead><tr class="border-b border-slate-200"><th class="py-2 px-3 font-bold text-slate-400 uppercase">Class</th><th class="py-2 px-3 font-bold text-slate-400 uppercase">Test</th><th class="py-2 px-3 font-bold text-slate-400 uppercase">Predicted</th><th class="py-2 px-3 font-bold text-slate-400 uppercase">Precision</th><th class="py-2 px-3 font-bold text-slate-400 uppercase">Recall</th><th class="py-2 px-3 font-bold text-slate-400 uppercase">F1</th></tr></thead>
+<tbody>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3 font-bold" style="color:#DC2626">Neg</td><td class="py-1.5 px-3 font-mono-data">10,697</td><td class="py-1.5 px-3 font-mono-data">11,073</td><td class="py-1.5 px-3 font-mono-data">75.42%</td><td class="py-1.5 px-3 font-mono-data">78.07%</td><td class="py-1.5 px-3 font-mono-data">76.72%</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3 font-bold" style="color:#EA580C">Neu</td><td class="py-1.5 px-3 font-mono-data">10,697</td><td class="py-1.5 px-3 font-mono-data">10,261</td><td class="py-1.5 px-3 font-mono-data">68.52%</td><td class="py-1.5 px-3 font-mono-data">65.73%</td><td class="py-1.5 px-3 font-mono-data" style="color:#EA580C">67.10%</td></tr>
+<tr><td class="py-1.5 px-3 font-bold" style="color:#10B981">Pos</td><td class="py-1.5 px-3 font-mono-data">10,698</td><td class="py-1.5 px-3 font-mono-data">10,758</td><td class="py-1.5 px-3 font-mono-data">87.49%</td><td class="py-1.5 px-3 font-mono-data">87.98%</td><td class="py-1.5 px-3 font-mono-data">87.73%</td></tr>
+</tbody></table></div>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Confusion Matrix: Where It Gets Confused</h3>
+<div class="overflow-x-auto mb-3">
+<table class="w-full text-left border-collapse text-xs">
+<thead><tr class="border-b border-slate-200"><th class="py-2 px-3 font-bold text-slate-400 uppercase"></th><th class="py-2 px-3 font-bold text-slate-400 uppercase text-center">Pred Neg</th><th class="py-2 px-3 font-bold text-slate-400 uppercase text-center">Pred Neu</th><th class="py-2 px-3 font-bold text-slate-400 uppercase text-center">Pred Pos</th></tr></thead>
+<tbody>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3 font-bold">True Neg</td><td class="py-1.5 px-3 text-center font-mono-data font-bold" style="color:#DC2626">8,351 (78.1%)</td><td class="py-1.5 px-3 text-center font-mono-data">2,140 (20.0%)</td><td class="py-1.5 px-3 text-center font-mono-data">206 (1.9%)</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3 font-bold">True Neu</td><td class="py-1.5 px-3 text-center font-mono-data">2,526 (23.6%)</td><td class="py-1.5 px-3 text-center font-mono-data font-bold" style="color:#EA580C">7,031 (65.7%)</td><td class="py-1.5 px-3 text-center font-mono-data">1,140 (10.7%)</td></tr>
+<tr><td class="py-1.5 px-3 font-bold">True Pos</td><td class="py-1.5 px-3 text-center font-mono-data">196 (1.8%)</td><td class="py-1.5 px-3 text-center font-mono-data">1,090 (10.2%)</td><td class="py-1.5 px-3 text-center font-mono-data font-bold" style="color:#10B981">9,412 (88.0%)</td></tr>
+</tbody></table></div>
+
+<p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-700" style="color:#DC2626;">The big takeaway: cross-polarity errors are rare.</strong> Only 1.9% of Negative reviews are called Positive, and only 1.8% of Positive reviews are called Negative. The model rarely makes the catastrophic mistake of flipping sentiment polarity.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-700" style="color:#EA580C;">Neutral is the leaky class.</strong> True Neutral reviews spill 23.6% into Negative but only 10.7% into Positive. The model has a <em>negative bias on uncertainty</em> — when it can't tell if a review is Neutral, it defaults to Negative. This makes linguistic sense: lukewarm reviews ("it's okay but the handle broke") share more vocabulary with complaints than with praise.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Model Strengths & Limitations</h3>
+<div class="overflow-x-auto mb-3">
+<table class="w-full text-left border-collapse text-xs">
+<thead><tr class="border-b border-slate-200"><th class="py-2 px-3 font-bold text-slate-400 uppercase w-1/2">Strength</th><th class="py-2 px-3 font-bold text-slate-400 uppercase w-1/2">Limitation</th></tr></thead>
+<tbody>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3">Excellent at <strong>polarity detection</strong> — rarely confuses Neg with Pos (~2% cross-polarity errors)</td><td class="py-1.5 px-3">Struggles with <strong>Neutral reviews</strong> — 34% of true Neutrals are misclassified, mostly as Negative</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3"><strong>Positive reviews</strong>: 88% correct, 87.5% precision. Can reliably filter 4–5★ reviews</td><td class="py-1.5 px-3"><strong>Negative bias on uncertainty</strong> — over-predicts Negative by 376 reviews. A Neutral review is more likely to be called Negative than Positive</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3"><strong>Fast inference</strong> — 66M params, ~20ms per review on CPU. No GPU required for production at moderate scale</td><td class="py-1.5 px-3"><strong>Sarcasm and irony</strong> are not handled — the model reads words at face value ("Great, another broken product" → Positive)</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3"><strong>No preprocessing needed</strong> — raw review text goes straight into the tokenizer. Handles HTML artifacts, emojis, and typos gracefully</td><td class="py-1.5 px-3"><strong>Non-English reviews</strong> — the tokenizer is English-only. Reviews in other languages will produce garbage predictions</td></tr>
+<tr><td class="py-1.5 px-3"><strong>Confidence scores</strong> — outputs calibrated probabilities, not just labels. You can set custom confidence thresholds</td><td class="py-1.5 px-3"><strong>Domain-specific</strong> — trained on Amazon product reviews. Performance on restaurant reviews, movie reviews, or tweets will be lower</td></tr>
+</tbody></table></div>
+
+<p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-700">Training hyperparameters:</strong> learning_rate=2e-5, batch_size=32, epochs=5, max_length=256, weight_decay=0.01, warmup_steps=2,340, train_samples=149,761.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-700">Final metrics:</strong> Accuracy 77.26%, Weighted F1 77.18%, Negative F1 76.72%, Neutral F1 67.10%, Positive F1 87.73%.</p>`
+                    },
+                    {
+                        id: 3,
+                        title: "HybridKMeans — Category Clustering",
+                        tag: "Model Card",
+                        icon: "ph-circles-three-plus",
+                        color: "#DC2626",
+                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">HybridKMeans — Category Clustering</h2>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Architecture at a Glance</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">We cluster Amazon review embeddings into <strong class="text-slate-700">6 semantic categories</strong> using a hybrid two-algorithm pipeline. The embedding model is <strong class="text-slate-700 font-mono-data">nomic-ai/nomic-embed-text-v1.5</strong> producing 768-dimensional vectors. The dataset is 219,998 reviews from Amazon Reviews 2023.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Two clustering algorithms were trained side by side, and each contributes to the final artifact:</p>
+<ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
+<li><strong class="text-slate-700">K-Means (Lloyd)</strong> provides the <em>centroids</em> you download — converges to a true local optimum, n_init=10, max_iter=300, converged in 112 iterations at 57.1s.</li>
+<li><strong class="text-slate-700">MiniBatchKMeans</strong> provides the <em>label assignments</em> — processes in chunks of 1,024, 10 epochs, 3 inits, fits in 19.6s.</li>
+</ul>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Why Two Algorithms?</h3>
+<div class="overflow-x-auto mb-3">
+<table class="w-full text-left border-collapse text-xs">
+<thead><tr class="border-b border-slate-200"><th class="py-2 px-3 font-bold text-slate-400 uppercase">Role</th><th class="py-2 px-3 font-bold text-slate-400 uppercase">Algorithm</th><th class="py-2 px-3 font-bold text-slate-400 uppercase">Why</th></tr></thead>
+<tbody>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3 font-bold">Centroids (weights)</td><td class="py-1.5 px-3 font-mono-data">K-Means (Lloyd)</td><td class="py-1.5 px-3">Converges to a true local optimum. Slightly better Silhouette at k=6 (0.0304 vs 0.0311 — within noise). Centroids are mathematically cleaner.</td></tr>
+<tr><td class="py-1.5 px-3 font-bold">Labels (assignments)</td><td class="py-1.5 px-3 font-mono-data">MiniBatchKMeans</td><td class="py-1.5 px-3">Scales to the full 571M-review dataset at O(batch·k·d) memory. Retains ~102% of K-Means quality at 3× faster fit time.</td></tr>
+</tbody></table></div>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">In practice this means: you load <code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">cluster_centroids.npy</code> for inference (K-Means weights), but the cluster profiles — sizes, avg ratings, top terms — come from the MiniBatchKMeans label assignment. The silhouette gap is negligible, meaning both algorithms agree on cluster boundaries. The centroids from either would produce nearly identical results.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">How to Use cluster_centroids.npy</h3>
+<div class="ide-container shadow-sm mb-3">
+<div class="flex bg-[#1E293B] border-b border-white/5 px-4 py-2">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Inference: assign a review to its nearest centroid</p>
+</div>
+<div class="code-viewport-auto" style="height:auto;min-height:0;padding:12px 16px;font-size:10px;line-height:1.5;">
+<span class="syn-pink">import</span> numpy <span class="syn-pink">as</span> np<br>
+<span class="syn-pink">from</span> scipy.spatial.distance <span class="syn-pink">import</span> cdist<br><br>
+centroids = np.load(<span class="syn-cyan">"cluster_centroids.npy"</span>)<br>
+<span class="syn-grey"># shape: (6, 768), dtype: float32</span><br><br>
+distances = cdist(new_embeddings, centroids, metric=<span class="syn-cyan">"cosine"</span>)<br>
+labels = np.argmin(distances, axis=<span class="syn-orange">1</span>)
+</div></div>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What the 6 Clusters Mean</h3>
+<div class="overflow-x-auto mb-3">
+<table class="w-full text-left border-collapse text-xs">
+<thead><tr class="border-b border-slate-200"><th class="py-2 px-2 font-bold text-slate-400 uppercase">#</th><th class="py-2 px-2 font-bold text-slate-400 uppercase">%</th><th class="py-2 px-2 font-bold text-slate-400 uppercase">Label</th><th class="py-2 px-2 font-bold text-slate-400 uppercase">Avg ★</th><th class="py-2 px-2 font-bold text-slate-400 uppercase">Top terms</th><th class="py-2 px-2 font-bold text-slate-400 uppercase">Key categories</th></tr></thead>
+<tbody>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-mono-data font-bold">0</td><td class="py-1.5 px-2 font-mono-data">13.4%</td><td class="py-1.5 px-2">Mixed (46% Neu)</td><td class="py-1.5 px-2 font-mono-data">2.69</td><td class="py-1.5 px-2">like, use, product, good, hair</td><td class="py-1.5 px-2">Beauty, Grocery, All Beauty</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-mono-data font-bold">1</td><td class="py-1.5 px-2 font-mono-data">5.6%</td><td class="py-1.5 px-2">Strong Pos (93%)</td><td class="py-1.5 px-2 font-mono-data">4.74</td><td class="py-1.5 px-2">good product, great, works</td><td class="py-1.5 px-2">Clothing, Automotive, Health</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-mono-data font-bold">2</td><td class="py-1.5 px-2 font-mono-data">17.6%</td><td class="py-1.5 px-2">Mixed (42% Neu)</td><td class="py-1.5 px-2 font-mono-data">2.98</td><td class="py-1.5 px-2">book, story, read, good</td><td class="py-1.5 px-2">Kindle Store, Movies, Books</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-mono-data font-bold">3</td><td class="py-1.5 px-2 font-mono-data">16.3%</td><td class="py-1.5 px-2">Mixed (53% Neu)</td><td class="py-1.5 px-2 font-mono-data">2.96</td><td class="py-1.5 px-2">described, small, fit, size, expected</td><td class="py-1.5 px-2">Amazon Fashion, Clothing, Sports</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-mono-data font-bold" style="color:#DC2626">4</td><td class="py-1.5 px-2 font-mono-data">24.6%</td><td class="py-1.5 px-2" style="color:#DC2626">Strong Neg (66%)</td><td class="py-1.5 px-2 font-mono-data" style="color:#DC2626">1.94</td><td class="py-1.5 px-2">work, use, just, money, did</td><td class="py-1.5 px-2">Cell Phones, Electronics, Patio</td></tr>
+<tr><td class="py-1.5 px-2 font-mono-data font-bold">5</td><td class="py-1.5 px-2 font-mono-data">22.4%</td><td class="py-1.5 px-2">Strong Pos (90%)</td><td class="py-1.5 px-2 font-mono-data">4.68</td><td class="py-1.5 px-2">great, love, easy, gift, nice</td><td class="py-1.5 px-2">Toys & Games, Gift Cards, Office</td></tr>
+</tbody></table></div>
+
+<p class="text-sm text-slate-600 leading-relaxed mb-3">A quick way to read this: Cluster 4 is your problem child — 66% negative, 1.94★ average, dominated by electronics complaints. Cluster 5 is your star — 90% positive, 4.68★, dominated by gifts and toys. The model discovered these patterns from embeddings alone, with zero human labelling.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Metrics & The Curse of Dimensionality</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The Silhouette Score is 0.0311. That sounds terrible, and it is — but it's <em>expected</em> for 768-dimensional text embeddings. The curse of dimensionality means distance metrics lose discriminative power in high-dimensional spaces. The Silhouette score here is a <strong class="text-slate-700">relative comparator between k values</strong>, not an absolute quality measure. k=6 was chosen via elbow method + domain interpretability: 6 clusters gave us meaningful, distinguishable categories that mapped cleanly to real product domains. k=8 split hairs; k=4 lumped unrelated categories together.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Production-Ready: Files in This Folder</h3>
+<div class="overflow-x-auto mb-3">
+<table class="w-full text-left border-collapse text-xs">
+<thead><tr class="border-b border-slate-200"><th class="py-2 px-3 font-bold text-slate-400 uppercase">File</th><th class="py-2 px-3 font-bold text-slate-400 uppercase">Description</th></tr></thead>
+<tbody>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3 font-mono-data">cluster_centroids.npy</td><td class="py-1.5 px-3">(6, 768) float32 — cluster center embeddings</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3 font-mono-data">cluster_profiles.json</td><td class="py-1.5 px-3">Per-cluster stats (sizes, sentiment, top terms, categories)</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3 font-mono-data">clusters.csv</td><td class="py-1.5 px-3">Per-review cluster assignments</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3 font-mono-data">embeddings_nomic.npz</td><td class="py-1.5 px-3">Full 219,998 × 768 embedding matrix (compressed)</td></tr>
+<tr><td class="py-1.5 px-3 font-mono-data">metrics_clustering.json</td><td class="py-1.5 px-3">Full training history: k-sweep, fit steps, convergence</td></tr>
+</tbody></table></div>`
+                    },
+                    {
+                        id: 4,
+                        title: "Review Summarisation — Notebook 05",
+                        tag: "Pipeline Analysis",
+                        icon: "ph-text-align-justify",
+                        color: "#DC2626",
+                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">Review Summarisation Pipeline (N05)</h2>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Architecture: Extractive-Abstractive</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Notebook 05 takes the cluster assignments from N04 and transforms them into <strong class="text-slate-700">6 blog-style articles</strong> — one per product category cluster. The pipeline has two distinct phases, and the division of labour between them is deliberate:</p>
+
+<div class="overflow-x-auto mb-3">
+<table class="w-full text-left border-collapse text-xs">
+<thead><tr class="border-b border-slate-200"><th class="py-2 px-3 font-bold text-slate-400 uppercase">Phase</th><th class="py-2 px-3 font-bold text-slate-400 uppercase">Tool</th><th class="py-2 px-3 font-bold text-slate-400 uppercase">What it does</th></tr></thead>
+<tbody>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-3 font-bold">Extractive</td><td class="py-1.5 px-3 font-mono-data">pandas + NumPy</td><td class="py-1.5 px-3">Extracts hard facts: top products, sentiment stats, worst-rated items, representative review excerpts. <strong>Deterministic, no hallucinations possible.</strong></td></tr>
+<tr><td class="py-1.5 px-3 font-bold">Abstractive</td><td class="py-1.5 px-3 font-mono-data">Gemini 3 Flash (Google API)</td><td class="py-1.5 px-3">Takes structured facts and writes a polished, persuasive blog article. <strong>Styling only — the facts are pre-computed.</strong></td></tr>
+</tbody></table></div>
+
+<p class="text-sm text-slate-600 leading-relaxed mb-3">This two-step approach is the core architectural insight of N05. The LLM's job is <em>styling</em>, not <em>discovery</em>. Every claim in the final article is traceable back to the data. The LLM cannot hallucinate product IDs or invent sentiment percentages because those numbers are injected as structured facts, not as open-ended prompts.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">How the Extractive Phase Works</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">For each of the 6 clusters, Python extracts a structured facts dictionary containing:</p>
+<ul class="list-disc list-inside space-y-1 text-sm text-slate-600 mb-3">
+<li><strong class="text-slate-700">Size & sentiment</strong> — review count, positive/neutral/negative percentages, average rating</li>
+<li><strong class="text-slate-700">Top 5 products</strong> — by review count, with average rating and sentiment breakdown</li>
+<li><strong class="text-slate-700">Best & worst product</strong> — highest and lowest average rating (minimum 5 reviews)</li>
+<li><strong class="text-slate-700">Original categories</strong> — which Amazon categories ended up in this cluster</li>
+<li><strong class="text-slate-700">Representative reviews</strong> — one positive, one negative, one neutral excerpt per cluster (truncated to 300 chars)</li>
+<li><strong class="text-slate-700">Top TF-IDF terms</strong> — merged from N04 cluster profiles</li>
+</ul>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">This data is assembled using the full 213,945-review dataset (not just the test split), giving accurate per-cluster statistics. The code uses <code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">groupby("parent_asin")</code> for product aggregation and <code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">sample(random_state=42)</code> for reproducible review excerpts.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">The Prompt: Persona-Driven, Data-Grounded</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The prompt template tells Gemini: <em>"You are a senior market analyst at a top-tier consulting firm. Your writing is clear, data-driven, and persuasive."</em> It then injects the structured facts as a data block and provides strict instructions:</p>
+<ul class="list-disc list-inside space-y-1 text-sm text-slate-600 mb-3">
+<li>Write 600–900 words in Markdown format</li>
+<li>Include 5 specific sections (Executive Summary, What Customers Love, What Customers Complain About, Sentiment at a Glance, Key Takeaways)</li>
+<li>Cite specific numbers from the data provided</li>
+<li>Never invent product names, brands, or statistics not in the data</li>
+<li>Refer to products by their ASIN (e.g., "Product B0XXXXX")</li>
+</ul>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The estimated prompt size per cluster is ~700–770 tokens. With 6 clusters, the total token budget for one full run is approximately 4,300 tokens — cheap enough to re-run as the data changes.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">API Integration: Resilience Patterns</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The <code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">call_gemini_api()</code> function includes exponential backoff for rate limiting (429 errors): wait time doubles from 2s → 4s → 8s → … capped at 30s. Between successful calls, there's a 3-second delay to stay within Google's free-tier limits. The API sweep processes all 6 clusters sequentially and reports success/failure per cluster.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Model used: <strong class="text-slate-700 font-mono-data">gemini-3-flash-preview</strong>. Authentication via <code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">GEMINI_API_KEY</code> environment variable loaded from Colab Secrets — never hardcoded in the notebook.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Notebook Conventions Followed</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">N05 follows the project's notebook conventions strictly:</p>
+<ul class="list-disc list-inside space-y-1 text-sm text-slate-600 mb-3">
+<li><strong class="text-slate-700">Environment detection</strong> via <code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">try/except ImportError</code> (not fragile string checks)</li>
+<li><strong class="text-slate-700">All imports in one cell</strong> (<code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">cell-imports</code>)</li>
+<li><strong class="text-slate-700">Path constants</strong> in <code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">cell-paths</code>: BASE_DIR, DATASET_DIR, OUTPUT_DIR, SUMMARIES_DIR</li>
+<li><strong class="text-slate-700">Input validation</strong> before computation: verifies Arrow dataset, clusters.csv, and cluster_profiles.json exist and have correct structure</li>
+<li><strong class="text-slate-700">Reproducibility</strong>: RANDOM_SEED=42, API rate limit delay=3s, all constants in one cell</li>
+<li><strong class="text-slate-700">Sentiment label map</strong>: single source of truth <code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">{0: "negative", 1: "neutral", 2: "positive"}</code> — no hardcoded label arrays</li>
+<li><strong class="text-slate-700">Output saved to</strong> <code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">data/summaries/category_XX_terms_summary.md</code></li>
+</ul>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Key Observations & Designer's Notes</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-700">1. The full dataset matters.</strong> N05 loads ALL three Arrow splits (train + validation + test), not just the test split. Using only the test split would distort sentiment distributions because N01 stratified the test set for balanced labels (~33/33/33). The full dataset gives real-world sentiment proportions per cluster — critical for the articles' credibility.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-700">2. Merge by text, not position.</strong> The cluster assignments (from N04) and the Arrow dataset (from N01) may come from slightly different runs with different row counts. Merging on review text (inner join) is more robust than positional alignment. About 1,889K reviews matched out of 214K — a reasonable hit rate given the different processing pipelines.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-700">3. The LLM is a stylist, not an analyst.</strong> This is the hardest lesson to internalise. It's tempting to ask Gemini to "find patterns" directly from review text. But that path leads to hallucinated products and invented statistics. The structured extractive phase — boring pandas operations — is what makes the articles trustworthy. The LLM adds voice and narrative flow, not data integrity.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-700">4. Verification pays off.</strong> The notebook includes explicit verification cells that check: row counts match, best/worst products exist, unique product counts ≥ 1, and all 6 clusters pass the checks. This catches issues early — a clear error at cell 17 saves debugging a cryptic API failure 20 cells later.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-700">5. What I'd do differently.</strong> The 3-second delay between API calls is conservative. Google's free tier allows faster bursts. I'd also consider parallel API calls with asyncio to cut the total runtime from ~20 seconds to ~3 seconds. But for a research pipeline where reproducibility matters more than speed, sequential calls with visible progress bars are the pragmatic choice.</p>`
+                    },
+                    {
+                        id: 5,
+                        title: "Web Architecture — Decisions & Resilience",
+                        tag: "Architecture",
+                        icon: "ph-browsers",
+                        color: "#DC2626",
+                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">Web Architecture — Decisions & Resilience</h2>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">The Core Decision: Local-First</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">This dashboard is a <strong class="text-slate-700">single HTML file</strong> with zero build step, zero server, and zero framework. Just HTML, Tailwind CSS (CDN), Chart.js (CDN), and vanilla JavaScript. Double-click the file, and it works. No <code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">npm install</code>, no <code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">docker compose up</code>, no environment variables.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">This wasn't laziness — it was a deliberate architectural choice. When you're building a research dashboard that needs to be shared with professors, peers, and potential employers, the last thing you want is for someone to say <em>"I couldn't get it running."</em> A single HTML file eliminates the entire category of "it doesn't work on my machine" problems.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The tradeoff is real: no server-side rendering, no database, no real-time updates. But for a dashboard that displays pre-computed, static analysis results, these aren't limitations — they're simplifications.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Security First: API Keys Never Leave the Browser</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The Playground tab needs two API keys to function: a Hugging Face token and a Gemini API key. These are stored in the browser's <code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">localStorage</code> and are <strong class="text-slate-700">never sent to any server we control</strong>. They go directly from the user's browser to HF/Google endpoints.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The Settings modal includes an explicit security notice: <em>"Keys are stored locally in your browser's localStorage. They are never sent to our servers, only directly to HF/Google endpoints."</em> This transparency is intentional — users should understand exactly where their credentials live.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Key masking is implemented: when displayed in the settings form, tokens show as partially obfuscated strings (<code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">hf_xx...xxxx</code>), only revealing the full value on focus. Another small touch that adds up to a security-conscious UX.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">The Hugging Face Problem (And How We Solved It)</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Our first approach to browser-side inference was direct calls to the Hugging Face Inference API. This seemed elegant: deploy the model once on HF Hub, call it from anywhere. The reality was less elegant:</p>
+<ul class="list-disc list-inside space-y-1 text-sm text-slate-600 mb-3">
+<li><strong class="text-slate-700" style="color:#DC2626;">Cold starts:</strong> The HF Inference API spins down models after inactivity. First request after a quiet period takes 10–30 seconds. Users think the app is broken.</li>
+<li><strong class="text-slate-700" style="color:#DC2626;">Rate limiting:</strong> Free-tier HF API has aggressive rate limits. During demos or class presentations, hitting the limit means the live inference stops working mid-sentence.</li>
+<li><strong class="text-slate-700" style="color:#DC2626;">Network dependency:</strong> No internet = no inference. This dashboard can't assume WiFi at a conference room or university lab.</li>
+</ul>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The solution came from an unexpected direction: <strong class="text-slate-700">Transformers.js</strong> — a JavaScript port of Hugging Face's Transformers library that runs models directly in the browser using WebAssembly and ONNX Runtime. The model weights (~256 MB) are downloaded once and cached in the browser using <code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">IndexedDB</code>. After the first load, inference is instant and works offline.</p>
+
+<div class="ide-container shadow-sm mb-3">
+<div class="flex bg-[#1E293B] border-b border-white/5 px-4 py-2">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Transformers.js — Browser-side ML inference</p>
+</div>
+<div class="code-viewport-auto" style="height:auto;min-height:0;padding:12px 16px;font-size:10px;line-height:1.5;">
+<span class="syn-pink">import</span> { pipeline, env } <span class="syn-pink">from</span> <span class="syn-cyan">'https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.2.0'</span>;<br><br>
+<span class="syn-grey">// Use browser cache for model weights (survives page reloads)</span><br>
+env.useBrowserCache = <span class="syn-pink">true</span>;<br><br>
+<span class="syn-grey">// Load once, reuse forever</span><br>
+_classifier = <span class="syn-pink">await</span> pipeline(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="syn-cyan">'text-classification'</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="syn-cyan">'SebasLopez-ai/distilbert-amazon-reviews-sentiment'</span><br>
+);
+</div></div>
+
+<p class="text-sm text-slate-600 leading-relaxed mb-3">This is transformative for a research dashboard. The model runs entirely in the user's browser. No server costs. No cold starts after the first load. No rate limits. No internet required after caching. It's not the right choice for every project, but for a portfolio piece that needs to work reliably in demo conditions, it's hard to beat.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Resilience Patterns: Graceful Degradation</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The dashboard has multiple failure modes, and each is handled explicitly:</p>
+<ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
+<li><strong class="text-slate-700">Model loading:</strong> Transformers.js model download happens silently in the background on page load (<code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">loadClassifier().catch(() => {})</code>). If it fails, the Playground still renders — it just can't run inference. The user sees a clear error, not a broken page.</li>
+<li><strong class="text-slate-700">Cluster matching:</strong> If a review doesn't match any known cluster, the Playground shows a specific "Item not found" card with a warning icon and explanatory text. This is better than a generic "error" that leaves the user guessing.</li>
+<li><strong class="text-slate-700">Chart fallback:</strong> Charts are lazily initialised only when their tab becomes visible. If a chart can't render (missing data, Canvas not supported), the rest of the dashboard continues to function.</li>
+<li><strong class="text-slate-700">Blog articles:</strong> Each cluster article has a fallback "Article not yet generated" message. If Gemini fails or the data is missing, the user sees a graceful placeholder, not a blank page.</li>
+<li><strong class="text-slate-700">Settings persistence:</strong> API keys survive page reloads via localStorage. The Clear Model Cache button lets users recover from corrupted cached weights without clearing their entire browser cache.</li>
+</ul>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Design Decisions: Why Vanilla Everything</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">A reasonable person would ask: <em>"Why not React? Why not Next.js? Why not a proper build pipeline?"</em></p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The honest answer: <strong class="text-slate-700">for a dashboard of this scope, a framework adds complexity without adding value.</strong> There are 6 tabs, a handful of charts, and a blog/article viewer. That's within the sweet spot of vanilla JS. Adding React would mean:</p>
+<ul class="list-disc list-inside space-y-1 text-sm text-slate-600 mb-3">
+<li>A build step (Webpack/Vite) that every collaborator needs to understand</li>
+<li>Node.js dependency on machines that might not have it</li>
+<li>JSX compilation that adds friction to quick edits</li>
+<li>~150 KB of framework code for functionality that vanilla JS handles in ~50 KB</li>
+</ul>
+<p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-700">The framework argument is valid at scale.</strong> If this dashboard grew to 20 tabs with shared state, routing, and authentication, React (or Svelte, or Solid) would become the obvious choice. But at 6 tabs? Vanilla JS is the pragmatic choice, not the lazy one.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">Tailwind CSS via CDN is the same logic. Yes, it ships a larger CSS file than hand-written styles. Yes, utility classes make the HTML verbose. But the productivity gain — being able to style anything without context-switching to a CSS file — is real. And for a single-file dashboard with no build step, CDN-loaded Tailwind is the only way to get utility-class DX.</p>
+
+<h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What I'd Do Differently in Production</h3>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">This dashboard is a research prototype. If it were a production service, I'd change several things:</p>
+<ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
+<li><strong class="text-slate-700">Server-side API proxy:</strong> Instead of sending API keys directly from the browser, a lightweight backend (FastAPI, ~50 lines) would proxy HF and Gemini calls. This keeps keys on the server and adds rate limiting.</li>
+<li><strong class="text-slate-700">Pre-computed inference:</strong> Instead of running DistilBERT in every user's browser, pre-classify all reviews server-side and serve results as static JSON. Browser-side inference is elegant; pre-computed inference is fast.</li>
+<li><strong class="text-slate-700">Service worker for offline:</strong> The Transformers.js model cache already enables offline inference. Adding a service worker would cache the entire dashboard (HTML, CSS, charts) for full offline functionality.</li>
+<li><strong class="text-slate-700">Content Security Policy:</strong> Loading Tailwind and Chart.js from CDNs means trusting third-party servers. A CSP header with strict <code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">script-src</code> and <code class="bg-slate-100 px-1 rounded text-[10px] font-mono-data">style-src</code> directives would lock this down.</li>
+</ul>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">But these are production concerns. For a research dashboard that needs to run on any machine with a browser, the current architecture is exactly right: <strong class="text-slate-700">zero dependencies, zero configuration, zero excuses.</strong></p>`
+                    }
+                ],
+                missingArticle: '<div class="text-center py-12 text-slate-400"><i class="ph ph-file-text text-3xl mb-3 block"></i><p class="text-sm">Article not yet available</p></div>'
+            },
+
             codeSnippets: {
                 distil: `<span class="syn-pink">from</span> transformers <span class="syn-pink">import</span> TrainingArguments
 
@@ -2194,6 +2556,11 @@ response = client.models.generate_content(
                     if (footer) footer.classList.remove('hidden');
                 } else {
                     if (footer) footer.classList.add('hidden');
+                }
+
+                // Docs tab handling
+                if (id === 'tab-docs') {
+                    if (!this.docsState.initialized) this.initDocs();
                 }
 
                 document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
@@ -3387,6 +3754,57 @@ response = client.models.generate_content(
                 const art = articles[index];
                 elements.content.innerHTML = art ? art.html : this.blogState.missingArticle;
                 this.blogState.activeArticle = index;
+            },
+
+            initDocs: function () {
+                this.docsState.elements = {
+                    strip: document.getElementById('docs-card-strip'),
+                    content: document.getElementById('docs-article-content')
+                };
+
+                const { strip, content } = this.docsState.elements;
+                if (!strip || !content) return;
+
+                strip.innerHTML = this.docsState.articles.map((art, i) => {
+                    return `
+                    <button class="doc-card card-standard w-full text-left flex flex-col gap-3 group transition-[border-color,background-color,transform] duration-300" data-index="${i}" onclick="app.selectDocsArticle(${i})">
+                        <div class="flex justify-between items-start">
+                            <div class="flex flex-col">
+                                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Article ${art.id} of 5</span>
+                                <span class="text-[9px] font-bold text-slate-500 uppercase tracking-tight">${art.tag}</span>
+                            </div>
+                            <i class="ph ${art.icon} text-slate-400 group-hover:text-amber-500 transition-colors text-base"></i>
+                        </div>
+                        <p class="doc-card-title text-[11px] font-bold text-slate-700 leading-tight line-clamp-2">
+                            ${art.title}
+                        </p>
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-100 mt-1">
+                            <span class="text-[9px] font-mono-data text-slate-400">~${Math.round(art.html.length / 1000)} KB</span>
+                            <i class="ph ph-arrow-right text-slate-300 opacity-0 group-hover:opacity-100 transition-[opacity,transform] transform translate-x-[-10px] group-hover:translate-x-0"></i>
+                        </div>
+                    </button>`;
+                }).join('');
+
+                this.docsState.elements.cards = document.querySelectorAll('#docs-card-strip .doc-card');
+                this.selectDocsArticle(0);
+                this.docsState.initialized = true;
+            },
+
+            selectDocsArticle: function (index) {
+                const { articles, elements } = this.docsState;
+                if (!elements.cards || !elements.content) return;
+
+                elements.cards.forEach((card, i) => {
+                    if (i === index) {
+                        card.classList.add('ring-1', 'ring-amber-500/50', 'bg-amber-50/30', 'border-amber-500/50');
+                    } else {
+                        card.classList.remove('ring-1', 'ring-amber-500/50', 'bg-amber-50/30', 'border-amber-500/50');
+                    }
+                });
+
+                const art = articles[index];
+                elements.content.innerHTML = art ? art.html : this.docsState.missingArticle;
+                this.docsState.activeArticle = index;
             }
         };
 
