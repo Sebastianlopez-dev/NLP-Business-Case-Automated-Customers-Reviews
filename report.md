@@ -2,8 +2,8 @@
 
 ## Project Report
 
-**Author**: Sebastián López  
-**Course**: Ironhack Data Science Bootcamp  
+**Author**: Sebastian López  
+**Course**: Ironhack AI Engineering Bootcamp  
 **Dataset**: Amazon Reviews 2023 — 571.54M reviews across 33 product categories
 
 ---
