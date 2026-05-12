@@ -797,9 +797,9 @@
                                 <h4 class="text-sm font-bold text-slate-800 mb-2 flex items-center gap-2">
                                     <i class="ph ph-memory text-slate-400"></i> Memory Asymmetry
                                 </h4>
-                                <p class="text-sm text-slate-600 leading-relaxed" id="model-insight-text">
+                                <div class="text-xs text-slate-600 leading-relaxed" id="model-insight-text">
                                     <!-- Text via JS -->
-                                </p>
+                                </div>
                             </div>
 
                             <div class="card-standard flex-1 flex flex-col justify-center">
@@ -811,11 +811,7 @@
                                             class="text-sm font-mono-data font-bold text-slate-700">max_length=256</span>
                                     </div>
                                 </div>
-                                <p class="text-xs text-slate-500 leading-relaxed">
-                                    Truncating from 512 to 256 speeds up training significantly due to quadratic
-                                    attention
-                                    reduction, safely retaining context for ~95%+ of reviews.
-                                </p>
+
                             </div>
                         </div>
 
@@ -905,27 +901,27 @@
                             </div>
 
                             <div class="bg-white border border-slate-200/60 rounded-xl p-3 shadow-sm flex flex-col"
-                                id="card-evolution-bertopic">
+                                id="card-evolution-hybridkmeans">
                                 <h4 class="text-xs font-bold text-slate-800 mb-2 flex items-center gap-2">
-                                    <i class="ph-fill ph-circle text-[10px] text-cyan-500"></i> BERTopic Integration
+                                    <i class="ph-fill ph-circle text-[10px] text-cyan-500"></i> HybridKMeans (N04)
                                 </h4>
                                 <div class="grid grid-cols-4 gap-2 pt-2 border-t border-slate-100 mb-2">
                                     <div class="flex flex-col"><span
-                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">UMAP</span><span
-                                            class="font-mono-data font-bold text-slate-700 text-sm">Low Dim</span>
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">K-Means</span><span
+                                            class="font-mono-data font-bold text-slate-700 text-sm">Centroids</span>
                                     </div>
                                     <div class="flex flex-col"><span
-                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">HDBSCAN</span><span
-                                            class="font-mono-data font-bold text-cyan-600 text-sm">Density</span></div>
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">MiniBatch</span><span
+                                            class="font-mono-data font-bold text-cyan-600 text-sm">Labels</span></div>
                                     <div class="flex flex-col"><span
-                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">c-TF-IDF</span><span
-                                            class="font-mono-data font-bold text-slate-700 text-sm">Label</span></div>
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Silhouette</span><span
+                                            class="font-mono-data font-bold text-slate-700 text-sm">0.031</span></div>
                                     <div class="flex flex-col"><span
-                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Topics</span><span
-                                            class="font-mono-data font-bold text-slate-700 text-sm">Dynamic</span></div>
+                                            class="text-[8px] uppercase text-slate-400 font-bold mb-0.5 tracking-widest truncate">Clusters</span><span
+                                            class="font-mono-data font-bold text-slate-700 text-sm">6</span></div>
                                 </div>
                                 <p class="text-[10px] text-slate-500 leading-relaxed">
-                                    <strong class="text-slate-700 font-bold">Strategy:</strong> Shift from static K-Means to density-based clusters. c-TF-IDF automatically extracts keywords for each sentiment cluster.
+                                    <strong class="text-slate-700 font-bold">Strategy:</strong> Dual-algorithm pipeline: K-Means provides centroids; MiniBatchKMeans scales to 571M reviews at O(batch·k·d) memory. 6 clusters selected via elbow method + domain interpretability.
                                 </p>
                             </div>
                         </div>
@@ -983,39 +979,43 @@
                     <div class="card-standard">
                         <div class="flex justify-between items-start mb-4">
                             <div>
-                                <h3 class="font-bold text-slate-800">BERTopic</h3>
+                                <h3 class="font-bold text-slate-800">RoBERTa</h3>
                                 <p class="text-[10px] uppercase font-medium tracking-widest mt-1">
-                                    <a href="https://arxiv.org/pdf/2203.05794" target="_blank" title="View Original Paper"
-                                        class="flex items-center gap-1.5 w-fit text-cyan-600 border-b border-dotted border-cyan-600/50 hover:border-cyan-500 hover:text-cyan-500 transition-all pb-[1px]">
-                                        PAPER: Grootendorst, 2022 <i
+                                    <a href="https://arxiv.org/pdf/1907.11692" target="_blank" title="View Original Paper"
+                                        class="flex items-center gap-1.5 w-fit text-orange-600 border-b border-dotted border-orange-600/50 hover:border-orange-500 hover:text-orange-500 transition-all pb-[1px]">
+                                        PAPER: Liu et al, 2019 <i
                                             class="ph-duotone ph-file-pdf text-[14px] ml-0.5"></i><i
                                             class="ph ph-arrow-square-out text-[10px] ml-0.5"></i>
                                     </a>
                                 </p>
                             </div>
-                            <span class="bg-cyan-100 text-cyan-700 text-[10px] font-bold px-2 py-1 rounded">CLUSTER CHAMPION</span>
+                            <span class="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-1 rounded">RUNNER-UP</span>
                         </div>
                         <ul class="space-y-4">
                             <li class="flex gap-3">
-                                <i class="ph ph-intersect text-lg text-cyan-500 mt-0.5"></i>
+                                <i class="ph ph-scales text-lg text-orange-500 mt-0.5"></i>
                                 <div class="w-full">
-                                    <p class="text-xs font-bold text-slate-700">Dynamic Topic Modeling</p>
-                                    <p class="text-xs text-slate-500 mb-3">Replaced static K-Means. Leverages DistilBERT embeddings with density-based clustering to discover latent topologies.</p>
+                                    <p class="text-xs font-bold text-slate-700">Higher Capacity, Lower Practical Performance</p>
+                                    <p class="text-xs text-slate-500 mb-3">125M parameters couldn't fit batch_size=32 on a T4 GPU. Forced to batch_size=16, training stagnated at 69.1% accuracy — 8.2 points below DistilBERT. More params ≠ better results under resource constraints.</p>
                                     <div class="pt-3 border-t border-slate-100 mt-3">
                                         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
-                                            Engine Components</p>
+                                            Key Parameters</p>
                                         <div
                                             class="grid grid-cols-2 gap-y-2 gap-x-4 text-[10px] font-mono-data text-slate-600">
                                             <div class="flex justify-between border-b border-slate-100 pb-1">
-                                                <span>Embeddings:</span><span
-                                                    class="font-bold text-slate-800">DistilBERT</span>
+                                                <span>Parameters:</span><span
+                                                    class="font-bold text-slate-800">125M</span>
                                             </div>
-                                            <div class="flex justify-between border-b border-slate-100 pb-1"><span>Reduction:</span><span class="font-bold text-slate-800">UMAP</span></div>
-                                            <div class="flex justify-between border-b border-slate-100 pb-1"><span>Clustering:</span><span class="font-bold text-slate-800">HDBSCAN</span></div>
+                                            <div class="flex justify-between border-b border-slate-100 pb-1"><span>Learn
+                                                    Rate:</span><span class="font-bold text-slate-800">1e-5</span></div>
+                                            <div class="flex justify-between border-b border-slate-100 pb-1"><span>Batch
+                                                    Size:</span><span class="font-bold text-slate-800">16</span></div>
                                             <div class="flex justify-between border-b border-slate-100 pb-1">
-                                                <span>Weighting:</span><span
-                                                    class="font-bold text-slate-800">c-TF-IDF</span>
+                                                <span>Tokenizer:</span><span
+                                                    class="font-bold text-slate-800">BPE (Byte-Level)</span>
                                             </div>
+                                            <div class="flex justify-between border-b border-slate-100 pb-1"><span>Accuracy:</span><span class="font-bold text-orange-600">69.1%</span></div>
+                                            <div class="flex justify-between border-b border-slate-100 pb-1"><span>F1 Neu:</span><span class="font-bold text-slate-700">58.7%</span></div>
                                         </div>
                                     </div>
                                 </div>
@@ -1036,7 +1036,7 @@
                 <div class="grid grid-cols-12 gap-6">
                     <div class="col-span-12 lg:col-span-8 card-standard flex flex-col">
                         <h3 class="text-sm font-semibold text-slate-800 mb-6 flex items-center gap-2">
-                            <i class="ph ph-scatter-plot text-slate-400"></i> Semantic Mapping (UMAP 2D)
+                            <i class="ph ph-scatter-plot text-slate-400"></i> Cluster Landscape — Size vs Rating
                         </h3>
                         <div class="chart-container flex-1">
                             <canvas id="clusterChart"></canvas>
@@ -1047,51 +1047,65 @@
                             <h4 class="text-sm font-bold text-slate-800 mb-3">Clustering Strategy</h4>
                             <div class="space-y-4">
                                 <div class="border-l-2 border-cyan-500 pl-4 py-1">
-                                    <p class="text-xs font-bold text-slate-700 mb-1">BERTopic Pipeline</p>
-                                    <p class="text-xs text-slate-500">A modular framework combining UMAP and HDBSCAN to create dense clusters, using c-TF-IDF to extract the most descriptive words for each topic.
+                                    <p class="text-xs font-bold text-slate-700 mb-1">HybridKMeans Pipeline</p>
+                                    <p class="text-xs text-slate-500">Two algorithms, one result. K-Means (Lloyd) computes mathematically clean centroids at full convergence. MiniBatchKMeans scales to the full 571M-review dataset at O(batch·k·d) memory. 6 clusters selected via elbow method.
                                     </p>
                                 </div>
                                 <div class="border-l-2 border-slate-200 pl-4 py-1">
                                     <p class="text-xs font-bold text-slate-700 mb-1">nomic-embed-text-v1.5</p>
-                                    <p class="text-xs text-slate-500">Upgraded from MiniLM. Projects the corpus into 768
-                                        dimensions, offering a 10-point leap in MTEB metrics.</p>
+                                    <p class="text-xs text-slate-500">Projects 219,998 reviews into 768 dimensions. Replaced MiniLM with a 10-point MTEB improvement. Better embeddings → better clusters.</p>
                                 </div>
                                 <div class="border-l-2 border-slate-200 pl-4 py-1">
-                                    <p class="text-xs font-bold text-slate-700 mb-1">Category Anomaly</p>
-                                    <p class="text-xs text-slate-500">The <em>Subscription_Boxes</em> category emerges
-                                        as a negative outlier (25% Neg) against the general dataset average.</p>
+                                    <p class="text-xs font-bold text-slate-700 mb-1">k=6 via Elbow + Domain Logic</p>
+                                    <p class="text-xs text-slate-500">Silhouette 0.0311 (expected in 768-dim space). k=8 split hairs; k=4 lumped unrelated categories. 6 clusters map cleanly to real product domains.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- N04.2 BGE Hybrid Clusters -->
-                <div class="col-span-12 mt-8 card-standard">
-                    <h3 class="text-sm font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                        <span class="bg-cyan-600 text-white text-xs px-2 py-0.5 rounded">N04.2</span>
-                        BGE Hybrid Clusters
-                    </h3>
-                    <div class="chart-container">
-                        <canvas id="clusterChartN042"></canvas>
+                <!-- Performance & Model Decision -->
+                <div class="grid grid-cols-12 gap-6 mt-8">
+                    <div class="col-span-12 lg:col-span-5 card-standard">
+                        <h3 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <i class="ph ph-scales text-slate-400"></i> Why HybridKMeans
+                        </h3>
+                        <div class="space-y-3 text-xs text-slate-600 leading-relaxed">
+                            <div class="border-l-2 border-cyan-500 pl-3">
+                                <p><strong class="text-slate-700">Two algorithms, one result.</strong> K-Means (Lloyd) provides mathematically clean centroids; MiniBatchKMeans scales to 571M reviews at O(batch·k·d) memory.</p>
+                            </div>
+                            <div class="border-l-2 border-slate-200 pl-3">
+                                <p><strong class="text-slate-700">Centroids from K-Means</strong> — n_init=10, max_iter=300, converged in 112 iterations (57.1s). Silhouette: 0.0304.</p>
+                            </div>
+                            <div class="border-l-2 border-slate-200 pl-3">
+                                <p><strong class="text-slate-700">Labels from MiniBatchKMeans</strong> — batch_size=1,024, 10 epochs, 3 inits, best kept. Fit in 19.6s. Silhouette: 0.0311.</p>
+                            </div>
+                            <div class="border-l-2 border-slate-200 pl-3">
+                                <p><strong class="text-slate-700">k=6</strong> selected via elbow method + domain interpretability. k=8 split hairs; k=4 lumped unrelated categories. 6 clusters map cleanly to real product domains.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-span-12 lg:col-span-7 card-standard">
+                        <h3 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <i class="ph ph-chart-line text-slate-400"></i> Cluster Performance
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead><tr class="border-b border-slate-200"><th class="py-1.5 px-2 font-bold text-slate-400 uppercase">Cluster</th><th class="py-1.5 px-2 font-bold text-slate-400 uppercase w-10">%</th><th class="py-1.5 px-2 font-bold text-slate-400 uppercase">Sentiment</th><th class="py-1.5 px-2 font-bold text-slate-400 uppercase w-12">★</th><th class="py-1.5 px-2 font-bold text-slate-400 uppercase">Top Terms</th></tr></thead>
+                                <tbody>
+                                    <tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-bold text-slate-700" style="color:#DC2626">Tech Frustrations</td><td class="py-1.5 px-2 font-mono-data">24.6</td><td class="py-1.5 px-2" style="color:#DC2626">66% Neg</td><td class="py-1.5 px-2 font-mono-data">1.94</td><td class="py-1.5 px-2">work, use, money, did</td></tr>
+                                    <tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-bold text-slate-700">Books & Media</td><td class="py-1.5 px-2 font-mono-data">17.6</td><td class="py-1.5 px-2">42% Neu · 31% Neg</td><td class="py-1.5 px-2 font-mono-data">2.98</td><td class="py-1.5 px-2">book, story, read, good</td></tr>
+                                    <tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-bold text-slate-700">Fashion & Fit</td><td class="py-1.5 px-2 font-mono-data">16.3</td><td class="py-1.5 px-2">53% Neu</td><td class="py-1.5 px-2 font-mono-data">2.96</td><td class="py-1.5 px-2">small, fit, size, described</td></tr>
+                                    <tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-bold text-slate-700">Personal Care</td><td class="py-1.5 px-2 font-mono-data">13.4</td><td class="py-1.5 px-2">46% Neu · 38% Neg</td><td class="py-1.5 px-2 font-mono-data">2.69</td><td class="py-1.5 px-2">like, use, product, hair</td></tr>
+                                    <tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-bold text-slate-700">Gifts & Delight</td><td class="py-1.5 px-2 font-mono-data">22.4</td><td class="py-1.5 px-2" style="color:#10B981">90% Pos</td><td class="py-1.5 px-2 font-mono-data">4.68</td><td class="py-1.5 px-2">great, love, easy, gift</td></tr>
+                                    <tr><td class="py-1.5 px-2 font-bold text-slate-700">Trusted Essentials</td><td class="py-1.5 px-2 font-mono-data">5.6</td><td class="py-1.5 px-2" style="color:#10B981">93% Pos</td><td class="py-1.5 px-2 font-mono-data">4.74</td><td class="py-1.5 px-2">good product, great, works</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-3">Sorted by % of dataset. Embeddings: nomic-embed-text-v1.5 (768-dim). Data: 219,998 reviews from Amazon Reviews 2023.</p>
                     </div>
                 </div>
 
-                <!-- N04.2 Sanity Check -->
-                <div class="card-standard col-span-12 mt-6">
-                    <h3 class="text-sm font-semibold text-slate-800 flex items-center gap-2 mb-4">
-                        <span class="bg-amber-100 text-amber-700 text-[9px] font-bold px-2 py-1 rounded">Sanity Check</span>
-                        Metadata vs BGE — Purity per Cluster
-                    </h3>
-                    <div class="chart-container" style="height: 300px;">
-                        <canvas id="sanityCheckChart"></canvas>
-                    </div>
-                    <p class="text-[10px] text-slate-400 mt-3">
-                        <span class="text-amber-600 font-bold">⬤ Metadata</span> clusters by Amazon category alone.
-                        <span class="text-cyan-600 font-bold">⬤ BGE</span> clusters by review semantics.
-                        The gap shows how much the model actually learns from reading reviews.
-                    </p>
-                </div>
             </section>
 
             <!-- 4. SUMMARIZATION -->
@@ -1120,7 +1134,7 @@
                                     <i class="ph ph-robot text-2xl text-slate-400 mb-2"></i>
                                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                                         Abstraction</p>
-                                    <p class="text-xs font-medium text-slate-600">Gemini 3.1 Flash-Lite</p>
+                                    <p class="text-xs font-medium text-slate-600">Gemini 3 Flash</p>
                                 </div>
                             </div>
                             <p class="text-xs text-slate-500 leading-relaxed">
@@ -1149,12 +1163,12 @@
                         <div class="flex items-center gap-3">
                             <i class="ph ph-robot text-2xl" style="color: #0891B2;"></i>
                             <div>
-                                <h3 class="text-sm font-bold text-slate-800 leading-tight">Gemini 3.1 Flash-Lite</h3>
+                                <h3 class="text-sm font-bold text-slate-800 leading-tight">Gemini 3 Flash</h3>
                                 <p class="text-[10px] font-mono-data mt-0.5" style="color: #0891B2;">google /
-                                    gemini-3.1-flash-lite</p>
+                                    gemini-3-flash-preview</p>
                             </div>
                         </div>
-                        <a href="https://deepmind.google/models/gemini/flash-lite/" target="_blank"
+                        <a href="https://deepmind.google/models/gemini/flash/" target="_blank"
                             rel="noopener noreferrer"
                             class="text-[10px] font-bold text-slate-400 hover:text-cyan-600 transition-colors flex items-center gap-1 border-b border-dotted border-slate-300 hover:border-cyan-500 pb-px">
                             Official Model Card <i class="ph ph-arrow-square-out text-[10px]"></i>
@@ -1163,47 +1177,50 @@
 
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5 pb-5 border-b border-slate-100">
                         <div>
-                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Architecture
-                            </p>
-                            <p class="text-xs font-semibold text-slate-700 font-mono-data">Gemini 3 Pro Based</p>
-                            <p class="text-[10px] text-slate-400">Native Multimodal</p>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Model</p>
+                            <p class="text-xs font-semibold text-slate-700 font-mono-data">Gemini 3 Flash</p>
+                            <p class="text-[10px] text-slate-400">Preview</p>
                         </div>
                         <div>
-                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Context Window
-                            </p>
-                            <p class="text-xs font-semibold font-mono-data" style="color: #0891B2;">1M tokens</p>
-                            <p class="text-[10px] text-slate-400">1,048,576 Tokens</p>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Role</p>
+                            <p class="text-xs font-semibold font-mono-data" style="color: #0891B2;">Abstractive Synthesis</p>
+                            <p class="text-[10px] text-slate-400">Styling only</p>
                         </div>
                         <div>
-                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Performance
-                            </p>
-                            <p class="text-xs font-semibold font-mono-data" style="color: #10B981;">Lite Efficiency</p>
-                            <p class="text-[10px] text-slate-400">High-Volume Optimized</p>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Input</p>
+                            <p class="text-xs font-semibold font-mono-data" style="color: #10B981;">Structured Facts</p>
+                            <p class="text-[10px] text-slate-400">Python-extracted JSON</p>
                         </div>
                         <div>
-                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Release</p>
-                            <p class="text-xs font-semibold text-slate-700 font-mono-data">03 / 01 / 2026</p>
-                            <p class="text-[10px] text-slate-400">deepmind.google</p>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Auth</p>
+                            <p class="text-xs font-semibold text-slate-700 font-mono-data">GEMINI_API_KEY</p>
+                            <p class="text-[10px] text-slate-400">Colab Secrets</p>
                         </div>
                     </div>
 
-                    <p class="text-xs text-slate-500 leading-relaxed mb-5">
-                        Gemini 3.1 Flash-Lite is a cost-efficient and fast addition to the <strong
-                            class="text-slate-700">Gemini 3 series</strong>,
-                        optimized for high-volume, latency-sensitive tasks like translation and classification.
-                        It retains the massive 1M context window of its predecessors while significantly improving
-                        safety and reasoning performance.
-                        <strong class="text-slate-700">Ideal for this pipeline</strong>: lightning-fast abstractive
-                        synthesis
-                        of clustered customer sentiment with a sub-second response threshold.
-                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5 pb-5 border-b border-slate-100">
+                        <div>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Blog Generation</p>
+                            <p class="text-xs text-slate-500 leading-relaxed">
+                                <strong class="text-slate-700">Persona:</strong> Senior market analyst.<br>
+                                <strong class="text-slate-700">Input:</strong> Pre-extracted facts per cluster: review counts, sentiment stats, top/worst product ASINs, review excerpts, TF-IDF terms.<br>
+                                <strong class="text-slate-700">Output:</strong> 600–900 word blog article with 5 sections.<br>
+                                <strong class="text-slate-700">Cost:</strong> ~700 tokens per cluster × 6 = ~4,300 total per run.
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Playground Personas</p>
+                            <p class="text-xs text-slate-500 leading-relaxed">
+                                <strong class="text-slate-700" style="color:#10B981;">Positive →</strong> Customer Success: celebrate the win, ask about daily use.<br>
+                                <strong class="text-slate-700" style="color:#EA580C;">Neutral →</strong> Product Specialist: name the product, ask a technical detail.<br>
+                                <strong class="text-slate-700" style="color:#DC2626;">Negative →</strong> Support Lead: identify root issue, propose concrete next step.
+                            </p>
+                        </div>
+                    </div>
 
-                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Capabilities</p>
-                    <p class="text-[10px] font-mono-data text-slate-500 leading-relaxed">
-                        <span style="color: #EA580C;">reasoning</span> · cost-efficient · fast · chat · text ·
-                        <span style="color: #0891B2;">multimodal</span> ·
-                        <span style="color: #10B981;">JSON extraction</span> ·
-                        <span style="color: #10B981;">high-volume latency</span>
+                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Architecture Principle</p>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        <strong class="text-slate-700">Extractive-Abstractive split.</strong> Python (pandas) extracts hard facts deterministically. Gemini only handles <em>styling</em> — transforming structured data into narrative. The LLM never touches raw reviews. Every product ID and percentage in the output is traceable to the extractive phase. Zero hallucination surface for numbers.
                     </p>
                 </div>
             </section>
@@ -1383,7 +1400,7 @@
                                     </span>
                                     <span class="block p-4 text-[10px] leading-relaxed font-mono-data bg-[#0F172A] text-slate-300">
                                         <span class="block mb-3">
-                                            <span class="syn-pink font-bold uppercase block mb-1">Google Gemini 3.1 Flash-Lite</span>
+                                            <span class="syn-pink font-bold uppercase block mb-1">Google Gemini 3 Flash</span>
                                             <span class="block text-slate-500 text-[9px]">Optimized for low-latency abstractive synthesis.</span>
                                         </span>
 
@@ -1706,7 +1723,7 @@
                 <div class="mb-10">
                     <h2 class="text-2xl font-bold text-slate-800 tracking-tight mb-1">AI-Generated Insights</h2>
                     <p class="text-sm text-slate-500 leading-relaxed max-w-3xl">
-                        Autonomous narratives synthesized by Gemini 3 Flash Preview from customer cluster centroids
+                        Autonomous narratives synthesized by Gemini 3 Flash from customer cluster centroids
                         identified within the Amazon review corpus.
                     </p>
                 </div>
@@ -1932,6 +1949,15 @@
                 }
             },
 
+            clusterNames: [
+                'Personal Care & Wellness',   // 0 — Beauty, Grocery, Health (2.69★)
+                'Trusted Essentials',         // 1 — Clothing, Automotive, Household (4.74★)
+                'Books & Media',              // 2 — Kindle, Movies, Books (2.98★)
+                'Fashion & Fit',              // 3 — Clothing, Fashion, Sports (2.96★)
+                'Tech Frustrations',           // 4 — Electronics, Cell Phones (1.94★)
+                'Gifts & Delight'             // 5 — Toys, Gift Cards, Office (4.68★)
+            ],
+
             blogState: {
                 activeArticle: 0,
                 initialized: false,
@@ -1939,12 +1965,12 @@
                 articles: [
                     {
                         cluster: 0,
-                        title: "The Performance Gap: Analyzing Consumer Disconnect in Personal Care and Consumables",
+                        title: "The Performance Gap: Personal Care & Wellness (Cluster 0)",
                         reviews: "~30K",
                         rating: "2.69",
                         html: `<h2 class="text-xl font-bold text-slate-800 mb-4">The Performance Gap: Analyzing Consumer Disconnect in Personal Care and Consumables</h2>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Executive Summary</h3>
-<p class="text-sm text-slate-600 leading-relaxed mb-3">Cluster 0, representing nearly 30,000 customer touchpoints across the Beauty, Grocery, and Health sectors, currently sits at a critical performance crossroads with a lackluster average rating of 2.69/5. With 37.7% of customers expressing active dissatisfaction and a heavy 45.7% remaining neutral, the data reveals a category plagued by functional failures and unmet efficacy promises. For executives, this cluster represents a high-churn environment where brand loyalty is fragile and the "quality ceiling" is surprisingly low.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-700">Personal Care & Wellness (Cluster 0)</strong>, representing nearly 30,000 customer touchpoints across the Beauty, Grocery, and Health sectors, currently sits at a critical performance crossroads with a lackluster average rating of 2.69/5. With 37.7% of customers expressing active dissatisfaction and a heavy 45.7% remaining neutral, the data reveals a category plagued by functional failures and unmet efficacy promises. For executives, this cluster represents a high-churn environment where brand loyalty is fragile and the "quality ceiling" is surprisingly low.</p>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Love: Niche Success Amidst General Mediocrity</h3>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">While the overall sentiment of the cluster is suppressed, there are pockets of excellence that provide a roadmap for success. The "Best Rated" product in this analysis, <strong class="text-slate-700 font-mono-data">Product B000UW2DTE</strong>, boasts a near-perfect average rating of 4.8/5. Though its sample size is smaller (5 reviews), it highlights a crucial insight: when products in these categories—particularly Grocery and Personal Care—hit the mark on sensory experience, consumers respond with fierce loyalty.</p>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">Positive sentiment (16.6%) is often driven by the intersection of texture and flavor profile. For instance, high-performing consumables are praised for being "soft and chewy" without being "too sweet," as seen in the reviews for licorice-flavored taffy. The key takeaway for the "positive" minority is that satisfaction is derived from a product doing exactly what it says on the tin—whether that is a specific taste profile or a physical result in hair care.</p>
@@ -1957,7 +1983,7 @@
 <li> <strong class="text-slate-700">High Stakes, Low Delivery:</strong> In the "Health and Household" and "Beauty" categories, customers are looking for solutions to problems—anxiety, hair health, or dietary needs. When <strong class="text-slate-700 font-mono-data">Product B0BM6V2SH8</strong> yields a 59.5% negative rating, it suggests a systemic failure to deliver on the core value proposition.</li>
 </ol>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Sentiment at a Glance: The Danger of the "Neutral Trap"</h3>
-<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution for Cluster 0 is a bell curve that shifts uncomfortably toward the negative:</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution for <strong class="text-slate-700">Personal Care & Wellness (Cluster 0)</strong> is a bell curve that shifts uncomfortably toward the negative:</p>
 <ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
 <li><strong class="text-slate-700">Positive: 16.6%</strong></li>
 <li><strong class="text-slate-700">Neutral: 45.7%</strong></li>
@@ -1977,12 +2003,12 @@
                     },
                     {
                         cluster: 1,
-                        title: "Understanding the \"Utility King\": A Deep Dive into Market Cluster 1",
+                        title: "Understanding the \"Utility King\": Trusted Essentials (Cluster 1)",
                         reviews: "1.5M",
                         rating: "4.79",
-                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">Understanding the "Utility King": A Deep Dive into Market Cluster 1</h2>
+                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">Understanding the "Utility King": Trusted Essentials (Cluster 1)</h2>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Executive Summary</h3>
-<p class="text-sm text-slate-600 leading-relaxed mb-3">Cluster 1 represents the dominant force in the current consumer landscape, accounting for <strong class="text-slate-700">79.7% of the total dataset</strong> with over <strong class="text-slate-700">1.5 million reviews</strong>. Boasting an exceptional <strong class="text-slate-700">average rating of 4.79/5</strong>, this cluster indicates a market where "utility and reliability" are the primary drivers of consumer satisfaction across diversified categories ranging from Electronics to Home and Kitchen. For executives, the takeaway is clear: in this segment, high performance is not a differentiator—it is the entry fee.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-700">Trusted Essentials (Cluster 1)</strong> represents the dominant force in the current consumer landscape, accounting for <strong class="text-slate-700">79.7% of the total dataset</strong> with over <strong class="text-slate-700">1.5 million reviews</strong>. Boasting an exceptional <strong class="text-slate-700">average rating of 4.79/5</strong>, this cluster indicates a market where "utility and reliability" are the primary drivers of consumer satisfaction across diversified categories ranging from Electronics to Home and Kitchen. For executives, the takeaway is clear: in this segment, high performance is not a differentiator—it is the entry fee.</p>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Love</h3>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">In a cluster where <strong class="text-slate-700">94.7% of sentiments are positive</strong>, the "Best Rated" products set a staggering benchmark for excellence. <strong class="text-slate-700">Product 0137140762</strong> stands out as a paragon of consumer trust, maintaining a <strong class="text-slate-700">5.0/5 average rating across 5,322 reviews</strong>. Similarly, <strong class="text-slate-700 font-mono-data">Product B00IX1I3G6</strong> commands the highest volume of feedback with <strong class="text-slate-700">9,497 reviews</strong>, yet remarkably sustains a <strong class="text-slate-700">100.0% positive sentiment</strong> profile and a perfect <strong class="text-slate-700">5.0/5 rating</strong>.</p>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">The recurring themes in these high-performing products are captured by the keywords "works," "great," and "good product." This suggests that for products in the Appliances, Electronics, and Health & Household categories, consumers value functional consistency above all else. When a product simply "works" as advertised, the likelihood of a 5-star review increases exponentially. The data shows that top-tier products like <strong class="text-slate-700 font-mono-data">Product B00N3QS622</strong> (5,347 reviews, 5.0 rating) have effectively commoditized excellence, leaving no room for error.</p>
@@ -1991,7 +2017,7 @@
 <p class="text-sm text-slate-600 leading-relaxed mb-3">We also see a fascinating "middle-ground failure" in <strong class="text-slate-700 font-mono-data">Product B086KKT3RX</strong>. Despite having a significant volume of <strong class="text-slate-700">7,698 reviews</strong>, it holds a mediocre <strong class="text-slate-700">3.6/5 rating</strong> and a surprisingly low <strong class="text-slate-700">30.9% positive sentiment</strong> rate. While it reports 0.0% negative sentiment in this specific data slice, the high volume of neutral or lukewarm feedback suggests a "disappointment gap."</p>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">Interestingly, the qualitative data reveals a nuance in consumer language: a review with a 1/5 rating was still tagged with the phrase "great product." This indicates that even when a product is fundamentally "great" in concept or design, a failure in delivery, longevity, or specific utility can lead to a total collapse in rating. Executives must realize that a "good product" (a keyword appearing across all sentiment levels) is no longer enough to guarantee loyalty; it is merely the baseline.</p>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Sentiment at a Glance</h3>
-<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution for Cluster 1 is heavily skewed toward the top end of the scale:</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution for <strong class="text-slate-700">Trusted Essentials (Cluster 1)</strong> is heavily skewed toward the top end of the scale:</p>
 <ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
 <li><strong class="text-slate-700">Positive: 94.7%</strong></li>
 <li><strong class="text-slate-700">Neutral: 5.1%</strong></li>
@@ -2008,12 +2034,12 @@
                     },
                     {
                         cluster: 2,
-                        title: "The Expectation Gap: Analyzing Consumer Volatility in Media and Digital Content",
+                        title: "The Expectation Gap: Books & Media (Cluster 2)",
                         reviews: "~51K",
                         rating: "2.89",
-                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">The Expectation Gap: Analyzing Consumer Volatility in Media and Digital Content</h2>
+                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">The Expectation Gap: Books & Media (Cluster 2)</h2>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Executive Summary</h3>
-<p class="text-sm text-slate-600 leading-relaxed mb-3">Cluster 2 represents a significant cross-section of media and digital content, characterized by a lukewarm average rating of 2.89/5 across 51,402 reviews. With neutral and negative sentiment combined accounting for over 75% of the data, the cluster reveals a critical "expectation gap" where products are failing to deliver on their marketing promises or foundational value propositions. Business leaders must focus on content alignment and clarity to convert the massive 41.5% neutral audience into brand advocates.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-700">Books & Media (Cluster 2)</strong> represents a significant cross-section of media and digital content, characterized by a lukewarm average rating of 2.89/5 across 51,402 reviews. With neutral and negative sentiment combined accounting for over 75% of the data, the cluster reveals a critical "expectation gap" where products are failing to deliver on their marketing promises or foundational value propositions. Business leaders must focus on content alignment and clarity to convert the massive 41.5% neutral audience into brand advocates.</p>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Love</h3>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">Despite the low overall average, there are pockets of excellence within this cluster that provide a blueprint for success. The best-rated product, <strong class="text-slate-700">031008962X</strong>, boasts a perfect 5.0/5 average rating (from 16 reviews), signaling that when the product hits the mark, consumer satisfaction is absolute.</p>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">When customers are satisfied, the feedback points to a desire for immersive, transformative experiences. One positive reviewer described their experience as a "fantastic roller coaster ride," specifically praising a storyline that was "so different from anything" they had encountered. This suggests that in the saturated markets of Books, Kindle Store, and Movies_and_TV, high-performing products are those that break conventional molds and offer unique, mind-bending narratives.</p>
@@ -2023,7 +2049,7 @@
 <p class="text-sm text-slate-600 leading-relaxed mb-3">Consider <strong class="text-slate-700 font-mono-data">Product B004GVZUTU</strong> and <strong class="text-slate-700 font-mono-data">Product B003O5MNSK</strong>. These products have 173 and 170 reviews respectively, yet their negative sentiment levels are staggering: 89.6% for the former and 85.9% for the latter. Ratings of 2.2 and 2.4 indicate a systemic failure. The common refrain in negative feedback—"not what I expected"—points toward a disconnect in the sales funnel. Whether through misleading metadata, poor software optimization, or confusing narrative structures (as hinted at by the keywords "confusing" and "expected"), these products are actively eroding brand equity.</p>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">Even the most reviewed item, <strong class="text-slate-700 font-mono-data">Product B00IX1I3G6</strong>, displays a high degree of polarization. With 273 reviews and an average rating of 3.0/5, it is split perfectly between 42.1% positive and 42.1% negative sentiment. This "love it or hate it" dynamic is a risky position for any executive to manage, as it indicates a lack of broad-market appeal.</p>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Sentiment at a Glance</h3>
-<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution for Cluster 2 paints a picture of a category in crisis:</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution for <strong class="text-slate-700">Books & Media (Cluster 2)</strong> paints a picture of a category in crisis:</p>
 <ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
 <li><strong class="text-slate-700">Positive (24.4%):</strong> Less than one-quarter of customers are genuinely satisfied.</li>
 <li><strong class="text-slate-700">Neutral (41.5%):</strong> This is the largest segment. In consulting terms, "neutral" often means "uninspired." These are customers who did not find enough value to praise the product, but were not sufficiently aggrieved to demand a refund. This represents a massive untapped opportunity for product refinement.</li>
@@ -2041,14 +2067,14 @@
                     },
                     {
                         cluster: 3,
-                        title: "The Expectation Gap: Navigating Performance and Precision in Cluster 3",
+                        title: "The Expectation Gap: Fashion & Fit (Cluster 3)",
                         reviews: "~145K",
                         rating: "3.91",
-                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">The Expectation Gap: Navigating Performance and Precision in Cluster 3</h2>
+                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">The Expectation Gap: Fashion & Fit (Cluster 3)</h2>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Executive Summary</h3>
-<p class="text-sm text-slate-600 leading-relaxed mb-3">Cluster 3 represents a significant cross-section of the market, accounting for 7.7% of the total dataset with 145,267 reviews and an average rating of 3.91 / 5. While the majority of customers are satisfied, the high volume of neutral sentiment (34.5%) suggests a market where products often meet the bare minimum of expectations but struggle to provide a "wow" factor. For executives, the data reveals a sharp divide between high-performing outliers and products failing fundamentally on sizing and durability.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-700">Fashion & Fit (Cluster 3)</strong> represents a significant cross-section of the market, accounting for 7.7% of the total dataset with 145,267 reviews and an average rating of 3.91 / 5. While the majority of customers are satisfied, the high volume of neutral sentiment (34.5%) suggests a market where products often meet the bare minimum of expectations but struggle to provide a "wow" factor. For executives, the data reveals a sharp divide between high-performing outliers and products failing fundamentally on sizing and durability.</p>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Love</h3>
-<p class="text-sm text-slate-600 leading-relaxed mb-3">In a marketplace often defined by hyperbole, the most successful products in Cluster 3 share a common trait: they do exactly what they claim to do. This "precision of promise" is reflected in the key terms "described" and "expected." When a product aligns perfectly with its digital footprint, customer loyalty follows.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">In a marketplace often defined by hyperbole, the most successful products in <strong class="text-slate-700">Fashion & Fit (Cluster 3)</strong> share a common trait: they do exactly what they claim to do. This "precision of promise" is reflected in the key terms "described" and "expected." When a product aligns perfectly with its digital footprint, customer loyalty follows.</p>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">The data highlights several standout performers that have achieved near-perfection. Product B077N4CNVJ leads the pack with 3,653 reviews and a staggering 99.9% positive sentiment, maintaining a perfect 5.0 / 5 average rating. Similarly, Product B00ADR2LV6 boasts 1,219 reviews with an identical 99.9% positive rate. These are not small sample sizes; they represent thousands of customers experiencing zero friction.</p>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">Another notable success is Product B00005C97M, which earned a perfect 5.0 / 5 rating across 201 reviews. The positive sentiment in this cluster is often summed up by the phrase "as expected." For items spanning categories like Automotive, Industrial & Scientific, and Home & Kitchen, reliability is the ultimate luxury. Customers are rewarding brands that provide accurate descriptions and consistent quality, allowing them to complete their tasks without incident.</p>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Complain About</h3>
@@ -2056,7 +2082,7 @@
 <p class="text-sm text-slate-600 leading-relaxed mb-3">The negative sentiment (7.8%) is concentrated heavily in products that fail to meet physical expectations. Product B071X4ZX3X is a cautionary tale, holding a dismal 1.6 / 5 average rating across 1,206 reviews. An overwhelming 83.7% of its reviews are negative, making it a major detractor for the cluster’s overall health. Furthermore, Product B000XEX8AW holds the title of the worst-rated product with a 1.0 / 5 average rating.</p>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">The recurring key terms "small," "fit," and "size" point to a systemic issue with dimensional accuracy. In categories like Arts, Crafts & Sewing or Automotive, a discrepancy of even a few millimeters can render a product useless. This frustration is compounded by durability concerns; one representative review noted that a product developed holes after only one month of use. When a product fails to "fit" or falls apart shortly after purchase, the sentiment shift from neutral to negative is swift and devastating to the brand's long-term viability.</p>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Sentiment at a Glance</h3>
-<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution of Cluster 3 tells a story of "competent utility" rather than "emotional delight."</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution of <strong class="text-slate-700">Fashion & Fit (Cluster 3)</strong> tells a story of "competent utility" rather than "emotional delight."</p>
 <ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
 <li><strong class="text-slate-700">Positive (57.7%):</strong> More than half of the customers are pleased, primarily because the product matched the description. This is a solid foundation, but it suggests the cluster is dominated by functional, rather than aspirational, purchases.</li>
 <li><strong class="text-slate-700">Neutral (34.5%):</strong> This is the most telling statistic for a market analyst. Over a third of all reviews (nearly 50,000 instances) are neutral. This indicates a "commodity" mindset. Customers are not unhappy, but they are not advocates either. They characterize their experience as "as expected," which leaves the door wide open for a competitor to disrupt the space with a superior brand experience.</li>
@@ -2074,18 +2100,18 @@
                     },
                     {
                         cluster: 4,
-                        title: "The Reliability Gap: Why Cluster 4 is Failing the Modern Consumer",
+                        title: "The Reliability Gap: Tech Frustrations (Cluster 4)",
                         reviews: "~75K",
                         rating: "1.95",
-                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">The Reliability Gap: Why Cluster 4 is Failing the Modern Consumer</h2>
+                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">The Reliability Gap: Tech Frustrations (Cluster 4)</h2>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Executive Summary</h3>
-<p class="text-sm text-slate-600 leading-relaxed mb-3">Cluster 4 represents a critical failure in the customer experience, evidenced by a staggering 63.5% negative sentiment and a dismal average rating of 1.95 / 5 across more than 74,000 reviews. For executives, this data signals a category where basic functional expectations are consistently unmet, leaving a massive opening for any competitor capable of delivering fundamental product reliability and "value for money."</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-700" style="color:#DC2626">Tech Frustrations (Cluster 4)</strong> represents a critical failure in the customer experience, evidenced by a staggering 63.5% negative sentiment and a dismal average rating of 1.95 / 5 across more than 74,000 reviews. For executives, this data signals a category where basic functional expectations are consistently unmet, leaving a massive opening for any competitor capable of delivering fundamental product reliability and "value for money."</p>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Love</h3>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">Finding "the good" in a cluster with only 3.0% positive sentiment requires looking at the outliers. When customers do offer praise, it is centered almost entirely on functional restoration and utility.</p>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">The standout performer in this category is <strong class="text-slate-700 font-mono-data">Product B00067BC4U</strong>, maintaining a perfect 5.0 / 5 average rating. While the sample size is small (8 reviews), it represents the "gold standard" of what is possible within this cluster. Positive feedback, such as the 5-star review regarding a phone battery replacement, highlights a core theme: solving a specific pain point. In that instance, the customer noted they "had to charge my phone 3 times day" until the product allowed them to "have my phone back."</p>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">This reveals that the 3.0% of satisfied customers aren't looking for luxury or "delight" features. They are looking for products that "work great" and fulfill their basic promise. When a product in this category—whether it’s in Software, Electronics, or Patio & Garden—actually performs its primary function, customers are remarkably relieved and grateful.</p>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Complain About</h3>
-<p class="text-sm text-slate-600 leading-relaxed mb-3">The overwhelming narrative in Cluster 4 is one of frustration and perceived waste. With 63.5% of the 74,722 reviews trending negative, the "average" experience in this cluster is one of failure.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The overwhelming narrative in <strong class="text-slate-700">Tech Frustrations (Cluster 4)</strong> is one of frustration and perceived waste. With 63.5% of the 74,722 reviews trending negative, the "average" experience in this cluster is one of failure.</p>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">The negative sentiment is best personified by <strong class="text-slate-700">Product 1603113703</strong>, which holds a bottom-tier 1.0 / 5 rating. Even the most reviewed products in the cluster struggle significantly:</p>
 <ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
 <li><strong class="text-slate-700 font-mono-data">Product B07DNLTBG7</strong>: 299 reviews with a 1.8 / 5 average rating and an alarming 73.2% negative sentiment.</li>
@@ -2094,7 +2120,7 @@
 </ul>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">The recurring themes in these complaints are captured by the key terms: "work," "money," and "did." The review excerpt "poor quality" summarizes the sentiment concisely. Customers feel that these products simply do not "work" as intended, leading to the frequent use of the word "money"—almost always in the context of feeling like they have wasted it. Unlike other categories where complaints might focus on aesthetics or delivery times, the grievances here are foundational. If 73.2% of your customers for a top-reviewed product are reporting a negative experience, you are not just facing a PR issue; you are facing a product integrity crisis.</p>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Sentiment at a Glance</h3>
-<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution for Cluster 4 is one of the most lopsided we have analyzed, painting a picture of a "broken" category:</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution for <strong class="text-slate-700">Tech Frustrations (Cluster 4)</strong> is one of the most lopsided we have analyzed, painting a picture of a "broken" category:</p>
 <ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
 <li><strong class="text-slate-700">Positive (3.0%)</strong>: A negligible minority. This suggests that exceeding expectations is almost non-existent in this cluster.</li>
 <li><strong class="text-slate-700">Neutral (33.4%)</strong>: A significant portion of the market is in "purgatory." As seen in the 3-star review for a device where the "speaker could be a little better," these customers are not happy; they are simply tolerant. They feel the product "did the job" but provide no brand loyalty. Note that <strong class="text-slate-700 font-mono-data">Product B00S0X4DEI</strong> and <strong class="text-slate-700 font-mono-data">Product B00FKK2VKM</strong> both have 3.0 / 5 ratings with 0.0% positive and nearly 0.0% negative ratings, indicating they are viewed as purely mediocre, "middle-of-the-road" utilities.</li>
@@ -2106,19 +2132,19 @@
 <li> <strong class="text-slate-700">Reliability is the Only Competitive Advantage:</strong> In a cluster where the average rating is 1.95 / 5, you do not need to innovate with complex features to win market share. You simply need to ensure the product "works." The key terms "work" and "did" suggest that functional consistency is the primary driver of the few positive reviews that exist.</li>
 <li> <strong class="text-slate-700">The "Neutral" Trap:</strong> 33.4% of your market is currently settled in a neutral state. These are not "safe" customers; they are "at-risk" customers who will defect the moment a reliable alternative appears. Products like <strong class="text-slate-700">B00S0X4DEI</strong>, which sits at a 3.0 rating with 0% positive sentiment, are placeholders that offer no long-term brand equity.</li>
 <li> <strong class="text-slate-700">Address the Quality-Price Gap:</strong> The prominence of the word "money" in negative reviews indicates a disconnect between cost and value. Customers in the Electronics, Software, and Cell Phone categories are particularly sensitive to products that fail shortly after purchase. Quality control isn't just a manufacturing metric here; it is the core of the brand's survival.</li>
-<li> <strong class="text-slate-700">Listen to the "Work" Narrative:</strong> The data shows that users are focused on utility ("use," "work," "did"). To turn the tide of negative sentiment, marketing and product development must align on a "Back to Basics" approach. Fix the speaker, fix the battery life, and ensure the software runs. In Cluster 4, the winner will be the brand that stops overpromising and starts consistently delivering.</li>
+<li> <strong class="text-slate-700">Listen to the "Work" Narrative:</strong> The data shows that users are focused on utility ("use," "work," "did"). To turn the tide of negative sentiment, marketing and product development must align on a "Back to Basics" approach. Fix the speaker, fix the battery life, and ensure the software runs. In <strong class="text-slate-700">Tech Frustrations (Cluster 4)</strong>, the winner will be the brand that stops overpromising and starts consistently delivering.</li>
 </ol>`
                     },
                     {
                         cluster: 5,
-                        title: "Beyond the Transaction: Decoding High-Stakes Satisfaction in Cluster 5",
+                        title: "Beyond the Transaction: Gifts & Delight (Cluster 5)",
                         reviews: "~83K",
                         rating: "4.71",
-                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">Beyond the Transaction: Decoding High-Stakes Satisfaction in Cluster 5</h2>
+                        html: `<h2 class="text-xl font-bold text-slate-800 mb-4">Beyond the Transaction: Gifts & Delight (Cluster 5)</h2>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Executive Summary</h3>
-<p class="text-sm text-slate-600 leading-relaxed mb-3">Cluster 5 represents a high-performing segment of the market characterized by exceptional customer loyalty and a staggering 90.0% positive sentiment rate across 82,639 reviews. With an average rating of 4.71/5, this category—spanning Gift Cards, Toys, and Office Products—thrives on "ease of use" and gifting utility, though it remains vulnerable to specific functional failures where product performance meets critical expectations.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-700">Gifts & Delight (Cluster 5)</strong> represents a high-performing segment of the market characterized by exceptional customer loyalty and a staggering 90.0% positive sentiment rate across 82,639 reviews. With an average rating of 4.71/5, this category—spanning Gift Cards, Toys, and Office Products—thrives on "ease of use" and gifting utility, though it remains vulnerable to specific functional failures where product performance meets critical expectations.</p>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Love</h3>
-<p class="text-sm text-slate-600 leading-relaxed mb-3">In a marketplace often defined by friction, Cluster 5 is an anomaly of streamlined satisfaction. The data reveals a consumer base that prioritizes simplicity and emotional resonance. The top-performing products in this cluster don't just meet expectations; they virtually eliminate dissatisfaction.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">In a marketplace often defined by friction, <strong class="text-slate-700">Gifts & Delight (Cluster 5)</strong> is an anomaly of streamlined satisfaction. The data reveals a consumer base that prioritizes simplicity and emotional resonance. The top-performing products in this cluster don't just meet expectations; they virtually eliminate dissatisfaction.</p>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">For instance, <strong class="text-slate-700">Product 0415289556</strong> stands as the gold standard within this data set, maintaining a perfect 5.0/5 rating across 63 reviews. This level of consensus is mirrored in high-volume leaders such as <strong class="text-slate-700 font-mono-data">Product B018F4M89S</strong> and <strong class="text-slate-700 font-mono-data">Product B0719C5P56</strong>, which boast positive sentiment scores of 99.0% and 98.7% respectively.</p>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">The "story" behind these numbers is found in the recurring key terms: <em>great, love, easy,</em> and <em>gift</em>. For these customers, the product is often a means to an end—a successful birthday, a seamless office task, or a creative project. A representative positive review captures this succinctly: "easy to use." When the barrier to entry is low and the reliability is high, customers reward brands with near-unanimous praise. This is particularly evident in <strong class="text-slate-700 font-mono-data">Product B00ADR2LV6</strong>, which achieved a 4.9/5 rating from 846 reviews, indicating that even at scale, high-touch satisfaction is achievable.</p>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What Customers Complain About</h3>
@@ -2126,7 +2152,7 @@
 <p class="text-sm text-slate-600 leading-relaxed mb-3">A critical outlier in the high-volume category is <strong class="text-slate-700 font-mono-data">Product B077N4CNVJ</strong>. Despite being the second most-reviewed product (873 reviews), it carries a 4.0/5 rating and a significant 34.2% negative sentiment rate. This is nearly 23 times higher than the cluster average for negative feedback.</p>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">The qualitative data suggests that "performance gaps" are the primary driver of these low scores. One consumer provided a detailed 2/5 rating when comparing a purchase to a previous version of a blackout curtain, noting, "you could see the morning light through these... [compared to] 100 blackout curtains." In this cluster, "good enough" is not an option when a product is sold on a specific functional promise (like light insulation). If a product is marketed for its utility and fails that single test, the "ease of use" that usually drives the cluster becomes irrelevant, and the rating collapses.</p>
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Sentiment at a Glance</h3>
-<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution for Cluster 5 is heavily skewed toward excellence, providing a "high-trust" environment for brands:</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">The sentiment distribution for <strong class="text-slate-700">Gifts & Delight (Cluster 5)</strong> is heavily skewed toward excellence, providing a "high-trust" environment for brands:</p>
 <ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
 <li><strong class="text-slate-700">Positive (90.0%):</strong> The vast majority of interactions are frictionless. This indicates that for the categories of Toys, Gift Cards, and Office Products, the baseline market expectation is being met or exceeded.</li>
 <li><strong class="text-slate-700">Neutral (8.5%):</strong> This segment represents a "wait and see" demographic. As seen in the review for a Spiderman-themed product, the customer was pleased with the "vibrant" color but remained cautious about the "thick" material, stating they "will update once he tries it on." Neutrality here isn't a lack of interest; it’s a pending judgment on durability and fit.</li>
@@ -2188,7 +2214,7 @@
 <li><strong class="text-slate-700">DistilBERT over RoBERTa</strong> — 66M vs. 125M parameters. On a T4 with 15 GB VRAM, RoBERTa couldn't fit batch_size=32. DistilBERT gave us 77.3% accuracy at half the memory. RoBERTa's 69.1% wasn't worth the VRAM tax.</li>
 <li><strong class="text-slate-700">MiniBatchKMeans over standard K-Means</strong> — we needed an algorithm that scales to 571M reviews. MiniBatch processes in chunks of 1,024, needing only O(batch·k·d) memory. Standard K-Means needs the full dataset in RAM. The quality gap? Silhouette 0.0311 vs 0.0304 — within noise.</li>
 <li><strong class="text-slate-700">nomic-embed-text-v1.5 over MiniLM</strong> — a 10-point MTEB leap for embeddings. Better embeddings → better clusters. Sometimes the upgrade is obvious.</li>
-<li><strong class="text-slate-700">Gemini Flash-Lite for summarisation</strong> — the 1M token context window lets us fit full cluster statistics without truncation. The "Lite" variant is fast enough for sub-second responses, cheap enough for high-volume use.</li>
+<li><strong class="text-slate-700">Gemini 3 Flash for summarisation</strong> — the model receives structured facts extracted by pandas (product IDs, sentiment stats, review excerpts) and transforms them into executive blog articles. Styling only — every number is traceable to the extractive phase. ~700 tokens per cluster prompt, ~4,300 total for 6 articles.</li>
 </ul>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">None of these were "the right choice" in an absolute sense. They were the right choices <em>under these constraints</em>. Different hardware, different data, different answers.</p>`
                     },
@@ -2303,17 +2329,17 @@ labels = np.argmin(distances, axis=<span class="syn-orange">1</span>)
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">What the 6 Clusters Mean</h3>
 <div class="overflow-x-auto mb-3">
 <table class="w-full text-left border-collapse text-xs">
-<thead><tr class="border-b border-slate-200"><th class="py-2 px-2 font-bold text-slate-400 uppercase">#</th><th class="py-2 px-2 font-bold text-slate-400 uppercase">%</th><th class="py-2 px-2 font-bold text-slate-400 uppercase">Label</th><th class="py-2 px-2 font-bold text-slate-400 uppercase">Avg ★</th><th class="py-2 px-2 font-bold text-slate-400 uppercase">Top terms</th><th class="py-2 px-2 font-bold text-slate-400 uppercase">Key categories</th></tr></thead>
+<thead><tr class="border-b border-slate-200"><th class="py-2 px-2 font-bold text-slate-400 uppercase">#</th><th class="py-2 px-2 font-bold text-slate-400 uppercase">Name</th><th class="py-2 px-2 font-bold text-slate-400 uppercase">%</th><th class="py-2 px-2 font-bold text-slate-400 uppercase">Label</th><th class="py-2 px-2 font-bold text-slate-400 uppercase">Avg ★</th><th class="py-2 px-2 font-bold text-slate-400 uppercase">Top terms</th><th class="py-2 px-2 font-bold text-slate-400 uppercase">Key categories</th></tr></thead>
 <tbody>
-<tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-mono-data font-bold">0</td><td class="py-1.5 px-2 font-mono-data">13.4%</td><td class="py-1.5 px-2">Mixed (46% Neu)</td><td class="py-1.5 px-2 font-mono-data">2.69</td><td class="py-1.5 px-2">like, use, product, good, hair</td><td class="py-1.5 px-2">Beauty, Grocery, All Beauty</td></tr>
-<tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-mono-data font-bold">1</td><td class="py-1.5 px-2 font-mono-data">5.6%</td><td class="py-1.5 px-2">Strong Pos (93%)</td><td class="py-1.5 px-2 font-mono-data">4.74</td><td class="py-1.5 px-2">good product, great, works</td><td class="py-1.5 px-2">Clothing, Automotive, Health</td></tr>
-<tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-mono-data font-bold">2</td><td class="py-1.5 px-2 font-mono-data">17.6%</td><td class="py-1.5 px-2">Mixed (42% Neu)</td><td class="py-1.5 px-2 font-mono-data">2.98</td><td class="py-1.5 px-2">book, story, read, good</td><td class="py-1.5 px-2">Kindle Store, Movies, Books</td></tr>
-<tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-mono-data font-bold">3</td><td class="py-1.5 px-2 font-mono-data">16.3%</td><td class="py-1.5 px-2">Mixed (53% Neu)</td><td class="py-1.5 px-2 font-mono-data">2.96</td><td class="py-1.5 px-2">described, small, fit, size, expected</td><td class="py-1.5 px-2">Amazon Fashion, Clothing, Sports</td></tr>
-<tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-mono-data font-bold" style="color:#DC2626">4</td><td class="py-1.5 px-2 font-mono-data">24.6%</td><td class="py-1.5 px-2" style="color:#DC2626">Strong Neg (66%)</td><td class="py-1.5 px-2 font-mono-data" style="color:#DC2626">1.94</td><td class="py-1.5 px-2">work, use, just, money, did</td><td class="py-1.5 px-2">Cell Phones, Electronics, Patio</td></tr>
-<tr><td class="py-1.5 px-2 font-mono-data font-bold">5</td><td class="py-1.5 px-2 font-mono-data">22.4%</td><td class="py-1.5 px-2">Strong Pos (90%)</td><td class="py-1.5 px-2 font-mono-data">4.68</td><td class="py-1.5 px-2">great, love, easy, gift, nice</td><td class="py-1.5 px-2">Toys & Games, Gift Cards, Office</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-mono-data font-bold">0</td><td class="py-1.5 px-2 font-bold text-slate-700">Personal Care & Wellness</td><td class="py-1.5 px-2 font-mono-data">13.4%</td><td class="py-1.5 px-2">Mixed (46% Neu)</td><td class="py-1.5 px-2 font-mono-data">2.69</td><td class="py-1.5 px-2">like, use, product, good, hair</td><td class="py-1.5 px-2">Beauty, Grocery, All Beauty</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-mono-data font-bold">1</td><td class="py-1.5 px-2 font-bold text-slate-700">Trusted Essentials</td><td class="py-1.5 px-2 font-mono-data">5.6%</td><td class="py-1.5 px-2">Strong Pos (93%)</td><td class="py-1.5 px-2 font-mono-data">4.74</td><td class="py-1.5 px-2">good product, great, works</td><td class="py-1.5 px-2">Clothing, Automotive, Health</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-mono-data font-bold">2</td><td class="py-1.5 px-2 font-bold text-slate-700">Books & Media</td><td class="py-1.5 px-2 font-mono-data">17.6%</td><td class="py-1.5 px-2">Mixed (42% Neu)</td><td class="py-1.5 px-2 font-mono-data">2.98</td><td class="py-1.5 px-2">book, story, read, good</td><td class="py-1.5 px-2">Kindle Store, Movies, Books</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-mono-data font-bold">3</td><td class="py-1.5 px-2 font-bold text-slate-700">Fashion & Fit</td><td class="py-1.5 px-2 font-mono-data">16.3%</td><td class="py-1.5 px-2">Mixed (53% Neu)</td><td class="py-1.5 px-2 font-mono-data">2.96</td><td class="py-1.5 px-2">described, small, fit, size, expected</td><td class="py-1.5 px-2">Amazon Fashion, Clothing, Sports</td></tr>
+<tr class="border-b border-slate-100"><td class="py-1.5 px-2 font-mono-data font-bold" style="color:#DC2626">4</td><td class="py-1.5 px-2 font-bold text-slate-700" style="color:#DC2626">Tech Frustrations</td><td class="py-1.5 px-2 font-mono-data">24.6%</td><td class="py-1.5 px-2" style="color:#DC2626">Strong Neg (66%)</td><td class="py-1.5 px-2 font-mono-data" style="color:#DC2626">1.94</td><td class="py-1.5 px-2">work, use, just, money, did</td><td class="py-1.5 px-2">Cell Phones, Electronics, Patio</td></tr>
+<tr><td class="py-1.5 px-2 font-mono-data font-bold">5</td><td class="py-1.5 px-2 font-bold text-slate-700">Gifts & Delight</td><td class="py-1.5 px-2 font-mono-data">22.4%</td><td class="py-1.5 px-2">Strong Pos (90%)</td><td class="py-1.5 px-2 font-mono-data">4.68</td><td class="py-1.5 px-2">great, love, easy, gift, nice</td><td class="py-1.5 px-2">Toys & Games, Gift Cards, Office</td></tr>
 </tbody></table></div>
 
-<p class="text-sm text-slate-600 leading-relaxed mb-3">A quick way to read this: Cluster 4 is your problem child — 66% negative, 1.94★ average, dominated by electronics complaints. Cluster 5 is your star — 90% positive, 4.68★, dominated by gifts and toys. The model discovered these patterns from embeddings alone, with zero human labelling.</p>
+<p class="text-sm text-slate-600 leading-relaxed mb-3">A quick way to read this: <strong style="color:#DC2626">Tech Frustrations (Cluster 4)</strong> is your problem child — 66% negative, 1.94★ average, dominated by electronics complaints. <strong style="color:#10B981">Gifts & Delight (Cluster 5)</strong> is your star — 90% positive, 4.68★, dominated by gifts and toys. The model discovered these patterns from embeddings alone, with zero human labelling.</p>
 
 <h3 class="text-sm font-bold text-slate-700 mt-6 mb-3">Metrics & The Curse of Dimensionality</h3>
 <p class="text-sm text-slate-600 leading-relaxed mb-3">The Silhouette Score is 0.0311. That sounds terrible, and it is — but it's <em>expected</em> for 768-dimensional text embeddings. The curse of dimensionality means distance metrics lose discriminative power in high-dimensional spaces. The Silhouette score here is a <strong class="text-slate-700">relative comparator between k values</strong>, not an absolute quality measure. k=6 was chosen via elbow method + domain interpretability: 6 clusters gave us meaningful, distinguishable categories that mapped cleanly to real product domains. k=8 split hairs; k=4 lumped unrelated categories together.</p>
@@ -2512,9 +2538,9 @@ training_args = TrainingArguments(
 <span class="syn-grey"># The client gets the API key from environment</span>
 client = genai.Client(api_key=os.getenv(<span class="syn-cyan">"GEMINI_API_KEY"</span>))
 
-<span class="syn-grey"># Abstractive Synthesis (Gemini 3.1 Flash-Lite)</span>
+<span class="syn-grey"># Abstractive Synthesis (Gemini 3 Flash — preview)</span>
 response = client.models.generate_content(
-    model=<span class="syn-cyan">"gemini-3.1-flash-lite"</span>, 
+    model=<span class="syn-cyan">"gemini-3-flash-preview"</span>, 
     contents=<span class="syn-cyan">"Explain how AI works in a few words"</span>
 )
 
@@ -2542,8 +2568,6 @@ response = client.models.generate_content(
                 // Lazy-init charts when their tab becomes visible
                 if (id === 'tab-clusters') {
                     this.initClusterChart();
-                    this.initClusterChartN042();
-                    this.initSanityCheckChart();
                 } else if (id === 'tab-benchmark') {
                     if (this.currentMode === 'metrics') this.initMetricsChart();
                     if (this.currentMode === 'evolution') this.initEvolutionChart();
@@ -2662,12 +2686,12 @@ response = client.models.generate_content(
                     btnD.className = "text-[10px] font-bold py-3 text-cyan-400 border-b-2 border-cyan-400 transition-all uppercase tracking-wider";
                     btnR.className = "text-[10px] font-bold py-3 text-white/30 hover:text-white/60 border-b-2 border-transparent transition-all uppercase tracking-wider";
                     display.innerHTML = this.codeSnippets.distil;
-                    insightText.innerHTML = `DistilBERT seamlessly processes the standard <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-xs">batch_size=32</code> and <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-xs">lr=2e-5</code>, unexpectedly outperforming RoBERTa with 77.3% accuracy.`;
+                    insightText.innerHTML = `<ul class="list-disc list-inside space-y-1 text-xs text-slate-600 leading-relaxed"><li>66M params, 6 layers, <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-[10px]">batch_size=32</code>, <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-[10px]">lr=2e-5</code>, 5 epochs → 77.3% accuracy</li><li>Cross-polarity errors near zero: only 1.9% Neg→Pos, 1.8% Pos→Neg</li><li>Neutral F1 67.1% — the weak spot. Matches the Neutral Paradox (longer, more complex reviews)</li><li>Deployed to HF: <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-[10px]">distilbert-amazon-reviews-sentiment</code></li></ul>`;
                 } else {
                     btnR.className = "text-[10px] font-bold py-3 text-orange-400 border-b-2 border-orange-400 transition-all uppercase tracking-wider";
                     btnD.className = "text-[10px] font-bold py-3 text-white/30 hover:text-white/60 border-b-2 border-transparent transition-all uppercase tracking-wider";
                     display.innerHTML = this.codeSnippets.roberta;
-                    insightText.innerHTML = `RoBERTa's ~125M parameters quickly saturate the GPU VRAM. We mitigated this by reducing to <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-xs">batch_size=16</code> and <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-xs">lr=1e-5</code>, but it stagnated at 69.1% accuracy.`;
+                    insightText.innerHTML = `<ul class="list-disc list-inside space-y-1 text-xs text-slate-600 leading-relaxed"><li>125M params couldn't fit <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-[10px]">batch_size=32</code> on T4 — forced to <code class="bg-slate-50 border border-slate-200 text-slate-800 px-1 py-0.5 rounded font-mono-data text-[10px]">batch_size=16</code></li><li>69.1% accuracy — 8.2 pts below DistilBERT. More params ≠ better under VRAM constraints</li><li>Neutral F1 58.7% (vs DistilBERT's 67.1%) — smaller batches hurt the hardest class most</li><li>Not deployed. The accuracy gap + 2× inference cost made DistilBERT the clear choice</li></ul>`;
                 }
             },
 
@@ -3002,25 +3026,47 @@ response = client.models.generate_content(
                 const canvas = document.getElementById('clusterChart');
                 if (!canvas || this.charts.cluster) return;
 
+                // Real data from cluster_profiles.json
+                // Each cluster: [pct_size, avg_rating, review_count, label, sentiment_color]
+                const clusters = [
+                    { x: 24.6, y: 1.94, r: 23, label: 'Tech Frustrations', color: '#DC2626', sent: '66% Neg', terms: 'work, use, money' },
+                    { x: 22.4, y: 4.68, r: 21, label: 'Gifts & Delight', color: '#10B981', sent: '90% Pos', terms: 'great, love, easy' },
+                    { x: 17.6, y: 2.98, r: 18, label: 'Books & Media', color: '#EA580C', sent: '42% Neu', terms: 'book, story, read' },
+                    { x: 16.3, y: 2.96, r: 17, label: 'Fashion & Fit', color: '#EA580C', sent: '53% Neu', terms: 'small, fit, size' },
+                    { x: 13.4, y: 2.69, r: 15, label: 'Personal Care', color: '#EA580C', sent: '38% Neg', terms: 'like, use, product' },
+                    { x: 5.6,  y: 4.74, r: 10, label: 'Trusted Essentials', color: '#10B981', sent: '93% Pos', terms: 'works, great' }
+                ];
+
                 this.charts.cluster = new Chart(canvas.getContext('2d'), {
                     type: 'bubble',
                     data: {
-                        datasets: [
-                            { label: 'C1: Logistics', data: [{ x: 2, y: 3, r: 12 }, { x: 2.5, y: 3.5, r: 10 }], backgroundColor: '#0E7490' },
-                            { label: 'C2: Subscriptions', data: [{ x: -4, y: -5, r: 18 }, { x: -3.5, y: -4, r: 15 }], backgroundColor: '#0891B2' },
-                            { label: 'C3: Quality', data: [{ x: 5, y: -1, r: 10 }, { x: 4.5, y: -0.5, r: 8 }], backgroundColor: '#06B6D4' }
-                        ]
+                        datasets: clusters.map(c => ({
+                            label: c.label,
+                            data: [{ x: c.x, y: c.y, r: c.r }],
+                            backgroundColor: c.color + 'CC',
+                            borderColor: c.color,
+                            borderWidth: 1.5
+                        }))
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         scales: {
-                            x: { grid: { color: this.colors.gridAlpha, borderDash: [4, 4] }, ticks: { display: false } },
-                            y: { grid: { color: this.colors.gridAlpha, borderDash: [4, 4] }, ticks: { display: false } }
+                            x: { 
+                                title: { display: true, text: 'Cluster size (% of dataset)', font: { size: 9 }, color: '#94A3B8' },
+                                grid: { color: this.colors.gridAlpha },
+                                min: 0, max: 30,
+                                ticks: { callback: v => v + '%', font: { size: 9 }, color: '#94A3B8' }
+                            },
+                            y: {
+                                title: { display: true, text: 'Avg rating', font: { size: 9 }, color: '#94A3B8' },
+                                grid: { color: this.colors.gridAlpha },
+                                min: 1, max: 5,
+                                ticks: { callback: v => v + '★', font: { size: 9 }, color: '#94A3B8' }
+                            }
                         },
-                        animation: false,
                         plugins: {
-                            legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 10 } } },
+                            legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 9 }, padding: 12, usePointStyle: true } },
                             tooltip: {
                                 backgroundColor: '#FFFFFF',
                                 titleColor: '#1E293B',
@@ -3029,144 +3075,17 @@ response = client.models.generate_content(
                                 borderWidth: 1,
                                 padding: 10,
                                 cornerRadius: 8,
-                                displayColors: true,
                                 callbacks: {
-                                    label: c => {
-                                        const size = Math.round(c.raw.r * 3140);
-                                        return ` ${size.toLocaleString()} reviews in this node`;
+                                    title: ctx => clusters[ctx[0].datasetIndex].label,
+                                    label: ctx => {
+                                        const c = clusters[ctx[0].datasetIndex];
+                                        return [`${c.x}% of dataset`, `${c.y.toFixed(2)}★ avg`, `Sentiment: ${c.sent}`, `Terms: ${c.terms}`];
                                     }
                                 }
                             }
                         }
                     }
                 });
-            },
-
-            // Lazy-init: N04.2 BGE Hybrid Clusters from JSON
-            initClusterChartN042: function () {
-                const canvas = document.getElementById('clusterChartN042');
-                if (!canvas || this.charts.clusterN042) return;
-
-                fetch('data/n042_outputs/n042_cluster_assignments_bge.json')
-                    .then(r => r.json())
-                    .then(data => {
-                        this.charts.clusterN042 = new Chart(canvas.getContext('2d'), {
-                            type: 'bubble',
-                            data: { datasets: data.datasets },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                scales: {
-                                    x: { grid: { color: this.colors.gridAlpha, borderDash: [4, 4] }, ticks: { display: false } },
-                                    y: { grid: { color: this.colors.gridAlpha, borderDash: [4, 4] }, ticks: { display: false } }
-                                },
-                                animation: { duration: 800 },
-                                plugins: {
-                                    legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 10 } } },
-                                    tooltip: {
-                                        backgroundColor: '#FFFFFF',
-                                        titleColor: '#1E293B',
-                                        bodyColor: '#334155',
-                                        borderColor: '#E2E8F0',
-                                        borderWidth: 1,
-                                        padding: 10,
-                                        cornerRadius: 8,
-                                        displayColors: true,
-                                    }
-                                }
-                            }
-                        });
-                    })
-                    .catch(() => {
-                        console.log('N04.2 JSON not available');
-                        canvas.parentElement.innerHTML = '<p class="text-sm text-slate-400 text-center py-8">N04.2 cluster data not available. Run Notebook 04.2 to generate.</p>';
-                    });
-            },
-
-            // Lazy-init: N04.2 Sanity Check — Metadata vs BGE purity comparison
-            initSanityCheckChart: function () {
-                const canvas = document.getElementById('sanityCheckChart');
-                if (!canvas || this.charts.sanityCheck) return;
-
-                fetch('data/n042_outputs/n042_sanity_check.json')
-                    .then(r => r.json())
-                    .then(data => {
-                        const clusters = data.clusters || [];
-                        const labels = clusters.map(c => {
-                            if (c.label) return `C${c.id}: ${c.label}`;
-                            return `C${c.id}: ${c.top_metadata_category || 'Cluster'}`;
-                        });
-                        const metaData = clusters.map(c => c.metadata_purity_pct ?? 0);
-                        const bgeData = clusters.map(c => c.bge_purity_pct ?? 0);
-
-                        this.charts.sanityCheck = new Chart(canvas.getContext('2d'), {
-                            type: 'bar',
-                            data: {
-                                labels: labels,
-                                datasets: [
-                                    {
-                                        label: 'Metadata',
-                                        data: metaData,
-                                        backgroundColor: '#F59E0B',
-                                        borderRadius: 4,
-                                        barPercentage: 0.6,
-                                        categoryPercentage: 0.8
-                                    },
-                                    {
-                                        label: 'BGE',
-                                        data: bgeData,
-                                        backgroundColor: '#0891B2',
-                                        borderRadius: 4,
-                                        barPercentage: 0.6,
-                                        categoryPercentage: 0.8
-                                    }
-                                ]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                scales: {
-                                    x: {
-                                        grid: { display: false },
-                                        ticks: { font: { size: 10 }, maxRotation: 45, minRotation: 30 }
-                                    },
-                                    y: {
-                                        beginAtZero: true,
-                                        max: 100,
-                                        grid: { color: this.colors.gridAlpha, borderDash: [4, 4] },
-                                        ticks: { callback: v => v + '%', font: { size: 10 } },
-                                        title: { display: true, text: 'Purity %', font: { size: 10 } }
-                                    }
-                                },
-                                animation: { duration: 800 },
-                                plugins: {
-                                    legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 10 } } },
-                                    tooltip: {
-                                        backgroundColor: '#FFFFFF',
-                                        titleColor: '#1E293B',
-                                        bodyColor: '#334155',
-                                        borderColor: '#E2E8F0',
-                                        borderWidth: 1,
-                                        padding: 10,
-                                        cornerRadius: 8,
-                                        displayColors: true,
-                                        callbacks: {
-                                            afterBody: ctx => {
-                                                const idx = ctx[0].dataIndex;
-                                                const delta = clusters[idx].delta_pct;
-                                                const sign = delta > 0 ? '+' : '';
-                                                return `Delta: ${sign}${delta}%`;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                    })
-                    .catch(() => {
-                        console.log('Sanity check JSON not available');
-                        canvas.parentElement.innerHTML = '<p class="text-sm text-slate-400 text-center py-8">Sanity check data not available. Run Notebook 04.2.</p>';
-                    });
             },
 
             // N04 Cluster Match: lightweight keyword heuristic for Playground
@@ -3221,7 +3140,8 @@ response = client.models.generate_content(
                             .slice(0, 2);
                         const catLabel = topCats.map(([k]) => k.replace(/_/g, ' ')).join(' · ');
 
-                        clusterName.textContent = `Cluster ${bestMatch.cluster_id}: ${catLabel || 'Mixed'}`;
+                        const clusterNameDisplay = app.clusterNames[bestMatch.cluster_id] || `Cluster ${bestMatch.cluster_id}`;
+                        clusterName.textContent = `${clusterNameDisplay} — ${catLabel || 'Mixed'}`;
                         clusterSubcats.textContent = `Terms: ${(bestMatch.top_terms || []).slice(0, 4).join(', ')}`;
                         clusterReview.textContent = `"${reviewText.substring(0, 120)}${reviewText.length > 120 ? '...' : ''}"`;
 
@@ -3391,18 +3311,76 @@ response = client.models.generate_content(
                     btnTxt.textContent = "Synthesizing...";
 
                     const personas = {
-                        "Positive": "You are an enthusiastic Customer Success Manager. Celebrate the customer's happiness, mention the specific product they bought, and ask a fun or practical question about its daily use.",
-                        "Neutral": "You are a curious Product Specialist. Thank them for the feedback, identify the product, and ask for a technical or usage detail that could tip the scale to positive.",
-                        "Negative": "You are an empathetic and direct Support Lead. Apologize for the poor experience with the product, identify the main issue, and ask a question to understand how we can compensate or what exactly went wrong."
+                        "Positive": `You are a sharp, authentic Customer Success Manager. Write like a real person who just read this review — not a chatbot.
+
+Your task: Write ONE short paragraph (2-3 sentences max) that:
+1. Acknowledges what the customer loved (name the product or use case from the review)
+2. Adds a specific, non-generic follow-up — mention a real feature, ask about a real scenario, or suggest something genuinely useful
+
+Examples of good responses:
+- Review: "This blender is amazing, makes the smoothest smoothies!"  
+  → "Love hearing that! The 1200W motor really does make a difference with frozen fruit. Have you tried making nut butter with it yet? That's where it really shines."
+- Review: "Great quality headphones, very comfortable for long sessions."
+  → "Comfort for long sessions is exactly what we designed for. What are you usually listening to — podcasts, music, or calls?"
+
+Anti-patterns to AVOID:
+- NEVER say "Thank you for your feedback" or "We appreciate your review"
+- NEVER say "We're thrilled to hear" or "Your satisfaction is our priority"
+- NEVER use the word "delighted" or "esteemed"
+- NEVER write more than 3 sentences
+- NEVER sound like a corporate press release`,
+
+                        "Neutral": `You are a perceptive Product Specialist who reads between the lines. Write like an engineer who actually cares about the product.
+
+Your task: Write ONE short paragraph (2-3 sentences max) that:
+1. Thanks them genuinely for the honest take (not "thank you for your feedback")
+2. Names the product they mentioned
+3. Asks ONE specific, technical question that could reveal whether the issue is fixable or fundamental
+
+Examples of good responses:
+- Review: "The story was interesting but the middle dragged on."
+  → "Fair take — pacing is tricky with longer narratives. Was it the world-building that slowed things down, or did the plot threads just lose momentum?"
+- Review: "It works fine but the setup was more complicated than expected."
+  → "Noted on the setup friction. Was it the instructions that were unclear, or did the physical assembly have too many steps?"
+
+Anti-patterns to AVOID:
+- NEVER say "Thank you for your feedback" or "We value your input"
+- NEVER say "rest assured" or "we take this seriously"
+- NEVER use the word "feedback" alone without specifics
+- NEVER write more than 3 sentences
+- NEVER sound like you're reading from a support script`,
+
+                        "Negative": `You are a direct, no-BS Support Lead. Write like someone who actually wants to fix the problem — not someone following a script.
+
+Your task: Write ONE short paragraph (3 sentences max) that:
+1. Names the specific problem they described (not "the issue you experienced")
+2. Takes ownership with a real, concrete next step (refund path, replacement, investigation)
+3. Asks ONE clarifying question that helps diagnose the root cause
+
+Examples of good responses:
+- Review: "This charger stopped working after two weeks. Complete waste of money."
+  → "A charger dying in two weeks is unacceptable — that sounds like a defective unit, not normal wear. We'll replace it immediately. Quick check: did it fail on a specific device or across multiple ones?"
+- Review: "The shoes fell apart after a month, poor quality."
+  → "A month is way too short for shoes to fall apart. That's a manufacturing defect, full stop. We'll process a refund today. Was it the sole separation or the stitching that gave out first?"
+
+Anti-patterns to AVOID:
+- NEVER say "We sincerely apologize" or "We deeply regret"
+- NEVER say "This is not the experience we want for our customers"
+- NEVER say "Your feedback has been forwarded to our team"
+- NEVER use the word "inconvenience" — it minimizes legitimate complaints
+- NEVER write more than 3 sentences
+- NEVER sound like a corporate damage-control statement`
                     };
 
                     const payload = {
                         contents: [{
                             parts: [{
-                                text: `${personas[label] || personas["Neutral"]} 
-                                Context: The model detected a ${label} sentiment. 
-                                Original review: "${text}". 
-                                Instruction: Write a short response (max 2 sentences) in the SAME LANGUAGE as the review above.`
+                                text: `${personas[label] || personas["Neutral"]}
+
+REVIEW TO RESPOND TO: "${text}"
+SENTIMENT DETECTED: ${label}
+
+CRITICAL: Write your response in the SAME LANGUAGE as the review above. If the review is in Spanish, respond in Spanish. If it's in English, respond in English. Match the customer's language exactly.`
                             }]
                         }]
                     };
@@ -3714,13 +3692,14 @@ response = client.models.generate_content(
                 strip.innerHTML = this.blogState.articles.map((art, i) => {
                     const ratingNum = parseFloat(art.rating);
                     const ratingColor = ratingNum < 3.0 ? '#DC2626' : (ratingNum < 4.0 ? '#D97706' : '#10B981');
+                    const clusterName = app.clusterNames[art.cluster] || `Cluster ${art.cluster}`;
 
                     return `
                     <button class="blog-card card-standard w-full text-left flex flex-col gap-3 group transition-[border-color,background-color,transform] duration-300" data-index="${i}" onclick="app.selectBlogArticle(${i})">
                         <div class="flex justify-between items-start">
                             <div class="flex flex-col">
-                                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Cluster 0${i + 1}</span>
-                                <span class="text-[9px] font-bold text-slate-500 uppercase tracking-tight">${art.category}</span>
+                                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">${clusterName}</span>
+                                <span class="text-[9px] font-bold text-slate-500 uppercase tracking-tight">Cluster ${art.cluster}</span>
                             </div>
                             <span class="text-[10px] font-mono-data font-bold" style="color:${ratingColor}">★ ${art.rating}</span>
                         </div>
