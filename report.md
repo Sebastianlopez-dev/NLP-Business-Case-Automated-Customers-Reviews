@@ -4,7 +4,7 @@
 
 **Author**: Sebastián López  
 **Course**: Ironhack Data Science Bootcamp  
-**Dataset**: Amazon Reviews 2023 — 571.54M reviews across 33 product categories  
+**Dataset**: Amazon Reviews 2023 — 571.54M reviews across 33 product categories
 
 ---
 
@@ -22,10 +22,10 @@ All three components are surfaced in an **interactive web dashboard** with live 
 
 ## 2. Deployed Models
 
-| Model | HuggingFace | Task |
-|-------|-------------|------|
-| DistilBERT Sentiment | [SebasLopez-ai/distilbert-amazon-reviews-sentiment](https://huggingface.co/SebasLopez-ai/distilbert-amazon-reviews-sentiment) | 3-class sentiment classification (Negative / Neutral / Positive) |
-| MiniBatchKMeans Clustering | [SebasLopez-ai/hybridKMeans-category-clustering](https://huggingface.co/SebasLopez-ai/hybridKMeans-category-clustering) | 6-category product clustering via cosine distance to centroids |
+| Model                      | HuggingFace                                                                                                                   | Task                                                             |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| DistilBERT Sentiment       | [SebasLopez-ai/distilbert-amazon-reviews-sentiment](https://huggingface.co/SebasLopez-ai/distilbert-amazon-reviews-sentiment) | 3-class sentiment classification (Negative / Neutral / Positive) |
+| MiniBatchKMeans Clustering | [SebasLopez-ai/hybridKMeans-category-clustering](https://huggingface.co/SebasLopez-ai/hybridKMeans-category-clustering)       | 6-category product clustering via cosine distance to centroids   |
 
 Both models include `config.json`, model weights (`model.safetensors` / `cluster_centroids.npy`), tokenizer files, cluster profiles, and usage examples in their README cards. The web dashboard queries these models via the HuggingFace Inference API for real-time predictions.
 
@@ -51,14 +51,14 @@ This approach avoids the ~120 GB HuggingFace cache that would fill Colab's disk 
 
 ### 4.2 Dataset Profile
 
-| Property | Value |
-|----------|-------|
-| Raw reviews loaded | 976,216 |
-| Unique products (`parent_asin`) | 633,101 |
-| Unique users | 189,161 |
-| Rating distribution | 67.1% 5★, 14.7% 4★, 7.5% 3★, 4.1% 2★, 6.5% 1★ |
-| Mean rating | 4.32 |
-| Median review length | 144 characters (27 words) |
+| Property                        | Value                                         |
+| ------------------------------- | --------------------------------------------- |
+| Raw reviews loaded              | 976,216                                       |
+| Unique products (`parent_asin`) | 633,101                                       |
+| Unique users                    | 189,161                                       |
+| Rating distribution             | 67.1% 5★, 14.7% 4★, 7.5% 3★, 4.1% 2★, 6.5% 1★ |
+| Mean rating                     | 4.32                                          |
+| Median review length            | 144 characters (27 words)                     |
 
 ### 4.3 Key EDA Findings
 
@@ -90,15 +90,15 @@ For comparison, **RoBERTa** (`roberta-base`, 125M parameters) was also fine-tune
 
 ### 5.2 Training Configuration
 
-| Parameter | DistilBERT | RoBERTa |
-|-----------|-----------|---------|
-| Learning Rate | 2e-5 | 1e-5 |
-| Batch Size | 32 | 16 |
-| Dropout | 0.3 | 0.1 |
-| Max Tokens | 256 | 256 |
-| Epochs | 5 | 5 |
-| Training Time (T4) | ~80 min | ~180 min |
-| Parameters | 66M | 125M |
+| Parameter          | DistilBERT | RoBERTa  |
+| ------------------ | ---------- | -------- |
+| Learning Rate      | 2e-5       | 1e-5     |
+| Batch Size         | 32         | 16       |
+| Dropout            | 0.3        | 0.1      |
+| Max Tokens         | 256        | 256      |
+| Epochs             | 5          | 5        |
+| Training Time (T4) | ~80 min    | ~180 min |
+| Parameters         | 66M        | 125M     |
 
 Dropout was raised from the default 0.1 to 0.3 in DistilBERT to combat overfitting on the relatively small fine-tuning dataset. RoBERTa kept 0.1 under the assumption that its larger pretraining corpus would naturally resist overfitting.
 
@@ -106,11 +106,11 @@ Dropout was raised from the default 0.1 to 0.3 in DistilBERT to combat overfitti
 
 **DistilBERT achieved 77.3% test accuracy with a weighted F1 of 0.772.** Training converged rapidly — 75% accuracy after epoch 1, plateauing at ~77.5% by epoch 3. The per-class breakdown reveals where the model struggles:
 
-| Class | Precision | Recall | F1 | Support |
-|-------|-----------|--------|-----|---------|
-| Negative | 0.754 | 0.781 | 0.767 | 10,697 |
-| **Neutral** | **0.685** | **0.657** | **0.671** | 10,697 |
-| Positive | 0.875 | 0.880 | 0.877 | 10,698 |
+| Class            | Precision | Recall    | F1        | Support    |
+| ---------------- | --------- | --------- | --------- | ---------- |
+| Negative         | 0.754     | 0.781     | 0.767     | 10,697     |
+| **Neutral**      | **0.685** | **0.657** | **0.671** | 10,697     |
+| Positive         | 0.875     | 0.880     | 0.877     | 10,698     |
 | **Weighted Avg** | **0.771** | **0.773** | **0.772** | **32,092** |
 
 Neutral is the hardest class by a wide margin (F1=0.671 vs 0.877 for Positive). This is expected — 3-star reviews sit in an inherently ambiguous space where vocabulary overlaps with both Negative and Positive. The model correctly identifies extremes 88% of the time but struggles with the middle ground.
@@ -133,13 +133,13 @@ RoBERTa underperformed significantly — **69.3% accuracy, 8 points below Distil
 
 After analysis, the root cause was identified: **learning rate was too low.** At LR=1e-5 with batch_size=16, RoBERTa receives ~4× less effective update signal than DistilBERT at LR=2e-5 with batch_size=32. The model stagnated at epoch 3 with validation loss flat at ~0.711 — EarlyStopping never triggered because per-epoch deltas fell below the threshold. The dropout was not the bottleneck; the optimizer simply could not move the weights fast enough.
 
-| Factor | DistilBERT | RoBERTa | Impact |
-|--------|-----------|---------|--------|
-| Parameters | 66M | 125M | 1.9× larger |
-| Effective LR signal | 2e-5 × 32 | 1e-5 × 16 | 🔴 4× weaker |
-| Val loss plateau | Epoch 3 | Epoch 3 | 🟡 Same convergence point |
-| Test Accuracy | **77.3%** | 69.3% | −8.0 pp |
-| Neutral F1 | **0.671** | 0.587 | −8.4 pp |
+| Factor              | DistilBERT | RoBERTa   | Impact                    |
+| ------------------- | ---------- | --------- | ------------------------- |
+| Parameters          | 66M        | 125M      | 1.9× larger               |
+| Effective LR signal | 2e-5 × 32  | 1e-5 × 16 | 🔴 4× weaker              |
+| Val loss plateau    | Epoch 3    | Epoch 3   | 🟡 Same convergence point |
+| Test Accuracy       | **77.3%**  | 69.3%     | −8.0 pp                   |
+| Neutral F1          | **0.671**  | 0.587     | −8.4 pp                   |
 
 **Recommendation**: Bump RoBERTa LR to 2e-5. If the 4× signal ratio theory holds, RoBERTa should reach ≥75% accuracy and potentially surpass DistilBERT.
 
@@ -181,14 +181,14 @@ With 33 original Amazon categories, the project brief asked for **4-6 meta-categ
 
 ### 6.3 Cluster Profiles
 
-| # | Label | Size | Avg ★ | Sentiment (Neg/Neu/Pos) | Top Terms |
-|---|-------|------|-------|------------------------|-----------|
-| 0 | Health & Beauty | 13.4% | 2.69 | 38% / **46%** / 17% | hair, smell, skin, taste, flavor |
-| 1 | Generic Positive | 5.6% | 4.74 | 0% / 7% / **93%** | good product, great, works |
-| 2 | Books & Entertainment | 17.6% | 2.98 | 31% / **43%** / 27% | book, story, read, magazine |
-| 3 | Fashion & Apparel | 16.3% | 2.96 | 26% / **53%** / 21% | fit, size, small, described |
-| 4 | **Electronics & Home** | **24.6%** | **1.94** | **66%** / 30% / 4% | work, money, cheap, quality |
-| 5 | Toys & Gifts | 22.4% | 4.68 | 2% / 9% / **90%** | great, love, gift, easy, nice |
+| #   | Label                  | Size      | Avg ★    | Sentiment (Neg/Neu/Pos) | Top Terms                        |
+| --- | ---------------------- | --------- | -------- | ----------------------- | -------------------------------- |
+| 0   | Health & Beauty        | 13.4%     | 2.69     | 38% / **46%** / 17%     | hair, smell, skin, taste, flavor |
+| 1   | Generic Positive       | 5.6%      | 4.74     | 0% / 7% / **93%**       | good product, great, works       |
+| 2   | Books & Entertainment  | 17.6%     | 2.98     | 31% / **43%** / 27%     | book, story, read, magazine      |
+| 3   | Fashion & Apparel      | 16.3%     | 2.96     | 26% / **53%** / 21%     | fit, size, small, described      |
+| 4   | **Electronics & Home** | **24.6%** | **1.94** | **66%** / 30% / 4%      | work, money, cheap, quality      |
+| 5   | Toys & Gifts           | 22.4%     | 4.68     | 2% / 9% / **90%**       | great, love, gift, easy, nice    |
 
 ### 6.4 Analysis
 
@@ -208,12 +208,12 @@ Two cluster types emerged:
 
 The summarization uses a **two-phase design** to prevent hallucination:
 
-| Phase | Tool | Role |
-|-------|------|------|
-| **Extractive** | Python (pandas, NumPy) | Hard facts: top products by `parent_asin`, average ratings, sentiment distributions, representative review excerpts |
-| **Abstractive** | Gemini 1.5 Flash (Google API) | Narrative styling: takes structured facts and writes a polished, persuasive blog article |
+| Phase           | Tool                          | Role                                                                                                                |
+| --------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Extractive**  | Python (pandas, NumPy)        | Hard facts: top products by `parent_asin`, average ratings, sentiment distributions, representative review excerpts |
+| **Abstractive** | Gemini 1.5 Flash (Google API) | Narrative styling: takes structured facts and writes a polished, persuasive blog article                            |
 
-This separation means every product name, rating, and statistic in the final articles is traceable to the data. The LLM's job is *writing*, not *discovering*.
+This separation means every product name, rating, and statistic in the final articles is traceable to the data. The LLM's job is _writing_, not _discovering_.
 
 ### 7.2 Design Decisions
 
@@ -225,14 +225,14 @@ This separation means every product name, rating, and statistic in the final art
 
 Six markdown articles in `data/summaries/`, each ~500-800 words:
 
-| File | Cluster | Style |
-|------|---------|-------|
-| `category_00_*.md` | Health & Beauty | Narrative with product rankings |
-| `category_01_*.md` | Generic Positive | Statistical summary |
-| `category_02_*.md` | Books & Entertainment | Narrative with product comparisons |
-| `category_03_*.md` | Fashion & Apparel | Narrative with sizing insights |
-| `category_04_*.md` | Electronics & Home | Investigative (failure patterns + recommendations) |
-| `category_05_*.md` | Toys & Gifts | Statistical summary |
+| File               | Cluster               | Style                                              |
+| ------------------ | --------------------- | -------------------------------------------------- |
+| `category_00_*.md` | Health & Beauty       | Narrative with product rankings                    |
+| `category_01_*.md` | Generic Positive      | Statistical summary                                |
+| `category_02_*.md` | Books & Entertainment | Narrative with product comparisons                 |
+| `category_03_*.md` | Fashion & Apparel     | Narrative with sizing insights                     |
+| `category_04_*.md` | Electronics & Home    | Investigative (failure patterns + recommendations) |
+| `category_05_*.md` | Toys & Gifts          | Statistical summary                                |
 
 ---
 
@@ -250,44 +250,44 @@ The dashboard is designed for the deployment scenario described in the project b
 
 ## 9. Results Summary
 
-| Component | Model | Key Metric | Status |
-|-----------|-------|------------|--------|
-| Sentiment | DistilBERT (66M) | Accuracy 77.3%, F1 0.772 | ✅ Champion |
-| Sentiment (comparison) | RoBERTa (125M) | Accuracy 69.3%, LR bottleneck | ⚠️ Underperformed |
-| Clustering | nomic-embed + MiniBatchKMeans | k=6, Silhouette 0.031 | ✅ Semantic clusters |
-| Summarization | Gemini 1.5 Flash | 6 articles, extractive-abstractive | ✅ Deployed |
-| Web Dashboard | HTML/Tailwind/Chart.js | Interactive, live HF API | ✅ Deployed |
-| **Model Hosting** | **HuggingFace Hub** | **Both models publicly queryable** | ✅ **Bonus** |
+| Component              | Model                         | Key Metric                         | Status               |
+| ---------------------- | ----------------------------- | ---------------------------------- | -------------------- |
+| Sentiment              | DistilBERT (66M)              | Accuracy 77.3%, F1 0.772           | ✅ Champion          |
+| Sentiment (comparison) | RoBERTa (125M)                | Accuracy 69.3%, LR bottleneck      | ⚠️ Underperformed    |
+| Clustering             | nomic-embed + MiniBatchKMeans | k=6, Silhouette 0.031              | ✅ Semantic clusters |
+| Summarization          | Gemini 1.5 Flash              | 6 articles, extractive-abstractive | ✅ Deployed          |
+| Web Dashboard          | HTML/Tailwind/Chart.js        | Interactive, live HF API           | ✅ Deployed          |
+| **Model Hosting**      | **HuggingFace Hub**           | **Both models publicly queryable** | ✅ **Bonus**         |
 
 ---
 
 ## 10. Key Decisions & Tradeoffs
 
-| Decision | Alternative | Rationale |
-|----------|-------------|-----------|
-| Stream from UCSD, not HuggingFace Hub | `datasets.load_dataset()` with streaming | Avoids 120 GB disk cache; API instability in `datasets>=2.19` |
-| Undersampling (not oversampling) | SMOTE, class weights | Transparent: no synthetic data. Weights unnecessary on balanced data |
-| DistilBERT over RoBERTa for production | RoBERTa as primary | 77.3% in 66M params, faster training, simpler tuning |
-| nomic-embed (137M) over BGE-large (335M) | Larger embedding models | Fits CPU inference; 768-dim sufficient for k=6 |
-| MiniBatchKMeans label assignment | K-Means for everything | 36× faster, 102% quality, scales to 571M dataset |
-| Extractive-Abstractive pipeline | Pure LLM summarization | Prevents hallucination of products and statistics |
-| Gemini 1.5 Flash over Mistral/NVIDIA | Alternative LLM APIs | Free tier sustainability; comparable synthesis quality |
-| HuggingFace Hub for model hosting | Local-only deployment | Bonus points; public API access for dashboard |
+| Decision                                 | Alternative                              | Rationale                                                            |
+| ---------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------- |
+| Stream from UCSD, not HuggingFace Hub    | `datasets.load_dataset()` with streaming | Avoids 120 GB disk cache; API instability in `datasets>=2.19`        |
+| Undersampling (not oversampling)         | SMOTE, class weights                     | Transparent: no synthetic data. Weights unnecessary on balanced data |
+| DistilBERT over RoBERTa for production   | RoBERTa as primary                       | 77.3% in 66M params, faster training, simpler tuning                 |
+| nomic-embed (137M) over BGE-large (335M) | Larger embedding models                  | Fits CPU inference; 768-dim sufficient for k=6                       |
+| MiniBatchKMeans label assignment         | K-Means for everything                   | 36× faster, 102% quality, scales to 571M dataset                     |
+| Extractive-Abstractive pipeline          | Pure LLM summarization                   | Prevents hallucination of products and statistics                    |
+| Gemini 1.5 Flash over Mistral/NVIDIA     | Alternative LLM APIs                     | Free tier sustainability; comparable synthesis quality               |
+| HuggingFace Hub for model hosting        | Local-only deployment                    | Bonus points; public API access for dashboard                        |
 
 ---
 
 ## 11. Evaluation Criteria Mapping
 
-| Criterion | Points | Covered by |
-|-----------|--------|------------|
-| Data Preprocessing | 15 | Streaming from UCSD, cleaning pipeline, EDA, balanced 70/15/15 split |
-| Review Classification | 20 | DistilBERT F1=0.77 + RoBERTa comparison with LR bottleneck analysis |
-| Clustering Model | 20 | nomic-embed + MiniBatchKMeans k=6, k-sweep from 2-10, TF-IDF validation |
-| Summarization Model | 20 | Extractive-abstractive pipeline, 6 articles, anti-hallucination design |
-| Deployment | 10 | Interactive web dashboard with live HuggingFace Inference API |
-| PDF Report | 5 | This document |
-| PPT Presentation | 10 | To be created from analysis and report |
-| **Bonus: Public Hosting** | **+10** | **Both models deployed on HuggingFace Hub** |
+| Criterion                 | Points  | Covered by                                                              |
+| ------------------------- | ------- | ----------------------------------------------------------------------- |
+| Data Preprocessing        | 15      | Streaming from UCSD, cleaning pipeline, EDA, balanced 70/15/15 split    |
+| Review Classification     | 20      | DistilBERT F1=0.77 + RoBERTa comparison with LR bottleneck analysis     |
+| Clustering Model          | 20      | nomic-embed + MiniBatchKMeans k=6, k-sweep from 2-10, TF-IDF validation |
+| Summarization Model       | 20      | Extractive-abstractive pipeline, 6 articles, anti-hallucination design  |
+| Deployment                | 10      | Interactive web dashboard with live HuggingFace Inference API           |
+| PDF Report                | 5       | This document                                                           |
+| PPT Presentation          | 10      | To be created from analysis and report                                  |
+| **Bonus: Public Hosting** | **+10** | **Both models deployed on HuggingFace Hub**                             |
 
 **Total: up to 100 pts + 10 bonus**
 
@@ -336,11 +336,7 @@ The dashboard is designed for the deployment scenario described in the project b
 
 ### HuggingFace Deployments
 
-| Model | URL | Artifacts |
-|-------|-----|-----------|
-| DistilBERT Sentiment | [huggingface.co/SebasLopez-ai/distilbert-amazon-reviews-sentiment](https://huggingface.co/SebasLopez-ai/distilbert-amazon-reviews-sentiment) | model.safetensors (268 MB), tokenizer, config.json |
-| Category Clustering | [huggingface.co/SebasLopez-ai/hybridKMeans-category-clustering](https://huggingface.co/SebasLopez-ai/hybridKMeans-category-clustering) | cluster_centroids.npy (6×768), profiles.json, clusters.csv |
-
----
-
-*Report generated from notebook outputs, analysisN01–N04.md, and concepts documentation. All metrics verified against notebook execution outputs.*
+| Model                | URL                                                                                                                                          | Artifacts                                                  |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| DistilBERT Sentiment | [huggingface.co/SebasLopez-ai/distilbert-amazon-reviews-sentiment](https://huggingface.co/SebasLopez-ai/distilbert-amazon-reviews-sentiment) | model.safetensors (268 MB), tokenizer, config.json         |
+| Category Clustering  | [huggingface.co/SebasLopez-ai/hybridKMeans-category-clustering](https://huggingface.co/SebasLopez-ai/hybridKMeans-category-clustering)       | cluster_centroids.npy (6×768), profiles.json, clusters.csv |
