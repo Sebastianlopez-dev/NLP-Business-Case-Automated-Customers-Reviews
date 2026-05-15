@@ -50,7 +50,7 @@ Amazon Reviews 2023 (UCSD)
 | **Sentiment** | DistilBERT (66M) | Accuracy **77.3%** · Weighted F1 **0.77** |
 | **Sentiment** (comparison) | RoBERTa (125M) | Accuracy 69.3% · LR bottleneck identified |
 | **Clustering** | nomic-embed + MiniBatchKMeans | k=6 · Silhouette 0.031 · 36× faster than K-Means |
-| **Summarization** | Gemini 1.5 Flash | 6 articles · Extractive-Abstractive pipeline |
+| **Summarization** | Gemini 3 Flash | 6 articles · Extractive-Abstractive pipeline |
 | **Web App** | HTML/Tailwind/Chart.js | Interactive dashboard with live HF Inference |
 | **Batch Upload** | FastAPI + Docker (HF Space) | Upload CSV → sentiment + clustering + Gemini report |
 | **Deployment** | Vercel + HuggingFace Spaces | `project-wmh9z.vercel.app` · auto-deploy on push |
