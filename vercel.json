@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cp -r web/* .",
+  "buildCommand": "ls -la && echo '=== web/ ===' && ls -la web/ && cp web/raw-web-vs3.html web/train_history.js . && echo 'copied'",
   "outputDirectory": ".",
   "rewrites": [
     { "source": "/(.*)", "destination": "/raw-web-vs3.html" }
