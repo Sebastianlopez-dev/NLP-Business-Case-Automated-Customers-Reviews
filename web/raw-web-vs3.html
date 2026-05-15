@@ -2802,10 +2802,6 @@ _classifier = <span class="syn-pink">await</span> pipeline(<br>
                 });
 
                 this.uploadState.initialized = true;
-
-                // Reset button
-                const resetBtn = document.getElementById('upload-reset-btn');
-                if (resetBtn) resetBtn.addEventListener('click', () => this.resetUpload());
             },
 
             handleUploadFile: function(file) {
@@ -3345,6 +3341,17 @@ response = client.models.generate_content(
                 // Upload tab handling
                 if (id === 'tab-upload') {
                     if (!this.uploadState.initialized) this.initUpload();
+                }
+
+                // Update URL hash
+                const tabToHash = {
+                    'tab-play': 'pipeline', 'tab-upload': 'upload', 'tab-blog': 'documentation',
+                    'tab-eda': 'overview', 'tab-benchmark': 'benchmark', 'tab-clusters': 'clusters',
+                    'tab-summarization': 'summaries', 'tab-web': 'deployment', 'tab-docs': 'docs'
+                };
+                const newHash = tabToHash[id];
+                if (newHash && window.location.hash !== '#' + newHash) {
+                    history.replaceState(null, '', '#' + newHash);
                 }
 
                 document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
@@ -4615,9 +4622,27 @@ CRITICAL: Write your response in the SAME LANGUAGE as the review above. If the r
             app.playground.hfToken = localStorage.getItem('nlp_hf_token') || 'HF_TOKEN_PLACEHOLDER';
             app.playground.geminiToken = localStorage.getItem('nlp_gemini_key') || 'GEMINI_API_KEY_PLACEHOLDER';
 
+            // Hash-based routing: remember active tab on reload
+            const hashToTab = {
+                '#playground': 'tab-play', '#pipeline': 'tab-play', '#play': 'tab-play',
+                '#upload': 'tab-upload',
+                '#blog': 'tab-blog', '#documentation': 'tab-blog', '#docs': 'tab-blog',
+                '#eda': 'tab-eda', '#overview': 'tab-eda',
+                '#benchmark': 'tab-benchmark',
+                '#clusters': 'tab-clusters',
+                '#summarization': 'tab-summarization', '#summaries': 'tab-summarization',
+                '#web': 'tab-web', '#deployment': 'tab-web',
+            };
+            const hash = window.location.hash.toLowerCase();
+            if (hash && hashToTab[hash]) {
+                app.switchTab(hashToTab[hash]);
+            }
+
             // Reset buttons (event listeners)
             const playResetBtn = document.getElementById('play-reset-btn');
             if (playResetBtn) playResetBtn.addEventListener('click', () => app.resetPlayground());
+            const uploadResetBtn = document.getElementById('upload-reset-btn');
+            if (uploadResetBtn) uploadResetBtn.addEventListener('click', () => app.resetUpload());
 
             // Pre-warm Transformers.js model (silent background download, cached after first load)
             if (typeof window.loadClassifier === 'function') {
