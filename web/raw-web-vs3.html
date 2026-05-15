@@ -1484,6 +1484,9 @@
                                 <span id="play-spinner"
                                     class="hidden w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
                             </button>
+                            <button onclick="app.resetPlayground()" class="w-full py-2.5 rounded-md text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors flex justify-center items-center gap-1.5 mt-1">
+                                <i class="ph ph-arrow-counter-clockwise text-sm"></i> Reset
+                            </button>
                         </div>
                     </div>
 
@@ -1753,6 +1756,9 @@
                             <button onclick="app.processUpload()" id="upload-process-btn" class="btn-cta ml-auto px-6 py-2.5 rounded-md text-sm flex items-center gap-2 shadow-sm">
                                 <span id="upload-btn-txt">Process Reviews</span>
                                 <span id="upload-spinner" class="hidden w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                            </button>
+                            <button onclick="app.resetUpload()" id="upload-reset-btn" class="px-4 py-2.5 rounded-md text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors flex items-center gap-1.5">
+                                <i class="ph ph-arrow-counter-clockwise text-sm"></i> Reset
                             </button>
                         </div>
                     </div>
@@ -3644,7 +3650,45 @@ response = client.models.generate_content(
                                             epInfo = `(~Epoch ${(step / 9360).toFixed(1)})`;
                                         }
                                         return `Step: ${step.toLocaleString()} ${epInfo}`;
-                                    },
+            },
+
+            resetUpload: function() {
+                // Reset state
+                this.uploadState.parsedRows = [];
+                this.uploadState.headers = [];
+                this.uploadState.selectedColumn = null;
+
+                // Destroy charts
+                if (this.uploadState.sentimentChartInstance) { this.uploadState.sentimentChartInstance.destroy(); this.uploadState.sentimentChartInstance = null; }
+                if (this.uploadState.clusterChartInstance) { this.uploadState.clusterChartInstance.destroy(); this.uploadState.clusterChartInstance = null; }
+                if (this.uploadState.sentClusterChartInstance) { this.uploadState.sentClusterChartInstance.destroy(); this.uploadState.sentClusterChartInstance = null; }
+
+                // Hide results and summaries
+                document.getElementById('upload-results').classList.add('hidden');
+                document.getElementById('upload-summaries').classList.add('hidden');
+                document.getElementById('upload-progress').classList.add('hidden');
+                document.getElementById('upload-error-banner').classList.add('hidden');
+                document.getElementById('upload-cap-warning').classList.add('hidden');
+                document.getElementById('upload-cold-start').classList.add('hidden');
+
+                // Show drop zone, hide mapping
+                document.getElementById('upload-drop-zone').classList.remove('hidden');
+                document.getElementById('upload-mapping').classList.add('hidden');
+                document.getElementById('upload-preview').classList.add('hidden');
+
+                // Reset process count
+                document.getElementById('upload-process-count').value = 200;
+
+                // Reset button
+                const btn = document.getElementById('upload-process-btn');
+                btn.disabled = false;
+                document.getElementById('upload-spinner').classList.add('hidden');
+                document.getElementById('upload-btn-txt').textContent = 'Process Reviews';
+
+                // Reset file input
+                const fileInput = document.getElementById('upload-file-input');
+                if (fileInput) fileInput.value = '';
+            },
                                     label: function (context) {
                                         return context.dataset.label + ' Loss: ' + context.parsed.y.toFixed(4);
                                     }
@@ -4171,6 +4215,39 @@ CRITICAL: Write your response in the SAME LANGUAGE as the review above. If the r
                     btn.disabled = false;
                     btnTxt.textContent = "Run Inference Pipeline";
                 }
+            },
+
+            resetPlayground: function() {
+                const input = document.getElementById('play-input');
+                if (input) {
+                    input.value = '';
+                    input.classList.remove('ring-2', 'ring-red-500', 'border-red-500');
+                    input.placeholder = 'Paste an Amazon review to analyze sentiment and classify...';
+                }
+                const results = document.getElementById('play-results');
+                const empty = document.getElementById('play-empty');
+                if (results) { results.classList.add('hidden'); results.classList.remove('flex'); }
+                if (empty) empty.classList.remove('hidden');
+                const statusTxt = document.getElementById('pipeline-status-text');
+                const statusDot = document.getElementById('pipeline-status-dot');
+                if (statusTxt) { statusTxt.textContent = 'IDLE'; statusTxt.className = 'text-slate-400'; }
+                if (statusDot) statusDot.className = 'w-1.5 h-1.5 rounded-full bg-slate-300';
+                ['step-1-dot','step-2-dot','step-3-dot'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.className = 'absolute -left-[5px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-white border-2 border-slate-200 hidden md:block';
+                });
+                ['step-2-icon','step-3-icon'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.className = 'ph-fill ph-circle text-slate-300 text-lg';
+                });
+                const trace = document.getElementById('play-trace');
+                if (trace) trace.textContent = '';
+                const btn = document.getElementById('play-btn');
+                if (btn) btn.disabled = false;
+                const spinner = document.getElementById('play-spinner');
+                if (spinner) spinner.classList.add('hidden');
+                const btnTxt = document.getElementById('play-btn-txt');
+                if (btnTxt) btnTxt.textContent = 'Run Inference Pipeline';
             },
 
             // Settings Logic
