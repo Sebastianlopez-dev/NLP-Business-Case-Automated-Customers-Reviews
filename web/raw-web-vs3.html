@@ -1484,7 +1484,7 @@
                                 <span id="play-spinner"
                                     class="hidden w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
                             </button>
-                            <button onclick="app.resetPlayground()" class="w-full py-2.5 rounded-md text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors flex justify-center items-center gap-1.5 mt-1">
+                            <button id="play-reset-btn" type="button" class="w-full py-2.5 rounded-md text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors flex justify-center items-center gap-1.5 mt-1">
                                 <i class="ph ph-arrow-counter-clockwise text-sm"></i> Reset
                             </button>
                         </div>
@@ -1757,7 +1757,7 @@
                                 <span id="upload-btn-txt">Process Reviews</span>
                                 <span id="upload-spinner" class="hidden w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
                             </button>
-                            <button onclick="app.resetUpload()" id="upload-reset-btn" class="px-4 py-2.5 rounded-md text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors flex items-center gap-1.5">
+                            <button id="upload-reset-btn" type="button" class="px-4 py-2.5 rounded-md text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors flex items-center gap-1.5">
                                 <i class="ph ph-arrow-counter-clockwise text-sm"></i> Reset
                             </button>
                         </div>
@@ -2802,6 +2802,10 @@ _classifier = <span class="syn-pink">await</span> pipeline(<br>
                 });
 
                 this.uploadState.initialized = true;
+
+                // Reset button
+                const resetBtn = document.getElementById('upload-reset-btn');
+                if (resetBtn) resetBtn.addEventListener('click', () => this.resetUpload());
             },
 
             handleUploadFile: function(file) {
@@ -4610,6 +4614,10 @@ CRITICAL: Write your response in the SAME LANGUAGE as the review above. If the r
             // Load keys into state initially
             app.playground.hfToken = localStorage.getItem('nlp_hf_token') || 'HF_TOKEN_PLACEHOLDER';
             app.playground.geminiToken = localStorage.getItem('nlp_gemini_key') || 'GEMINI_API_KEY_PLACEHOLDER';
+
+            // Reset buttons (event listeners)
+            const playResetBtn = document.getElementById('play-reset-btn');
+            if (playResetBtn) playResetBtn.addEventListener('click', () => app.resetPlayground());
 
             // Pre-warm Transformers.js model (silent background download, cached after first load)
             if (typeof window.loadClassifier === 'function') {
