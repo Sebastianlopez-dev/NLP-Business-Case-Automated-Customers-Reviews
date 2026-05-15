@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/raw-web-vs3.html" }
+  ]
+}
