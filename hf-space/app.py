@@ -263,7 +263,7 @@ def landing():
 
         <div class="section">
             <div class="section-label">Quick test</div>
-            <textarea id="testInput" placeholder='["This product is amazing!", "Terrible quality, broke in a day.", "It works fine I guess."]'></textarea>
+            <textarea id="testInput" placeholder="Type a review here, or paste a JSON array of reviews&hellip;"></textarea>
             <div style="margin-top:10px; display:flex; gap:8px; align-items:center;">
                 <button id="testBtn" onclick="testPredict()" {'disabled' if not model_loaded else ''}>Test /predict</button>
                 <span id="testStatus" style="font-size:12px;color:#94A3B8;"></span>
@@ -297,8 +297,13 @@ def landing():
             result.className = 'result';
 
             try {{
-                const texts = JSON.parse(input);
-                if (!Array.isArray(texts)) throw new Error('Input must be a JSON array');
+                let texts = input.trim();
+                // Auto-wrap plain text as a single-element JSON array
+                if (!texts.startsWith('[')) {{
+                    texts = JSON.stringify([texts]);
+                }}
+                texts = JSON.parse(texts);
+                if (!Array.isArray(texts)) throw new Error('Input must be text or a JSON array');
 
                 status.textContent = 'Sending…';
                 const t0 = performance.now();
