@@ -11,6 +11,7 @@
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
     <!-- Typography: Inter (UI), JetBrains Mono (Data/Code) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -318,6 +319,10 @@
                 class="nav-item active w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-current="page"
                 aria-label="Inference Playground section">
                 <i class="ph ph-lightning text-lg" aria-hidden="true"></i><span>Playground</span>
+            </button>
+            <button onclick="app.switchTab('tab-upload')" id="nav-upload"
+                class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-label="Batch file upload and inference">
+                <i class="ph ph-upload text-lg" aria-hidden="true"></i><span>Upload</span>
             </button>
             <button onclick="app.switchTab('tab-blog')" id="nav-blog"
                 class="nav-item w-full px-3 py-2.5 rounded-md gap-3 text-sm" aria-label="Blog — AI-generated summaries">
@@ -1678,6 +1683,128 @@
                     </div>
             </section>
 
+            <!-- 6. UPLOAD -->
+            <section id="tab-upload" class="tab-content">
+                <div class="mb-8 flex justify-between items-start">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800 tracking-tight mb-1">Batch Inference Upload</h2>
+                        <p class="text-sm text-slate-500">Upload a CSV or JSON file of reviews for bulk sentiment + clustering analysis via HuggingFace Space.</p>
+                    </div>
+                </div>
+
+                <!-- Error Banner -->
+                <div id="upload-error-banner" class="hidden mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+                    <i class="ph ph-warning-circle text-red-500 text-lg mt-0.5 flex-shrink-0"></i>
+                    <p id="upload-error-text" class="text-sm text-red-700 font-medium"></p>
+                </div>
+
+                <!-- Cold Start Notice -->
+                <div id="upload-cold-start" class="hidden mb-6 p-4 bg-cyan-50 border border-cyan-200 rounded-lg flex items-start gap-3">
+                    <i class="ph ph-spinner animate-spin text-cyan-600 text-lg mt-0.5 flex-shrink-0"></i>
+                    <p class="text-sm text-cyan-700 font-medium">Waking up model... This may take up to 30 seconds on the first request.</p>
+                </div>
+
+                <!-- Upload Zone -->
+                <div id="upload-drop-zone" class="card-standard border-dashed border-2 border-slate-300 hover:border-cyan-500 transition-colors text-center py-12 cursor-pointer mb-8">
+                    <input type="file" id="upload-file-input" accept=".csv,.json" class="hidden" />
+                    <div class="flex flex-col items-center gap-3">
+                        <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center">
+                            <i class="ph ph-upload text-2xl text-slate-400"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-700">Drop a CSV or JSON file here</p>
+                            <p class="text-xs text-slate-400 mt-1">or click to browse</p>
+                        </div>
+                        <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Max 500 reviews</p>
+                    </div>
+                </div>
+
+                <!-- Column Mapping -->
+                <div id="upload-mapping" class="hidden mb-8">
+                    <div class="card-standard">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                                <i class="ph ph-columns text-slate-400"></i> Column Mapping
+                            </h3>
+                            <span id="upload-row-count" class="text-[10px] font-mono-data text-slate-400 font-bold uppercase tracking-widest"></span>
+                        </div>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">Text Column</label>
+                        <select id="upload-column-select" class="w-full text-sm border border-slate-200 rounded-md p-2.5 text-slate-700 bg-white outline-none cursor-pointer hover:border-slate-300 transition-colors shadow-sm mb-4"></select>
+
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">Preview (first 5 rows)</label>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead><tr class="border-b border-slate-200"><th class="py-2 px-3 font-bold text-slate-400 uppercase text-[10px] tracking-widest">#</th><th class="py-2 px-3 font-bold text-slate-400 uppercase text-[10px] tracking-widest">Review Text</th></tr></thead>
+                                <tbody id="upload-preview-body"></tbody>
+                            </table>
+                        </div>
+
+                        <div id="upload-cap-warning" class="hidden mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-2">
+                            <i class="ph ph-warning text-amber-500 text-sm mt-0.5 flex-shrink-0"></i>
+                            <p class="text-xs text-amber-700">File exceeds 500 rows. Only the first 500 will be processed.</p>
+                        </div>
+
+                        <div class="flex items-center gap-4 mt-4 pt-4 border-t border-slate-100">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Process first</label>
+                            <select id="upload-process-count" class="text-sm border border-slate-200 rounded-md p-2 text-slate-700 bg-white outline-none cursor-pointer hover:border-slate-300 transition-colors shadow-sm">
+                                <option value="50">50 rows</option>
+                                <option value="100">100 rows</option>
+                                <option value="200" selected>200 rows</option>
+                                <option value="500">500 rows</option>
+                            </select>
+                            <button onclick="app.processUpload()" id="upload-process-btn" class="btn-cta ml-auto px-6 py-2.5 rounded-md text-sm flex items-center gap-2 shadow-sm">
+                                <span id="upload-btn-txt">Process Reviews</span>
+                                <span id="upload-spinner" class="hidden w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress -->
+                <div id="upload-progress" class="hidden mb-8">
+                    <div class="card-standard">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                                <i class="ph ph-git-merge text-slate-400"></i> Processing Batches
+                            </h3>
+                            <span id="upload-progress-text" class="text-[10px] font-mono-data text-slate-400 font-bold uppercase tracking-widest">0 / 0</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                            <div id="upload-progress-bar" class="h-full bg-cyan-500 transition-all duration-300" style="width:0%"></div>
+                        </div>
+                        <p id="upload-progress-detail" class="text-xs text-slate-400 mt-2 font-mono-data"></p>
+                    </div>
+                </div>
+
+                <!-- Results Charts -->
+                <div id="upload-results" class="hidden grid grid-cols-12 gap-6 mb-8">
+                    <div class="col-span-12 lg:col-span-5 card-standard flex flex-col">
+                        <h3 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <i class="ph ph-chart-pie-slice text-slate-400"></i> Sentiment Distribution
+                        </h3>
+                        <div class="chart-container flex-1">
+                            <canvas id="uploadSentimentChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-span-12 lg:col-span-7 card-standard flex flex-col">
+                        <h3 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <i class="ph ph-chart-bar text-slate-400"></i> Cluster Distribution
+                        </h3>
+                        <div class="chart-container flex-1">
+                            <canvas id="uploadClusterChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cluster Summaries -->
+                <div id="upload-summaries" class="hidden">
+                    <h3 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i class="ph ph-text-align-justify text-slate-400"></i> Cluster Summaries
+                    </h3>
+                    <div id="upload-summaries-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                </div>
+            </section>
+
 
             <!-- BLOG -->
             <section id="tab-blog" class="tab-content">
@@ -1957,6 +2084,72 @@
                 'Tech Frustrations',           // 4 — Electronics, Cell Phones (1.94★)
                 'Gifts & Delight'             // 5 — Toys, Gift Cards, Office (4.68★)
             ],
+
+            callGeminiAPI: async function(text, label) {
+                const personas = {
+                    "Positive": `You are a sharp, authentic Customer Success Manager. Write like a real person who just read this review.
+
+Your task: Write ONE short paragraph (2-3 sentences max) that:
+1. Acknowledges what the customer loved (name the product or use case from the review)
+2. Adds a specific, non-generic follow-up
+
+Anti-patterns to AVOID:
+- NEVER say "Thank you for your feedback"
+- NEVER say "We're thrilled to hear"
+- NEVER use the word "delighted"
+- NEVER write more than 3 sentences`,
+                    "Neutral": `You are a perceptive Product Specialist who reads between the lines. Write like an engineer who actually cares about the product.
+
+Your task: Write ONE short paragraph (2-3 sentences max) that:
+1. Thanks them genuinely for the honest take
+2. Names the product they mentioned
+3. Asks ONE specific, technical question
+
+Anti-patterns to AVOID:
+- NEVER say "Thank you for your feedback"
+- NEVER say "rest assured"
+- NEVER write more than 3 sentences`,
+                    "Negative": `You are a direct, no-BS Support Lead. Write like someone who actually wants to fix the problem.
+
+Your task: Write ONE short paragraph (3 sentences max) that:
+1. Names the specific problem they described
+2. Takes ownership with a real, concrete next step
+3. Asks ONE clarifying question
+
+Anti-patterns to AVOID:
+- NEVER say "We sincerely apologize"
+- NEVER say "Your feedback has been forwarded"
+- NEVER use the word "inconvenience"
+- NEVER write more than 3 sentences`
+                };
+
+                const payload = {
+                    contents: [{
+                        parts: [{
+                            text: `${personas[label] || personas["Neutral"]}
+
+REVIEW TO RESPOND TO: "${text}"
+SENTIMENT DETECTED: ${label}
+
+CRITICAL: Write your response in the SAME LANGUAGE as the review above.`
+                        }]
+                    }]
+                };
+
+                const llmEndpoint = this.playground.endpoints.llm(this.playground.geminiToken);
+                const llmResponse = await fetch(llmEndpoint, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!llmResponse.ok) {
+                    const errorData = await llmResponse.json();
+                    throw new Error(errorData.error?.message || "LLM API Error");
+                }
+                const llmData = await llmResponse.json();
+                return llmData.candidates[0].content.parts[0].text;
+            },
 
             blogState: {
                 activeArticle: 0,
@@ -2503,6 +2696,408 @@ _classifier = <span class="syn-pink">await</span> pipeline(<br>
                 missingArticle: '<div class="text-center py-12 text-slate-400"><i class="ph ph-file-text text-3xl mb-3 block"></i><p class="text-sm">Article not yet available</p></div>'
             },
 
+            uploadState: {
+                initialized: false,
+                parsedRows: [],
+                headers: [],
+                selectedColumn: null,
+                modelWarmed: false,
+                sentimentChartInstance: null,
+                clusterChartInstance: null
+            },
+
+            initUpload: function() {
+                if (this.uploadState.initialized) return;
+                const dropZone = document.getElementById('upload-drop-zone');
+                const fileInput = document.getElementById('upload-file-input');
+                if (!dropZone || !fileInput) return;
+
+                dropZone.addEventListener('click', () => fileInput.click());
+                dropZone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dropZone.classList.add('border-cyan-500', 'bg-cyan-50/30');
+                });
+                dropZone.addEventListener('dragleave', () => {
+                    dropZone.classList.remove('border-cyan-500', 'bg-cyan-50/30');
+                });
+                dropZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    dropZone.classList.remove('border-cyan-500', 'bg-cyan-50/30');
+                    const files = e.dataTransfer.files;
+                    if (files.length) this.handleUploadFile(files[0]);
+                });
+                fileInput.addEventListener('change', (e) => {
+                    if (e.target.files.length) this.handleUploadFile(e.target.files[0]);
+                });
+
+                document.getElementById('upload-column-select').addEventListener('change', (e) => {
+                    this.uploadState.selectedColumn = e.target.value;
+                    this.renderUploadPreview();
+                });
+
+                this.uploadState.initialized = true;
+            },
+
+            handleUploadFile: function(file) {
+                this.hideUploadError();
+                const ext = file.name.split('.').pop().toLowerCase();
+                if (!['csv', 'json'].includes(ext)) {
+                    this.showUploadError('Check file format — only .csv and .json are supported');
+                    return;
+                }
+
+                Papa.parse(file, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: (results) => {
+                        if (results.errors && results.errors.length > 0 && results.data.length === 0) {
+                            this.showUploadError('Check file format — unable to parse');
+                            return;
+                        }
+                        if (!results.data || results.data.length === 0) {
+                            this.showUploadError('File contains no data');
+                            return;
+                        }
+                        this.uploadState.parsedRows = results.data;
+                        this.uploadState.headers = results.meta.fields || Object.keys(results.data[0]);
+                        this.autoDetectColumn();
+                        this.renderUploadMapping();
+                    },
+                    error: () => {
+                        this.showUploadError('Check file format — parsing failed');
+                    }
+                });
+            },
+
+            autoDetectColumn: function() {
+                const headers = this.uploadState.headers;
+                const scores = headers.map(h => {
+                    const lower = h.toLowerCase();
+                    if (lower === 'review_text') return 100;
+                    if (['review', 'text', 'body', 'comment'].includes(lower)) return 50;
+                    if (lower.includes('review')) return 30;
+                    if (lower.includes('text')) return 20;
+                    return 0;
+                });
+                const bestIndex = scores.indexOf(Math.max(...scores));
+                this.uploadState.selectedColumn = headers[bestIndex] || headers[0];
+            },
+
+            renderUploadMapping: function() {
+                const mapping = document.getElementById('upload-mapping');
+                const select = document.getElementById('upload-column-select');
+                const countLabel = document.getElementById('upload-row-count');
+                const capWarning = document.getElementById('upload-cap-warning');
+                const dropZone = document.getElementById('upload-drop-zone');
+
+                mapping.classList.remove('hidden');
+                dropZone.classList.add('hidden');
+
+                select.innerHTML = this.uploadState.headers.map(h =>
+                    `<option value="${h}" ${h === this.uploadState.selectedColumn ? 'selected' : ''}>${h}</option>`
+                ).join('');
+
+                const totalRows = this.uploadState.parsedRows.length;
+                countLabel.textContent = `${totalRows.toLocaleString()} rows`;
+                capWarning.classList.toggle('hidden', totalRows <= 500);
+
+                this.renderUploadPreview();
+            },
+
+            renderUploadPreview: function() {
+                const tbody = document.getElementById('upload-preview-body');
+                const col = this.uploadState.selectedColumn;
+                const rows = this.uploadState.parsedRows.slice(0, 5);
+                tbody.innerHTML = rows.map((r, i) => {
+                    const text = (r[col] || '').toString().substring(0, 120);
+                    return `<tr class="border-b border-slate-100"><td class="py-2 px-3 font-mono-data text-slate-400">${i + 1}</td><td class="py-2 px-3 text-slate-600">${text}${(r[col] || '').length > 120 ? '...' : ''}</td></tr>`;
+                }).join('');
+            },
+
+            showUploadError: function(msg) {
+                const banner = document.getElementById('upload-error-banner');
+                const text = document.getElementById('upload-error-text');
+                text.textContent = msg;
+                banner.classList.remove('hidden');
+            },
+
+            hideUploadError: function() {
+                document.getElementById('upload-error-banner').classList.add('hidden');
+            },
+
+            processUpload: async function() {
+                this.hideUploadError();
+                const col = this.uploadState.selectedColumn;
+                const texts = this.uploadState.parsedRows
+                    .map(r => (r[col] || '').toString().trim())
+                    .filter(t => t.length > 0);
+
+                if (texts.length === 0) {
+                    this.showUploadError('No valid text column found — check column mapping');
+                    return;
+                }
+
+                const limit = parseInt(document.getElementById('upload-process-count').value, 10);
+                const cappedTexts = texts.slice(0, limit);
+
+                const btn = document.getElementById('upload-process-btn');
+                const spinner = document.getElementById('upload-spinner');
+                const btnTxt = document.getElementById('upload-btn-txt');
+                const progress = document.getElementById('upload-progress');
+                const progressBar = document.getElementById('upload-progress-bar');
+                const progressText = document.getElementById('upload-progress-text');
+                const progressDetail = document.getElementById('upload-progress-detail');
+
+                btn.disabled = true;
+                spinner.classList.remove('hidden');
+                btnTxt.textContent = 'Processing...';
+                progress.classList.remove('hidden');
+                document.getElementById('upload-results').classList.add('hidden');
+                document.getElementById('upload-summaries').classList.add('hidden');
+
+                const spaceUrl = 'https://sebaslopezai-amazon-reviews-sentiment-space.hf.space/predict';
+                const batchSize = 32;
+                const total = cappedTexts.length;
+                const allPredictions = [];
+
+                // Check cold start via /health
+                if (!this.uploadState.modelWarmed) {
+                    try {
+                        const healthRes = await fetch(spaceUrl.replace('/predict', '/health'));
+                        const health = await healthRes.json();
+                        if (!health.model_loaded) {
+                            document.getElementById('upload-cold-start').classList.remove('hidden');
+                        }
+                    } catch (_) {
+                        document.getElementById('upload-cold-start').classList.remove('hidden');
+                    }
+                }
+
+                try {
+                    for (let i = 0; i < total; i += batchSize) {
+                        const batch = cappedTexts.slice(i, i + batchSize);
+                        const attempt = async () => {
+                            const res = await fetch(spaceUrl, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ texts: batch })
+                            });
+                            if (!res.ok) {
+                                const err = await res.json().catch(() => ({}));
+                                throw new Error(err.detail || `HTTP ${res.status}`);
+                            }
+                            const json = await res.json();
+                            return json.predictions || [];
+                        };
+
+                        let batchPredictions;
+                        try {
+                            batchPredictions = await attempt();
+                        } catch (err) {
+                            // Retry once on 5xx
+                            if (err.message.includes('503') || err.message.includes('502') || err.message.includes('504')) {
+                                batchPredictions = await attempt();
+                            } else {
+                                throw err;
+                            }
+                        }
+
+                        allPredictions.push(...batchPredictions);
+                        const pct = Math.round(((i + batch.length) / total) * 100);
+                        progressBar.style.width = `${pct}%`;
+                        progressText.textContent = `${Math.min(i + batch.length, total)} / ${total}`;
+                        progressDetail.textContent = `Batch ${Math.floor(i / batchSize) + 1} of ${Math.ceil(total / batchSize)}`;
+
+                        if (!this.uploadState.modelWarmed && batchPredictions.length > 0) {
+                            this.uploadState.modelWarmed = true;
+                            document.getElementById('upload-cold-start').classList.add('hidden');
+                        }
+                    }
+
+                    this.renderUploadCharts(allPredictions);
+                    this.generateUploadSummaries(cappedTexts, allPredictions);
+                } catch (err) {
+                    console.error('Upload processing error:', err);
+                    if (err.message.includes('503') || err.message.includes('502') || err.message.includes('504') || err.message.includes('unavailable')) {
+                        this.showUploadError('Space unavailable — try again later');
+                    } else {
+                        this.showUploadError(err.message || 'Processing failed');
+                    }
+                } finally {
+                    btn.disabled = false;
+                    spinner.classList.add('hidden');
+                    btnTxt.textContent = 'Process Reviews';
+                    document.getElementById('upload-cold-start').classList.add('hidden');
+                }
+            },
+
+            renderUploadCharts: function(predictions) {
+                const results = document.getElementById('upload-results');
+                results.classList.remove('hidden');
+
+                // Sentiment counts: 0=Neg, 1=Neu, 2=Pos
+                const sentimentCounts = [0, 0, 0];
+                predictions.forEach(p => {
+                    const label = typeof p.label === 'number' ? p.label : 1;
+                    if (label >= 0 && label <= 2) sentimentCounts[label]++;
+                });
+
+                const clusterCounts = [0, 0, 0, 0, 0, 0];
+                predictions.forEach(p => {
+                    const cluster = typeof p.cluster === 'number' ? p.cluster : 0;
+                    if (cluster >= 0 && cluster <= 5) clusterCounts[cluster]++;
+                });
+
+                // Destroy previous charts
+                if (this.uploadState.sentimentChartInstance) {
+                    this.uploadState.sentimentChartInstance.destroy();
+                }
+                if (this.uploadState.clusterChartInstance) {
+                    this.uploadState.clusterChartInstance.destroy();
+                }
+
+                this.uploadState.sentimentChartInstance = new Chart(
+                    document.getElementById('uploadSentimentChart').getContext('2d'),
+                    {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Negative', 'Neutral', 'Positive'],
+                            datasets: [{
+                                data: sentimentCounts,
+                                backgroundColor: ['#DC2626', '#94A3B8', '#10B981'],
+                                borderWidth: 0,
+                                hoverOffset: 4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '60%',
+                            plugins: {
+                                legend: { position: 'bottom', labels: { boxWidth: 10, padding: 16, font: { size: 11 } } },
+                                tooltip: {
+                                    backgroundColor: '#FFFFFF',
+                                    titleColor: '#1E293B',
+                                    bodyColor: '#334155',
+                                    borderColor: '#E2E8F0',
+                                    borderWidth: 1,
+                                    padding: 10,
+                                    cornerRadius: 8,
+                                    callbacks: {
+                                        label: (c) => ` ${c.label}: ${c.raw.toLocaleString()} (${((c.raw / predictions.length) * 100).toFixed(1)}%)`
+                                    }
+                                }
+                            }
+                        }
+                    }
+                );
+
+                this.uploadState.clusterChartInstance = new Chart(
+                    document.getElementById('uploadClusterChart').getContext('2d'),
+                    {
+                        type: 'bar',
+                        data: {
+                            labels: this.clusterNames,
+                            datasets: [{
+                                data: clusterCounts,
+                                backgroundColor: ['#0891B2', '#7C3AED', '#D97706', '#0D9488', '#4F46E5', '#BE185D'],
+                                borderRadius: 4,
+                                barThickness: 24
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { borderDash: [4, 4], color: 'rgba(148, 163, 184, 0.2)' },
+                                    ticks: { font: { size: 10, family: 'JetBrains Mono' } }
+                                },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { font: { size: 9 }, maxRotation: 30, minRotation: 30 }
+                                }
+                            },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: '#FFFFFF',
+                                    titleColor: '#1E293B',
+                                    bodyColor: '#334155',
+                                    borderColor: '#E2E8F0',
+                                    borderWidth: 1,
+                                    padding: 10,
+                                    cornerRadius: 8
+                                }
+                            }
+                        }
+                    }
+                );
+            },
+
+            generateUploadSummaries: async function(texts, predictions) {
+                const container = document.getElementById('upload-summaries-grid');
+                const section = document.getElementById('upload-summaries');
+                section.classList.remove('hidden');
+                container.innerHTML = '';
+
+                // Group texts by cluster
+                const clusters = [[], [], [], [], [], []];
+                predictions.forEach((p, i) => {
+                    const c = typeof p.cluster === 'number' ? p.cluster : 0;
+                    if (c >= 0 && c <= 5 && texts[i]) clusters[c].push(texts[i]);
+                });
+
+                // Sentiment label names
+                const labelNames = ['Negative', 'Neutral', 'Positive'];
+
+                for (let c = 0; c < 6; c++) {
+                    const clusterTexts = clusters[c];
+                    if (clusterTexts.length === 0) continue;
+
+                    // Get dominant sentiment for this cluster
+                    const sentCounts = [0, 0, 0];
+                    predictions.forEach(p => {
+                        if (p.cluster === c) {
+                            const label = typeof p.label === 'number' ? p.label : 1;
+                            if (label >= 0 && label <= 2) sentCounts[label]++;
+                        }
+                    });
+                    const dominantIdx = sentCounts.indexOf(Math.max(...sentCounts));
+                    const dominantLabel = labelNames[dominantIdx];
+
+                    // Pick a representative text (first one)
+                    const representative = clusterTexts[0];
+
+                    const card = document.createElement('div');
+                    card.className = 'card-standard';
+                    card.innerHTML = `
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-2.5 h-2.5 rounded-full" style="background-color:${this.blogState.clusterColors[c]}"></span>
+                            <h4 class="text-xs font-bold text-slate-800">${this.clusterNames[c]}</h4>
+                            <span class="ml-auto text-[10px] font-mono-data text-slate-400">${clusterTexts.length} reviews</span>
+                        </div>
+                        <div id="upload-summary-${c}" class="text-xs text-slate-600 leading-relaxed">
+                            <span class="flex items-center gap-2 text-slate-400">
+                                <i class="ph ph-spinner animate-spin"></i> Generating summary...
+                            </span>
+                        </div>
+                    `;
+                    container.appendChild(card);
+
+                    // Call Gemini for summary
+                    try {
+                        const summary = await this.callGeminiAPI(representative, dominantLabel);
+                        document.getElementById(`upload-summary-${c}`).textContent = summary;
+                    } catch (e) {
+                        document.getElementById(`upload-summary-${c}`).innerHTML = `
+                            <span class="text-slate-400 italic">Summary unavailable — ${e.message}</span>
+                        `;
+                    }
+                }
+            },
+
             codeSnippets: {
                 distil: `<span class="syn-pink">from</span> transformers <span class="syn-pink">import</span> TrainingArguments
 
@@ -2585,6 +3180,11 @@ response = client.models.generate_content(
                 // Docs tab handling
                 if (id === 'tab-docs') {
                     if (!this.docsState.initialized) this.initDocs();
+                }
+
+                // Upload tab handling
+                if (id === 'tab-upload') {
+                    if (!this.uploadState.initialized) this.initUpload();
                 }
 
                 document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
@@ -3387,22 +3987,13 @@ CRITICAL: Write your response in the SAME LANGUAGE as the review above. If the r
 
                     this.logTrace("Gemini Request", { model: "gemini-3-flash-preview", persona: label, text_preview: text.substring(0, 50) + "..." });
 
-                    const llmEndpoint = this.playground.endpoints.llm(this.playground.geminiToken);
-                    const llmResponse = await fetch(llmEndpoint, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(payload)
-                    });
-
                     let synthesis = "Synthesis unavailable (check API configuration).";
-                    if (llmResponse.ok) {
-                        const llmData = await llmResponse.json();
-                        this.logTrace("Gemini Response", llmData);
-                        synthesis = llmData.candidates[0].content.parts[0].text;
-                    } else {
-                        const errorData = await llmResponse.json();
-                        this.logTrace("Gemini Error", errorData);
-                        throw new Error(errorData.error?.message || "LLM API Error");
+                    try {
+                        synthesis = await this.callGeminiAPI(text, label);
+                        this.logTrace("Gemini Response", { length: synthesis.length });
+                    } catch (err) {
+                        this.logTrace("Gemini Error", { error: err.message });
+                        throw err;
                     }
 
                     playLlm.textContent = synthesis;
