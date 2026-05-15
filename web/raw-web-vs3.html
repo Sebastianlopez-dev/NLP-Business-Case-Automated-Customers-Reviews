@@ -1786,10 +1786,18 @@
                     </div>
                     <div class="col-span-12 lg:col-span-7 card-standard flex flex-col">
                         <h3 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
-                            <i class="ph ph-chart-bar text-slate-400"></i> Cluster Distribution
+                            <i class="ph ph-chart-bar text-slate-400"></i> Clusters
                         </h3>
                         <div class="chart-container flex-1">
                             <canvas id="uploadClusterChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-span-12 card-standard">
+                        <h3 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <i class="ph ph-stack text-slate-400"></i> Sentiment per Cluster
+                        </h3>
+                        <div class="chart-container" style="height:300px;">
+                            <canvas id="uploadSentClusterChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -2754,7 +2762,8 @@ _classifier = <span class="syn-pink">await</span> pipeline(<br>
                 selectedColumn: null,
                 modelWarmed: false,
                 sentimentChartInstance: null,
-                clusterChartInstance: null
+                clusterChartInstance: null,
+                sentClusterChartInstance: null
             },
 
             initUpload: function() {
@@ -3029,7 +3038,11 @@ _classifier = <span class="syn-pink">await</span> pipeline(<br>
                 if (this.uploadState.clusterChartInstance) {
                     this.uploadState.clusterChartInstance.destroy();
                 }
+                if (this.uploadState.sentClusterChartInstance) {
+                    this.uploadState.sentClusterChartInstance.destroy();
+                }
 
+                // 1. Sentiment donut
                 this.uploadState.sentimentChartInstance = new Chart(
                     document.getElementById('uploadSentimentChart').getContext('2d'),
                     {
@@ -3066,6 +3079,7 @@ _classifier = <span class="syn-pink">await</span> pipeline(<br>
                     }
                 );
 
+                // 2. Cluster bar chart with data labels ON TOP
                 this.uploadState.clusterChartInstance = new Chart(
                     document.getElementById('uploadClusterChart').getContext('2d'),
                     {
@@ -3076,7 +3090,7 @@ _classifier = <span class="syn-pink">await</span> pipeline(<br>
                                 data: clusterCounts,
                                 backgroundColor: ['#0891B2', '#7C3AED', '#D97706', '#0D9488', '#4F46E5', '#BE185D'],
                                 borderRadius: 4,
-                                barThickness: 24
+                                barThickness: 28
                             }]
                         },
                         options: {
@@ -3095,6 +3109,66 @@ _classifier = <span class="syn-pink">await</span> pipeline(<br>
                             },
                             plugins: {
                                 legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: '#FFFFFF',
+                                    titleColor: '#1E293B',
+                                    bodyColor: '#334155',
+                                    borderColor: '#E2E8F0',
+                                    borderWidth: 1,
+                                    padding: 10,
+                                    cornerRadius: 8
+                                }
+                            }
+                        },
+                        plugins: [{
+                            id: 'barLabels',
+                            afterDatasetsDraw(chart) {
+                                const ctx = chart.ctx;
+                                chart.data.datasets[0].data.forEach((value, i) => {
+                                    if (value === 0) return;
+                                    const meta = chart.getDatasetMeta(0);
+                                    const x = meta.data[i].x;
+                                    const y = meta.data[i].y;
+                                    ctx.fillStyle = '#334155';
+                                    ctx.font = 'bold 10px JetBrains Mono';
+                                    ctx.textAlign = 'center';
+                                    ctx.textBaseline = 'bottom';
+                                    ctx.fillText(value.toLocaleString(), x, y - 4);
+                                });
+                            }
+                        }]
+                    }
+                );
+
+                // 3. Sentiment per Cluster (stacked bar)
+                const sentPerCluster = [[0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,0,0]];
+                predictions.forEach(p => {
+                    const c = typeof p.cluster === 'number' ? p.cluster : 0;
+                    const l = typeof p.label === 'number' ? p.label : 1;
+                    if (c >= 0 && c <= 5 && l >= 0 && l <= 2) sentPerCluster[c][l]++;
+                });
+
+                this.uploadState.sentClusterChartInstance = new Chart(
+                    document.getElementById('uploadSentClusterChart').getContext('2d'),
+                    {
+                        type: 'bar',
+                        data: {
+                            labels: this.clusterNames,
+                            datasets: [
+                                { label: 'Negative', data: sentPerCluster.map(c => c[0]), backgroundColor: '#DC2626', borderRadius: 0, barPercentage: 0.8 },
+                                { label: 'Neutral',  data: sentPerCluster.map(c => c[1]), backgroundColor: '#94A3B8', borderRadius: 0, barPercentage: 0.8 },
+                                { label: 'Positive', data: sentPerCluster.map(c => c[2]), backgroundColor: '#10B981', borderRadius: 4, barPercentage: 0.8 }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                x: { stacked: true, grid: { display: false }, ticks: { font: { size: 9 }, maxRotation: 30, minRotation: 30 } },
+                                y: { stacked: true, beginAtZero: true, grid: { borderDash: [4, 4], color: 'rgba(148, 163, 184, 0.2)' }, ticks: { font: { size: 10, family: 'JetBrains Mono' } } }
+                            },
+                            plugins: {
+                                legend: { position: 'bottom', labels: { boxWidth: 10, padding: 12, font: { size: 11 }, usePointStyle: true } },
                                 tooltip: {
                                     backgroundColor: '#FFFFFF',
                                     titleColor: '#1E293B',
