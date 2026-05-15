@@ -3345,9 +3345,9 @@ response = client.models.generate_content(
 
                 // Update URL hash
                 const tabToHash = {
-                    'tab-play': 'pipeline', 'tab-upload': 'upload', 'tab-blog': 'documentation',
-                    'tab-eda': 'overview', 'tab-benchmark': 'benchmark', 'tab-clusters': 'clusters',
-                    'tab-summarization': 'summaries', 'tab-web': 'deployment', 'tab-docs': 'docs'
+                    'tab-play': 'playground', 'tab-upload': 'upload', 'tab-blog': 'blog',
+                    'tab-eda': 'eda', 'tab-benchmark': 'emotion', 'tab-clusters': 'clusters',
+                    'tab-summarization': 'summarization', 'tab-web': 'web', 'tab-docs': 'docs'
                 };
                 const newHash = tabToHash[id];
                 if (newHash && window.location.hash !== '#' + newHash) {
@@ -4624,14 +4624,16 @@ CRITICAL: Write your response in the SAME LANGUAGE as the review above. If the r
 
             // Hash-based routing: remember active tab on reload
             const hashToTab = {
-                '#playground': 'tab-play', '#pipeline': 'tab-play', '#play': 'tab-play',
+                '#playground': 'tab-play',
                 '#upload': 'tab-upload',
-                '#blog': 'tab-blog', '#documentation': 'tab-blog', '#docs': 'tab-blog',
-                '#eda': 'tab-eda', '#overview': 'tab-eda',
-                '#benchmark': 'tab-benchmark',
+                '#blog': 'tab-blog',
+                '#eda': 'tab-eda',
+                '#emotion': 'tab-benchmark',
                 '#clusters': 'tab-clusters',
-                '#summarization': 'tab-summarization', '#summaries': 'tab-summarization',
-                '#web': 'tab-web', '#deployment': 'tab-web',
+                '#clustering': 'tab-clusters',
+                '#summarization': 'tab-summarization',
+                '#web': 'tab-web',
+                '#docs': 'tab-docs',
             };
             const hash = window.location.hash.toLowerCase();
             if (hash && hashToTab[hash]) {
