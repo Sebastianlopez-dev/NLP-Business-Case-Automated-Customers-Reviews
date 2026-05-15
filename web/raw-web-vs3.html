@@ -2151,6 +2151,59 @@ CRITICAL: Write your response in the SAME LANGUAGE as the review above.`
                 return llmData.candidates[0].content.parts[0].text;
             },
 
+            callGeminiDatasetSummary: async function(statsText) {
+                const payload = {
+                    contents: [{
+                        parts: [{
+                            text: `You are a senior data analyst writing a concise dashboard report.
+
+Below are the results of an NLP pipeline that analyzed customer reviews using:
+- DistilBERT for sentiment classification (Negative / Neutral / Positive)
+- nomic-embed + K-Means for semantic clustering into 6 product categories
+
+Your report must be written in HTML (just the body content, no <html> or <head> tags) and follow this EXACT structure:
+
+<h3 style="color:#1E293B;font-weight:600;margin:0 0 8px 0;">📊 Dataset Overview</h3>
+<p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 16px 0;">[2-3 sentences summarizing what the dataset contains and its overall sentiment tone]</p>
+
+<h3 style="color:#1E293B;font-weight:600;margin:0 0 8px 0;">🧠 DistilBERT Sentiment Analysis</h3>
+<p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 16px 0;">[2-3 sentences on what the sentiment distribution reveals. Which sentiment dominates? What does the ratio suggest about customer satisfaction?]</p>
+
+<h3 style="color:#1E293B;font-weight:600;margin:0 0 8px 0;">🔬 Cluster Analysis</h3>
+<p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 16px 0;">[2-3 sentences interpreting the cluster distribution. Which product categories dominate? Are they positive or negative clusters? What patterns emerge from the category mix?]</p>
+
+<h3 style="color:#1E293B;font-weight:600;margin:0 0 8px 0;">💡 What's Happening in This Dataset</h3>
+<p style="color:#475569;font-size:14px;line-height:1.6;margin:0;">[3-4 sentences synthesizing the overall narrative. Connect sentiment to clusters. What story does the data tell? What's the one thing the reader should take away? Be specific, use numbers, don't be generic.]</p>
+
+RULES:
+- Use the EXACT numbers from the stats below. Do NOT invent numbers.
+- Write in natural, professional English. No bullet points, no markdown.
+- Each section MUST be 2-4 sentences. No more, no less.
+- Mention at least one specific cluster name with its sentiment trend.
+
+STATS:
+${statsText}`
+                        }]
+                    }]
+                };
+
+                const llmEndpoint = this.playground.endpoints.llm(this.playground.geminiToken);
+                const llmResponse = await fetch(llmEndpoint, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!llmResponse.ok) {
+                    const errorData = await llmResponse.json();
+                    throw new Error(errorData.error?.message || "LLM API Error");
+                }
+                const llmData = await llmResponse.json();
+                const raw = llmData.candidates[0].content.parts[0].text;
+                // Strip markdown code fences if Gemini wraps in ```html
+                return raw.replace(/^```html?\s*/i, '').replace(/\s*```$/i, '');
+            },
+
             blogState: {
                 activeArticle: 0,
                 initialized: false,
@@ -3040,59 +3093,65 @@ _classifier = <span class="syn-pink">await</span> pipeline(<br>
                 const container = document.getElementById('upload-summaries-grid');
                 const section = document.getElementById('upload-summaries');
                 section.classList.remove('hidden');
-                container.innerHTML = '';
+                container.innerHTML = `
+                    <div class="card-standard" style="grid-column: 1 / -1;">
+                        <div class="flex items-center gap-2 mb-4">
+                            <i class="ph ph-brain text-cyan-600 text-lg"></i>
+                            <h4 class="text-sm font-bold text-slate-800">AI Dataset Analysis</h4>
+                        </div>
+                        <div id="upload-dataset-summary" class="text-sm text-slate-600 leading-relaxed space-y-3">
+                            <div class="flex items-center gap-2 text-slate-400">
+                                <i class="ph ph-spinner animate-spin"></i> Analyzing your dataset with Gemini...
+                            </div>
+                        </div>
+                    </div>
+                `;
 
-                // Group texts by cluster
-                const clusters = [[], [], [], [], [], []];
-                predictions.forEach((p, i) => {
-                    const c = typeof p.cluster === 'number' ? p.cluster : 0;
-                    if (c >= 0 && c <= 5 && texts[i]) clusters[c].push(texts[i]);
+                // Build stats
+                const labelNames = ['Negative', 'Neutral', 'Positive'];
+                const sentCounts = [0, 0, 0];
+                const clusterCounts = [0, 0, 0, 0, 0, 0];
+                predictions.forEach(p => {
+                    if (typeof p.label === 'number' && p.label >= 0 && p.label <= 2) sentCounts[p.label]++;
+                    if (typeof p.cluster === 'number' && p.cluster >= 0 && p.cluster <= 5) clusterCounts[p.cluster]++;
                 });
 
-                // Sentiment label names
-                const labelNames = ['Negative', 'Neutral', 'Positive'];
+                // Dominant sentiment & cluster
+                const domLabelIdx = sentCounts.indexOf(Math.max(...sentCounts));
+                const domClusterIdx = clusterCounts.indexOf(Math.max(...clusterCounts));
 
+                // Build structured prompt
+                const statsBlock = [
+                    `DATASET OVERVIEW`,
+                    `Total reviews analyzed: ${predictions.length}`,
+                    ``,
+                    `SENTIMENT BREAKDOWN (DistilBERT)`,
+                    `Negative: ${sentCounts[0]} (${((sentCounts[0]/predictions.length)*100).toFixed(1)}%)`,
+                    `Neutral:  ${sentCounts[1]} (${((sentCounts[1]/predictions.length)*100).toFixed(1)}%)`,
+                    `Positive: ${sentCounts[2]} (${((sentCounts[2]/predictions.length)*100).toFixed(1)}%)`,
+                    `Dominant sentiment: ${labelNames[domLabelIdx]}`,
+                    ``,
+                    `CLUSTER BREAKDOWN (nomic-embed + K-Means)`,
+                ];
                 for (let c = 0; c < 6; c++) {
-                    const clusterTexts = clusters[c];
-                    if (clusterTexts.length === 0) continue;
+                    if (clusterCounts[c] > 0) {
+                        statsBlock.push(`${this.clusterNames[c]}: ${clusterCounts[c]} reviews (${((clusterCounts[c]/predictions.length)*100).toFixed(1)}%)`);
+                    }
+                }
+                statsBlock.push(`Dominant cluster: ${this.clusterNames[domClusterIdx]}`);
 
-                    // Get dominant sentiment for this cluster
-                    const sentCounts = [0, 0, 0];
-                    predictions.forEach(p => {
-                        if (p.cluster === c) {
-                            const label = typeof p.label === 'number' ? p.label : 1;
-                            if (label >= 0 && label <= 2) sentCounts[label]++;
-                        }
-                    });
-                    const dominantIdx = sentCounts.indexOf(Math.max(...sentCounts));
-                    const dominantLabel = labelNames[dominantIdx];
+                const statsText = statsBlock.join('\n');
 
-                    // Pick a representative text (first one)
-                    const representative = clusterTexts[0];
-
-                    const card = document.createElement('div');
-                    card.className = 'card-standard';
-                    card.innerHTML = `
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="w-2.5 h-2.5 rounded-full" style="background-color:${this.blogState.clusterColors[c]}"></span>
-                            <h4 class="text-xs font-bold text-slate-800">${this.clusterNames[c]}</h4>
-                            <span class="ml-auto text-[10px] font-mono-data text-slate-400">${clusterTexts.length} reviews</span>
-                        </div>
-                        <div id="upload-summary-${c}" class="text-xs text-slate-600 leading-relaxed">
-                            <span class="flex items-center gap-2 text-slate-400">
-                                <i class="ph ph-spinner animate-spin"></i> Generating summary...
-                            </span>
-                        </div>
+                try {
+                    const summary = await this.callGeminiDatasetSummary(statsText);
+                    document.getElementById('upload-dataset-summary').innerHTML = summary;
+                } catch (e) {
+                    document.getElementById('upload-dataset-summary').innerHTML = `
+                        <span class="text-slate-400 italic">Gemini summary unavailable — ${e.message}</span>
+                        <pre class="mt-3 text-[11px] font-mono-data text-slate-500 bg-slate-50 rounded p-3">${statsText}</pre>
                     `;
-                    container.appendChild(card);
-
-                    // Call Gemini for summary
-                    try {
-                        const summary = await this.callGeminiAPI(representative, dominantLabel);
-                        document.getElementById(`upload-summary-${c}`).textContent = summary;
-                    } catch (e) {
-                        document.getElementById(`upload-summary-${c}`).innerHTML = `
-                            <span class="text-slate-400 italic">Summary unavailable — ${e.message}</span>
+                }
+            },
                         `;
                     }
                 }
