@@ -1,10 +1,65 @@
 # =============================================================================
-# .vercelignore — Solo se sube el dashboard, nada del pipeline de ML
+# .vercelignore — Excluir archivos pesados y sensibles del deploy
 # =============================================================================
 
-# ── Excluir todo en la raíz ───────────────────────────────────────────────────
-/*
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.so
+.ipynb_checkpoints/
+requirements.txt
+generate_report.py
 
-# ── Whitelist: solo web/ y config de Vercel ───────────────────────────────────
-!/web/
-!/vercel.json
+# ── Notebooks ─────────────────────────────────────────────────────────────────
+*.ipynb
+
+# ── Datasets y modelos (pesados) ──────────────────────────────────────────────
+data/
+dataset/
+*.csv
+*.parquet
+*.arrow
+*.pt
+*.bin
+*.h5
+*.pkl
+*.joblib
+*.npy
+*.npz
+*.zip
+
+# ── Reportes generados ───────────────────────────────────────────────────────
+report_print.html
+report.pdf
+*.png
+
+# ── Documentación del proyecto ───────────────────────────────────────────────
+concepts*.md
+analysis*.md
+design-visual.md
+itwouldenhance.md
+MASTER_PLAN.md
+
+# ── Archivos locales / IDE ───────────────────────────────────────────────────
+.idea/
+.vscode/
+.atl/
+.DS_Store
+.venv/
+venv/
+env/
+.env
+
+# ── Proyecto original de referencia ──────────────────────────────────────────
+project-nlp-business-case-automated-customers-reviews-v2-main/
+
+# ── Documentación de agentes y memoria ───────────────────────────────────────
+AGENTS.md
+memory.md
+report.md
+README.md
+.gitignore
+.git/
+
+# ── Backup de vercelignore ───────────────────────────────────────────────────
+.vercelignore.bak
