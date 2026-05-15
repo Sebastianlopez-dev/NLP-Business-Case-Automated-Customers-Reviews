@@ -71,3 +71,4 @@ project-nlp-business-case-automated-customers-reviews-v2-main/
 # Report generation script
 generate_report.py
 report_print.html
+.vercel
