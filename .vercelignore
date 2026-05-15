@@ -10,4 +10,5 @@
 
 # ── Whitelist: solo web/ y config de Vercel ───────────────────────────────────
 !web/
+!web/*
 !vercel.json
