@@ -52,6 +52,8 @@ Amazon Reviews 2023 (UCSD)
 | **Clustering** | nomic-embed + MiniBatchKMeans | k=6 · Silhouette 0.031 · 36× faster than K-Means |
 | **Summarization** | Gemini 1.5 Flash | 6 articles · Extractive-Abstractive pipeline |
 | **Web App** | HTML/Tailwind/Chart.js | Interactive dashboard with live HF Inference |
+| **Batch Upload** | FastAPI + Docker (HF Space) | Upload CSV → sentiment + clustering + Gemini report |
+| **Deployment** | Vercel + HuggingFace Spaces | `project-wmh9z.vercel.app` · auto-deploy on push |
 
 ---
 
@@ -201,11 +203,66 @@ k=10  ██          Sil 0.034
 
 ## Web Dashboard
 
-Single-page interactive dashboard (`web/raw-web-vs3.html`):
-- **Emotion Engine** tab: Live sentiment inference via HF Inference API (`distilbert-amazon-reviews-sentiment`)
-- **Category Intelligence** tab: Cluster profiles from `hybridKMeans-category-clustering`
-- **Training Evolution** chart: DistilBERT vs RoBERTa loss curves (Chart.js)
-- Pipeline selector: "Full Pipeline" vs "Sentiment Only"
+**Live**: [`project-wmh9z.vercel.app`](https://project-wmh9z.vercel.app) — auto-deployed on every push to `main`.
+
+Single-page interactive dashboard (`web/raw-web-vs3.html`) with 9 tabs:
+
+| Tab | Section | Description |
+|-----|---------|-------------|
+| **Playground** | Application | Live single-review inference (Transformers.js) + sentiment + cluster + Gemini response |
+| **Upload** | Application | Drag/drop CSV batch upload → HF Space backend (DistilBERT + nomic-embed) → dynamic charts + Gemini report |
+| **Blog** | Application | AI-generated cluster summaries from N05 pipeline |
+| **Data & EDA** | Pipeline | Dataset stats, sentiment distribution, textual analysis |
+| **Emotion Engine** | Pipeline | DistilBERT vs RoBERTa comparison, training evolution chart |
+| **Clustering** | Pipeline | UMAP visualization, cluster profiles, k-sweep analysis |
+| **Summarization** | Pipeline | Extractive-Abstractive methodology, Gemini integration |
+| **Web & HF** | Pipeline | Deployment architecture, HF model cards, API status |
+| **Documentation** | Docs | Pipeline concepts, code snippets, audit patterns |
+
+**Hash routing**: `#playground`, `#upload`, `#blog`, `#eda`, `#emotion`, `#clusters`, `#summarization`, `#web`, `#docs`.
+
+---
+
+## Batch Upload & HF Space
+
+Users can upload CSV files with Amazon-style reviews and get full ML pipeline results without touching a notebook.
+
+### Architecture
+
+```
+CSV drag/drop → Papa Parse (browser)
+      │
+      ▼
+  Batches of 32 → POST to HF Space /predict
+      │
+      ▼
+  HF Space (FastAPI + Docker):
+      ├── DistilBERT → sentiment (Negative / Neutral / Positive)
+      ├── nomic-embed → semantic clustering (6 centroids)
+      └── returns [{label, score, cluster}, ...]
+      │
+      ▼
+  Dashboard renders:
+      ├── Sentiment donut (Chart.js)
+      ├── Cluster bar chart with data labels
+      ├── Sentiment per Cluster stacked bar
+      └── Gemini AI dataset analysis (structured report)
+```
+
+### HF Space
+
+- **URL**: [`sebaslopez-ai-amazon-reviews-sentiment-space.hf.space`](https://sebaslopez-ai-amazon-reviews-sentiment-space.hf.space)
+- **Endpoints**: `/health` (model status) · `/predict` (batch inference)
+- **Stack**: FastAPI + Uvicorn + Docker (CPU free tier)
+- **Models**: DistilBERT (66M) + nomic-embed (137M) — ~810 MB total
+- **Features**: Landing page with live status indicator, endpoint docs, quick test form
+
+### Limits
+
+- Max **500 reviews** per upload (UI cap with advisory)
+- Batch size: 32 reviews per API call
+- Cold start: ~30s first request (container wakes from sleep)
+- Gemini API key required for AI summaries (stored in browser `localStorage`)
 
 ---
 
@@ -236,7 +293,9 @@ N02–N05 all consume the Arrow dataset from N01. Run sequentially — each note
 
 ```
 ├── README.md                                   ← You are here
-├── requirements.txt                            ← Python dependencies
+├── requirements.txt                            ← Python dependencies (notebooks)
+├── vercel.json                                 ← Vercel build + rewrites config
+├── .vercelignore                               ← Excludes notebooks/data/models from deploy
 ├── concepts.md                                 ← Research behind every decision
 ├── analysisN01.md                              ← EDA findings & preprocessing decisions
 ├── analysisN02.md                              ← DistilBERT results & training analysis
@@ -247,8 +306,15 @@ N02–N05 all consume the Arrow dataset from N01. Run sequentially — each note
 ├── notebook_03_roberta_sentiment.ipynb         ← RoBERTa fine-tuning
 ├── notebook_04_category_clustering.ipynb       ← Embedding + clustering
 ├── notebook_05_review_summarisation.ipynb      ← Extractive-abstractive summarization
+├── hf-space/
+│   ├── app.py                                  ← FastAPI: /predict + /health
+│   ├── Dockerfile                              ← Python 3.10-slim + uvicorn
+│   ├── requirements.txt                        ← fastapi, transformers, torch, etc.
+│   └── cluster_centroids.npy                   ← 6×768 centroids (from N04)
+├── test-files/
+│   └── test1.csv                               ← 250-review test dataset
 └── web/
-    ├── raw-web-vs3.html                        ← Interactive dashboard
+    ├── raw-web-vs3.html                        ← Interactive dashboard (9 tabs)
     └── train_history.js                        ← Training loss data for charts
 ```
 
@@ -266,6 +332,8 @@ N02–N05 all consume the Arrow dataset from N01. Run sequentially — each note
 | Extractive-Abstractive for N05 | Prevents LLM hallucination of products/numbers |
 | Gemini 1.5 Flash over Mistral | Free tier sustainability; comparable quality for synthesis |
 | Stratified split on indices (not text) | Zero leakage false positives vs text-based overlap checks |
+| FastAPI + Docker over Gradio for HF Space | Proper HTTP status codes (400/422/503), `/health` endpoint, clean REST contract |
+| nomic-embed (137M) in Space over BGE-large (335M) | Fits 2 GB CPU free tier with DistilBERT (~810 MB vs ~1.6 GB) |
 
 ---
 
@@ -277,7 +345,7 @@ N02–N05 all consume the Arrow dataset from N01. Run sequentially — each note
 | Review Classification | 20 | N02 — DistilBERT F1=0.77 + N03 — RoBERTa comparison |
 | Clustering Model | 20 | N04 — nomic-embed + MiniBatchKMeans k=6, k-sweep analysis |
 | Summarization Model | 20 | N05 — extractive-abstractive pipeline, 6 articles |
-| Deployment | 10 | Web dashboard with live HF Inference API |
+| Deployment | 10 | Dashboard (Vercel) + HF Space (FastAPI/Docker) + batch upload + auto-deploy |
 | PDF Report | 5 | analysisN01–N04.md + this README |
 | PPT Presentation | 10 | To be created from analysis docs |
 
