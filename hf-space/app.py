@@ -11,7 +11,7 @@ model_loaded = False
 sentiment_pipe = None
 embedder = None
 centroids = None
-LABEL_MAP = {"NEGATIVE": 0, "NEUTRAL": 1, "POSITIVE": 2}
+LABEL_MAP = {"Negative": 0, "Neutral": 1, "Positive": 2}
 
 
 def load_models():
