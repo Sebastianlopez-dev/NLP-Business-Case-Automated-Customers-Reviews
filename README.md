@@ -335,18 +335,4 @@ N02–N05 all consume the Arrow dataset from N01. Run sequentially — each note
 | FastAPI + Docker over Gradio for HF Space | Proper HTTP status codes (400/422/503), `/health` endpoint, clean REST contract |
 | nomic-embed (137M) in Space over BGE-large (335M) | Fits 2 GB CPU free tier with DistilBERT (~810 MB vs ~1.6 GB) |
 
----
 
-## Evaluation Criteria Mapping
-
-| Criterion | Points | Covered by |
-|-----------|--------|------------|
-| Data Preprocessing | 15 | N01 — streaming, cleaning, balancing, 16 EDA plots |
-| Review Classification | 20 | N02 — DistilBERT F1=0.77 + N03 — RoBERTa comparison |
-| Clustering Model | 20 | N04 — nomic-embed + MiniBatchKMeans k=6, k-sweep analysis |
-| Summarization Model | 20 | N05 — extractive-abstractive pipeline, 6 articles |
-| Deployment | 10 | Dashboard (Vercel) + HF Space (FastAPI/Docker) + batch upload + auto-deploy |
-| PDF Report | 5 | analysisN01–N04.md + this README |
-| PPT Presentation | 10 | To be created from analysis docs |
-
-**Total: up to 100 pts (+10 bonus for public hosting)**
