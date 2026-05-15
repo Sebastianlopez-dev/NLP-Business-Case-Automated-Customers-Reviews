@@ -1,6 +1,7 @@
 {
+  "buildCommand": "cp -r web/* .",
+  "outputDirectory": ".",
   "rewrites": [
-    { "source": "/train_history.js", "destination": "/web/train_history.js" },
-    { "source": "/(.*)", "destination": "/web/raw-web-vs3.html" }
+    { "source": "/(.*)", "destination": "/raw-web-vs3.html" }
   ]
 }
