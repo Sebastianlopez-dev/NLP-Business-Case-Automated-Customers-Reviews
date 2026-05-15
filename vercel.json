@@ -1,7 +1,6 @@
 {
-  "outputDirectory": "web",
-  "cleanUrls": true,
   "rewrites": [
-    { "source": "/(.*)", "destination": "/raw-web-vs3.html" }
+    { "source": "/train_history.js", "destination": "/web/train_history.js" },
+    { "source": "/(.*)", "destination": "/web/raw-web-vs3.html" }
   ]
 }
