@@ -1741,17 +1741,15 @@
 
                         <div id="upload-cap-warning" class="hidden mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-2">
                             <i class="ph ph-warning text-amber-500 text-sm mt-0.5 flex-shrink-0"></i>
-                            <p class="text-xs text-amber-700">File exceeds 500 rows. Only the first 500 will be processed.</p>
+                            <p id="upload-cap-text" class="text-xs text-amber-700">File exceeds 500 rows. Maximum processable is 500 reviews.</p>
                         </div>
 
                         <div class="flex items-center gap-4 mt-4 pt-4 border-t border-slate-100">
-                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Process first</label>
-                            <select id="upload-process-count" class="text-sm border border-slate-200 rounded-md p-2 text-slate-700 bg-white outline-none cursor-pointer hover:border-slate-300 transition-colors shadow-sm">
-                                <option value="50">50 rows</option>
-                                <option value="100">100 rows</option>
-                                <option value="200" selected>200 rows</option>
-                                <option value="500">500 rows</option>
-                            </select>
+                            <label for="upload-process-count" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Process first</label>
+                            <input type="number" id="upload-process-count" min="1" max="500" value="200"
+                                oninput="let v=parseInt(this.value);if(v>500){this.value=500;document.getElementById('upload-cap-warning').classList.remove('hidden');document.getElementById('upload-cap-text').textContent='Maximum 500 reviews. Value capped.';}else if(v<1&&this.value!==''){this.value=1;}"
+                                class="text-sm border border-slate-200 rounded-md p-2 text-slate-700 bg-white w-24 outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors shadow-sm">
+                            <span class="text-[10px] text-slate-400 font-mono-data">/ <span id="upload-max-rows">0</span> rows</span>
                             <button onclick="app.processUpload()" id="upload-process-btn" class="btn-cta ml-auto px-6 py-2.5 rounded-md text-sm flex items-center gap-2 shadow-sm">
                                 <span id="upload-btn-txt">Process Reviews</span>
                                 <span id="upload-spinner" class="hidden w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
@@ -2841,7 +2839,10 @@ _classifier = <span class="syn-pink">await</span> pipeline(<br>
                 const select = document.getElementById('upload-column-select');
                 const countLabel = document.getElementById('upload-row-count');
                 const capWarning = document.getElementById('upload-cap-warning');
+                const capText = document.getElementById('upload-cap-text');
                 const dropZone = document.getElementById('upload-drop-zone');
+                const processInput = document.getElementById('upload-process-count');
+                const maxRowsLabel = document.getElementById('upload-max-rows');
 
                 mapping.classList.remove('hidden');
                 dropZone.classList.add('hidden');
@@ -2852,7 +2853,19 @@ _classifier = <span class="syn-pink">await</span> pipeline(<br>
 
                 const totalRows = this.uploadState.parsedRows.length;
                 countLabel.textContent = `${totalRows.toLocaleString()} rows`;
-                capWarning.classList.toggle('hidden', totalRows <= 500);
+                maxRowsLabel.textContent = totalRows.toLocaleString();
+
+                // Update process count input
+                processInput.max = Math.min(totalRows, 500);
+                if (parseInt(processInput.value) > totalRows) processInput.value = totalRows;
+
+                // Cap warning
+                if (totalRows > 500) {
+                    capWarning.classList.remove('hidden');
+                    capText.textContent = `File has ${totalRows.toLocaleString()} rows. Maximum processable is 500. Process as many as you want below.`;
+                } else {
+                    capWarning.classList.add('hidden');
+                }
 
                 this.renderUploadPreview();
             },
@@ -2890,7 +2903,15 @@ _classifier = <span class="syn-pink">await</span> pipeline(<br>
                     return;
                 }
 
-                const limit = parseInt(document.getElementById('upload-process-count').value, 10);
+                const limitInput = document.getElementById('upload-process-count');
+                let limit = parseInt(limitInput.value, 10);
+                // Clamp to valid range
+                if (isNaN(limit) || limit < 1) limit = 1;
+                if (limit > 500) {
+                    limit = 500;
+                    limitInput.value = 500;
+                    this.showUploadError('Maximum 500 reviews per batch. Value capped to 500.');
+                }
                 const cappedTexts = texts.slice(0, limit);
 
                 const btn = document.getElementById('upload-process-btn');
