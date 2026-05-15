@@ -1,14 +1,10 @@
 # =============================================================================
 # .vercelignore — Solo se sube el dashboard, nada del pipeline de ML
 # =============================================================================
-# Vercel no necesita los notebooks, datasets, modelos ni archivos de análisis.
-# Esto evita que terminen en la infraestructura de Vercel.
-# =============================================================================
 
-# ── Excluir todo ──────────────────────────────────────────────────────────────
-*
+# ── Excluir todo en la raíz ───────────────────────────────────────────────────
+/*
 
 # ── Whitelist: solo web/ y config de Vercel ───────────────────────────────────
-!web/
-!web/*
-!vercel.json
+!/web/
+!/vercel.json
